@@ -1,0 +1,67 @@
+<div class="layout" [class.layout--sidebar-collapsed]="sidebarCollapsed()">
+  <app-sidebar
+    [collapsed]="sidebarCollapsed()"
+    (toggleSidebar)="toggleSidebar()"
+  />
+
+  <div class="layout__main">
+    <header class="layout__topbar">
+      <p class="layout__breadcrumb">{{ breadcrumb() }}</p>
+      <div class="layout__topbar-actions">
+        <button type="button" class="layout__icon-btn" aria-label="Help">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M9.6 9.4a2.4 2.4 0 1 1 3.5 2.1c-.7.4-1.1.9-1.1 1.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="12" cy="16.6" r="0.9" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <div class="layout__profile" (click)="$event.stopPropagation()">
+          <button
+            type="button"
+            class="layout__avatar"
+            aria-label="User profile"
+            [attr.aria-expanded]="profileMenuOpen()"
+            (click)="toggleProfileMenu()"
+          >
+            {{ userInitials() }}
+          </button>
+
+          @if (profileMenuOpen()) {
+            <div class="layout__profile-menu" role="menu">
+              <div class="layout__profile-menu-header">
+                <div class="layout__profile-menu-photo" aria-hidden="true">{{ userInitials() }}</div>
+                <p class="layout__profile-menu-name">{{ displayName() }}</p>
+                @if (userEmail()) {
+                  <p class="layout__profile-menu-email">{{ userEmail() }}</p>
+                }
+              </div>
+              <div class="layout__profile-menu-actions">
+                <button
+                  type="button"
+                  class="layout__profile-menu-btn layout__profile-menu-btn--primary"
+                  role="menuitem"
+                  (click)="goToProfile()"
+                >
+                  Profile
+                </button>
+                <button
+                  type="button"
+                  class="layout__profile-menu-btn layout__profile-menu-btn--logout"
+                  role="menuitem"
+                  (click)="logout()"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </header>
+
+    <main class="layout__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

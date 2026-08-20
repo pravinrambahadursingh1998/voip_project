@@ -1,0 +1,131 @@
+<div class="conn-list">
+  <div class="conn-list__toolbar">
+    <div class="conn-list__search">
+      <svg class="conn-list__search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        class="conn-list__search-input"
+        placeholder="Search by provider or model…"
+        aria-label="Search connections"
+      />
+    </div>
+
+    <button
+      type="button"
+      class="conn-list__add-btn"
+      title="Add connection"
+      (click)="createConnection.emit()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Add
+    </button>
+  </div>
+
+  <div class="conn-list__table-wrap">
+    <table class="conn-list__table">
+      <thead>
+        <tr>
+          <th scope="col">Provider</th>
+          <th scope="col">Model</th>
+          <th scope="col">API Key</th>
+          <th scope="col">Temp</th>
+          <th scope="col">Tokens</th>
+          <th scope="col">Conf.</th>
+          <th scope="col">Sim.</th>
+          <th scope="col" class="conn-list__th-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of connections; track item.id) {
+          <tr>
+            <td>
+              <span class="conn-list__provider">{{ providerLabel(item.provider) }}</span>
+            </td>
+            <td>
+              <span class="conn-list__model">{{ item.model || '—' }}</span>
+            </td>
+            <td>
+              <code class="conn-list__key">{{ maskApiKey(item.api_key) }}</code>
+            </td>
+            <td class="conn-list__num">{{ item.temperature ?? '—' }}</td>
+            <td class="conn-list__num">{{ item.max_tokens ?? '—' }}</td>
+            <td class="conn-list__num">
+              @if (item.confidence_threshold != null) {
+                {{ item.confidence_threshold }}%
+              } @else {
+                —
+              }
+            </td>
+            <td class="conn-list__num">
+              @if (item.similarity_threshold != null) {
+                {{ item.similarity_threshold }}%
+              } @else {
+                —
+              }
+            </td>
+            <td class="conn-list__actions">
+              <div class="conn-list__action-group">
+                <button
+                  type="button"
+                  class="conn-list__action-btn"
+                  title="Edit"
+                  aria-label="Edit connection"
+                  (click)="editConnection.emit(item.id)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M11.2 2.8a1.2 1.2 0 011.7 0l.3.3a1.2 1.2 0 010 1.7L6.1 11.9 3 12.9l1-3.1 7.2-7z"
+                      stroke="currentColor"
+                      stroke-width="1.35"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Edit</span>
+                </button>
+                <button
+                  type="button"
+                  class="conn-list__action-btn conn-list__action-btn--danger"
+                  title="Delete"
+                  aria-label="Delete connection"
+                  (click)="deleteConnection.emit(item.id)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M3.5 4.5h9M6.2 4.5V3.4h3.6v1.1M5.4 4.5l.5 8.1h4.2l.5-8.1M7 7v4M9 7v4"
+                      stroke="currentColor"
+                      stroke-width="1.35"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr class="conn-list__empty-row">
+            <td colspan="8">
+              <div class="conn-list__empty">
+                <p class="conn-list__empty-title">No connections yet</p>
+                <p class="conn-list__empty-text">Add an AI provider connection to get started.</p>
+                <button type="button" class="conn-list__add-btn" (click)="createConnection.emit()">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                  Add
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

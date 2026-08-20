@@ -1,0 +1,193 @@
+<form class="pr-editor" [formGroup]="promptForm" (ngSubmit)="onSubmit()">
+  <div class="pr-editor__header">
+    <div>
+      <h2 class="pr-editor__title">Prompt Editor</h2>
+      <p class="pr-editor__subtitle">
+        Write the system prompt for the voice agent on this extension.
+      </p>
+    </div>
+    <button
+      type="button"
+      class="pr-editor__btn pr-editor__btn--ghost"
+      (click)="onDelete()"
+      [disabled]="!currentPromptId || isDeleting() || isSaving()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3.5 4.5h9M6 4.5V3.5h4v1M5.5 6.5v5.5M8 6.5v5.5M10.5 6.5v5.5M4.5 4.5l.5 9h6l.5-9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{ isDeleting() ? 'Deleting…' : 'Delete' }}
+    </button>
+  </div>
+
+  <div class="pr-editor__body">
+    <div class="pr-editor__grid">
+      <div class="pr-editor__field">
+        <label class="pr-editor__label" for="pr-name">Prompt name</label>
+        <input
+          id="pr-name"
+          type="text"
+          class="pr-editor__input"
+          formControlName="name"
+          placeholder="e.g. Support Agent"
+          [class.pr-editor__input--invalid]="isInvalid('name')"
+        />
+        @if (isInvalid('name')) {
+          <p class="pr-editor__error">Prompt name is required.</p>
+        }
+      </div>
+
+      <div class="pr-editor__field">
+        <label class="pr-editor__label" for="pr-ext">Extension</label>
+        <select
+          id="pr-ext"
+          class="pr-editor__select"
+          formControlName="extension"
+          [class.pr-editor__input--invalid]="isInvalid('extension')"
+        >
+          <option value="" disabled>Select extension</option>
+          @for (ext of extensions; track ext.value) {
+            <option [value]="ext.value">{{ ext.label }}</option>
+          }
+        </select>
+        @if (isInvalid('extension')) {
+          <p class="pr-editor__error">Extension is required.</p>
+        }
+      </div>
+
+      <div class="pr-editor__field pr-editor__field--full">
+        <label class="pr-editor__label" for="pr-intro">Introduction</label>
+        <input
+          id="pr-intro"
+          type="text"
+          class="pr-editor__input"
+          formControlName="introduction"
+          placeholder="First spoken message when the call connects"
+          [class.pr-editor__input--invalid]="isInvalid('introduction')"
+        />
+        @if (isInvalid('introduction')) {
+          <p class="pr-editor__error">Introduction is required.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pr-editor__field">
+      <label class="pr-editor__label" for="pr-body">Prompt</label>
+      <div class="pr-editor__rich">
+        <div class="pr-editor__toolbar" aria-label="Formatting toolbar">
+          <button type="button" class="pr-editor__tool" title="Bold">B</button>
+          <button type="button" class="pr-editor__tool pr-editor__tool--italic" title="Italic">I</button>
+          <button type="button" class="pr-editor__tool" title="Heading">H</button>
+          <span class="pr-editor__tool-sep"></span>
+          <button type="button" class="pr-editor__tool" title="Quote">“”</button>
+          <button type="button" class="pr-editor__tool" title="Bullet list">•</button>
+          <button type="button" class="pr-editor__tool" title="Numbered list">1.</button>
+          <button type="button" class="pr-editor__tool" title="Code">&lt;/&gt;</button>
+          <span class="pr-editor__tool-sep"></span>
+          <div class="pr-editor__var-wrap" (click)="$event.stopPropagation()">
+            <button
+              type="button"
+              class="pr-editor__tool pr-editor__tool--var"
+              title="Insert variable"
+              [attr.aria-expanded]="varMenuOpen()"
+              (click)="toggleVarMenu($event)"
+            >
+              % Variable
+            </button>
+            @if (varMenuOpen()) {
+              <div class="pr-editor__var-menu" role="listbox" aria-label="Prompt variables">
+                @for (v of variables; track v) {
+                  <button
+                    type="button"
+                    class="pr-editor__var-item"
+                    role="option"
+                    (click)="onSelectVariable(v, $event)"
+                  >
+                    %{{ v }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="pr-editor__textarea-wrap" (click)="$event.stopPropagation()">
+          <textarea
+            #promptTextarea
+            id="pr-body"
+            class="pr-editor__textarea"
+            rows="14"
+            spellcheck="false"
+            formControlName="prompt"
+            [class.pr-editor__input--invalid]="isInvalid('prompt')"
+            placeholder="Write the system prompt…"
+            (keyup)="onPromptKeyup($event)"
+            (click)="onPromptClick()"
+          ></textarea>
+          @if (varSuggestions().length) {
+            <div class="pr-editor__var-menu pr-editor__var-menu--suggest" role="listbox">
+              @for (v of varSuggestions(); track v) {
+                <button
+                  type="button"
+                  class="pr-editor__var-item"
+                  role="option"
+                  (mousedown)="onSelectVariable(v, $event)"
+                >
+                  %{{ v }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+        @if (isInvalid('prompt')) {
+          <p class="pr-editor__error">Prompt body is required.</p>
+        }
+
+        <div class="pr-editor__statusbar">
+          <span>lines: {{ lineCount }}</span>
+          <span>words: {{ wordCount }}</span>
+          <span class="pr-editor__statusbar-hint">Type % to add variables</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-editor__toggle-row">
+      <div>
+        <p class="pr-editor__toggle-title">Prompt enabled</p>
+        <p class="pr-editor__toggle-hint">When off, this extension uses the default fallback prompt.</p>
+      </div>
+      <label class="pr-editor__toggle">
+        <input type="checkbox" formControlName="enabled" />
+        <span class="pr-editor__toggle-track" aria-hidden="true"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="pr-editor__footer">
+    <button
+      type="button"
+      class="pr-editor__btn pr-editor__btn--secondary"
+      (click)="resetForm()"
+      [disabled]="isSaving() || isDeleting()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8a5 5 0 019.5-2.2M13 8a5 5 0 01-9.5 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M12.5 3.5V5.8H10.2M3.5 12.5V10.2H5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Reset
+    </button>
+    <button
+      type="submit"
+      class="pr-editor__btn pr-editor__btn--primary"
+      [disabled]="isSaving() || isDeleting()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      @if (isSaving()) {
+        {{ isCreating() || !currentPromptId ? 'Creating…' : 'Updating…' }}
+      } @else {
+        {{ isCreating() || !currentPromptId ? 'Create Prompt' : 'Update Prompt' }}
+      }
+    </button>
+  </div>
+</form>

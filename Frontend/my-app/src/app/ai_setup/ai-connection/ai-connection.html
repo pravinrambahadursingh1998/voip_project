@@ -1,0 +1,207 @@
+<div class="ai-connection">
+  <div class="ai-connection__header">
+    <div>
+      <h1 class="ai-connection__title">AI Connection</h1>
+      <p class="ai-connection__subtitle">
+        @if (viewMode() === 'list') {
+          Manage your AI provider credentials and connection settings.
+        } @else {
+          Configure your AI provider credentials and connection settings.
+        }
+      </p>
+    </div>
+
+    @if (viewMode() === 'form') {
+      <button type="button" class="ai-connection__back-btn" (click)="showList()">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to list
+      </button>
+    }
+  </div>
+
+  @if (viewMode() === 'list') {
+    <app-connection-list
+      (createConnection)="showForm()"
+      (editConnection)="onEditConnection($event)"
+      (deleteConnection)="onDeleteConnection($event)"
+    />
+  } @else {
+    <form class="ai-connection__form" [formGroup]="connectionForm" (ngSubmit)="connectionFormSubmit(connectionForm.value)">
+      <div class="ai-connection__grid">
+        <div class="ai-connection__field">
+          <label class="ai-connection__label" for="provider">Provider</label>
+          <ng-select
+            id="provider"
+            class="ai-connection__ng-select"
+            formControlName="provider"
+            [items]="providers"
+            bindLabel="label"
+            bindValue="value"
+            placeholder="Select provider"
+            [searchable]="true"
+            [clearable]="true"
+            (change)="fetchAiModal()"
+            [class.ai-connection__input--invalid]="isInvalid('provider')"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              <div class="ai-connection__provider-option">
+                <img class="ai-connection__provider-icon" [src]="item.icon" [alt]="item.label" />
+                <span>{{ item.label }}</span>
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div class="ai-connection__provider-option">
+                <img class="ai-connection__provider-icon" [src]="item.icon" [alt]="item.label" />
+                <span>{{ item.label }}</span>
+              </div>
+            </ng-template>
+          </ng-select>
+
+          @if (isInvalid('provider')) {
+          <p class="ai-connection__error">Provider is required.</p>
+          }
+        </div>
+
+        <div class="ai-connection__field">
+          <label class="ai-connection__label" for="api_key">API Key</label>
+          <input id="api_key" type="password" class="ai-connection__input" formControlName="api_key"
+            placeholder="sk-····················" autocomplete="new-password" (input)="fetchAiModal()"
+            [class.ai-connection__input--invalid]="isInvalid('api_key')" />
+          @if (isInvalid('api_key')) {
+          <p class="ai-connection__error">API key is required.</p>
+          }
+        </div>
+
+        <div class="ai-connection__field">
+          <label class="ai-connection__label" for="model">Model</label>
+          <select class="ai-connection__select" formControlName="model">
+            <option value="">Select Model</option>
+            @for(model of models; track model.id){
+            <option [value]="model.id">
+              {{model.name}}
+            </option>
+            }
+
+          </select>
+          @if (isInvalid('model')) {
+          <p class="ai-connection__error">Model is required.</p>
+          }
+        </div>
+
+        <div class="ai-connection__field ai-connection__field--full" *ngIf="isConnectionVerified()">
+          <label class="ai-connection__slider-label" for="temperature">
+            <svg class="ai-connection__slider-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 2.5v7.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="8" cy="11.5" r="2.2" fill="#5bb8f5" stroke="currentColor" stroke-width="1.2" />
+              <path d="M10.5 4.5h2M10.5 6.5h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+            Temperature
+          </label>
+          <div class="ai-connection__slider-row">
+            <input id="temperature" type="range" class="ai-connection__range" formControlName="temperature" min="0"
+              max="2" step="0.01" [style.--progress]="sliderProgress('temperature', 2)" />
+            <input type="number" class="ai-connection__value-box" [value]="controlValue('temperature')" min="0" max="2"
+              step="0.01" (input)="onSliderBoxInput('temperature', $event, 0, 2)" aria-label="Temperature value" />
+          </div>
+          @if (isInvalid('temperature')) {
+          <p class="ai-connection__error">Temperature must be between 0 and 2.</p>
+          }
+        </div>
+
+        <div class="ai-connection__field ai-connection__field--full" *ngIf="isConnectionVerified()">
+          <label class="ai-connection__slider-label" for="max_tokens">
+            <svg class="ai-connection__slider-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2.5" y="3.5" width="11" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+              <path d="M5 7.5h6M5 10h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+            Max Tokens
+          </label>
+          <div class="ai-connection__slider-row">
+            <input id="max_tokens" type="range" class="ai-connection__range" formControlName="max_tokens" min="1"
+              max="8192" step="1" [style.--progress]="sliderProgress('max_tokens', 8192)" />
+            <input type="number" class="ai-connection__value-box ai-connection__value-box--wide"
+              [value]="controlValue('max_tokens')" min="1" max="8192" step="1"
+              (input)="onSliderBoxInput('max_tokens', $event, 1, 8192)" aria-label="Max tokens value" />
+          </div>
+          @if (isInvalid('max_tokens')) {
+          <p class="ai-connection__error">Max tokens must be between 1 and 8192.</p>
+          }
+        </div>
+
+        <div class="ai-connection__field ai-connection__field--full" *ngIf="isConnectionVerified()">
+          <label class="ai-connection__slider-label" for="confidence_threshold">
+            <svg class="ai-connection__slider-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="5.2" stroke="currentColor" stroke-width="1.3" />
+              <path d="M8 5v3.2l2 1.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Confidence Threshold
+          </label>
+          <div class="ai-connection__slider-row">
+            <input id="confidence_threshold" type="range" class="ai-connection__range"
+              formControlName="confidence_threshold" min="0" max="100" step="1"
+              [style.--progress]="sliderProgress('confidence_threshold', 100)" />
+            <div class="ai-connection__value-box ai-connection__value-box--percent">
+              <input type="number" class="ai-connection__value-box-input" [value]="controlValue('confidence_threshold')"
+                min="0" max="100" step="1" (input)="onSliderBoxInput('confidence_threshold', $event, 0, 100)"
+                aria-label="Confidence threshold value" />
+              <span>%</span>
+            </div>
+          </div>
+          @if (isInvalid('confidence_threshold')) {
+          <p class="ai-connection__error">Confidence threshold must be between 0% and 100%.</p>
+          }
+        </div>
+
+        <div class="ai-connection__field ai-connection__field--full" *ngIf="isConnectionVerified()">
+          <label class="ai-connection__slider-label" for="similarity_threshold">
+            <svg class="ai-connection__slider-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="6" cy="7" r="3.2" stroke="currentColor" stroke-width="1.3" />
+              <circle cx="10" cy="9" r="3.2" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+            Similarity Threshold
+          </label>
+          <div class="ai-connection__slider-row">
+            <input id="similarity_threshold" type="range" class="ai-connection__range"
+              formControlName="similarity_threshold" min="0" max="100" step="1"
+              [style.--progress]="sliderProgress('similarity_threshold', 100)" />
+            <div class="ai-connection__value-box ai-connection__value-box--percent">
+              <input type="number" class="ai-connection__value-box-input" [value]="controlValue('similarity_threshold')"
+                min="0" max="100" step="1" (input)="onSliderBoxInput('similarity_threshold', $event, 0, 100)"
+                aria-label="Similarity threshold value" />
+              <span>%</span>
+            </div>
+          </div>
+          @if (isInvalid('similarity_threshold')) {
+          <p class="ai-connection__error">Similarity threshold must be between 0% and 100%.</p>
+          }
+        </div>
+      </div>
+
+      <div class="ai-connection__actions">
+        <button type="button" class="ai-connection__test-btn" (click)="testConnection()"
+          [disabled]="isTesting() || isSaving()">
+          @if (isTesting()) {
+          <mat-progress-spinner class="ai-connection__btn-spinner" diameter="18" strokeWidth="3" mode="indeterminate"
+            aria-hidden="true"></mat-progress-spinner>
+          Testing...
+          } @else {
+          Test Connection
+          }
+        </button>
+
+        <button type="submit" class="ai-connection__submit-btn" [disabled]="!isConnectionVerified() || isSaving()">
+          @if (isSaving()) {
+          <mat-progress-spinner class="ai-connection__btn-spinner" diameter="18" strokeWidth="3" mode="indeterminate"
+            aria-hidden="true"></mat-progress-spinner>
+          Saving...
+          } @else {
+          Save connection
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>

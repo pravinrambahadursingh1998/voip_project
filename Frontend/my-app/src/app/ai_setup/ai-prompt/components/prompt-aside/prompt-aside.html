@@ -1,0 +1,59 @@
+<div class="pr-aside">
+  <div class="pr-aside__header">
+    <div>
+      <h2 class="pr-aside__title">Live Preview</h2>
+      <p class="pr-aside__subtitle">
+        {{
+          isCreating()
+            ? 'Preview updates as you write the new prompt.'
+            : 'How the agent reads this prompt on the call.'
+        }}
+      </p>
+    </div>
+  </div>
+
+  <div class="pr-aside__meta">
+    <span class="pr-aside__badge pr-aside__badge--ext">
+      Ext {{ preview().extension || '—' }}
+    </span>
+    @if (preview().enabled) {
+      <span class="pr-aside__badge pr-aside__badge--on">Enabled</span>
+    } @else {
+      <span class="pr-aside__badge">Disabled</span>
+    }
+    <span class="pr-aside__badge">System</span>
+  </div>
+
+  <div class="pr-aside__card">
+    <div class="pr-aside__card-label">Introduction</div>
+    <p class="pr-aside__intro">
+      {{
+        compiledIntroduction()
+          ? '“' + compiledIntroduction() + '”'
+          : 'No introduction yet'
+      }}
+    </p>
+  </div>
+
+  <div class="pr-aside__card pr-aside__card--grow">
+    <div class="pr-aside__card-head">
+      <span class="pr-aside__card-label">Compiled prompt</span>
+      <span class="pr-aside__chars">~{{ charCount() }} chars</span>
+    </div>
+    <pre class="pr-aside__code">{{ compiledPrompt() || 'Prompt body will appear here…' }}</pre>
+  </div>
+
+  <div class="pr-aside__vars">
+    <div class="pr-aside__card-label">Available variables</div>
+    <div class="pr-aside__chips">
+      @for (v of variables; track v) {
+        <button type="button" class="pr-aside__chip" (click)="onChipClick(v)" [title]="variableValues[v]">
+          %{{ v }}
+        </button>
+      }
+    </div>
+    <p class="pr-aside__hint">
+      Example: %datetime → {{ variableValues.datetime }}
+    </p>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)
+[Queue] Job 4 FAILED: Cannot find module '../controller/appointment_controller'
+Require stack:
+- /home/pravin/Documents/voip_project/database/queues/aiQueue.js
+- /home/pravin/Documents/voip_project/database/controller/ai_controller.js
+- /home/pravin/Documents/voip_project/database/routes/ai_route.js
+- /home/pravin/Documents/voip_project/database/server.js
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+error: terminating connection due to administrator command
+    at Parser.parseErrorMessage (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/home/pravin/Documents/voip_project/database/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:191:23)

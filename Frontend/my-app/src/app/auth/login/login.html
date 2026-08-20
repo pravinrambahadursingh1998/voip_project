@@ -1,0 +1,104 @@
+<main class="login-page">
+    <section class="brand-panel">
+        <div class="brand"><b>P</b><strong>PBX<span>Bridge</span></strong></div>
+        <div class="intro">
+            <p class="eyebrow">PBX INTEGRATION MIDDLEWARE</p>
+            <h1>One console for every call platform.</h1>
+            <p>Securely connect FreeSWITCH and your PBX systems through a single, reliable management layer.</p>
+        </div>
+        <div class="feature">
+            <i>✓</i>
+            <span>
+                <strong>Enterprise secure</strong>
+                <small>Role-based access and audit readiness</small>
+            </span>
+        </div>
+        <footer>© 2026 PBXBridge Middleware</footer>
+    </section>
+
+    <section class="sign-in">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+
+            <div class="mobile-brand">
+                <b>P</b> PBXBridge
+            </div>
+
+            <p class="eyebrow">SECURE ACCESS</p>
+
+            <h2>Welcome back</h2>
+
+            <p class="hint">
+                Sign in to manage your PBX integrations.
+            </p>
+
+            <!-- Email -->
+            <label>
+                Work email
+
+                <input type="email" formControlName="email" placeholder="name@company.com">
+            </label>
+
+            @if (loginForm.get('email')?.touched &&
+            loginForm.get('email')?.invalid) {
+
+            <p class="error">
+
+                @if (loginForm.get('email')?.errors?.['required']) {
+                Email is required.
+                }
+
+                @if (loginForm.get('email')?.errors?.['email']) {
+                Please enter a valid email.
+                }
+
+            </p>
+
+            }
+
+            <!-- Password -->
+            <label>
+                Password
+
+                <input type="password" formControlName="password" placeholder="Enter your password">
+            </label>
+
+            @if (loginForm.get('password')?.touched &&
+            loginForm.get('password')?.invalid) {
+
+            <p class="error">
+                Password is required.
+            </p>
+
+            }
+
+            <!-- Remember -->
+            <div class="options">
+
+                <label>
+                    <input type="checkbox" formControlName="rememberDevice">
+
+                    Remember this device
+                </label>
+
+                <a href="javascript:void(0)">
+                    Forgot password?
+                </a>
+
+            </div>
+
+            <button type="submit" [disabled]="isLoading()" [class.loading]="isLoading()">
+                Sign in securely
+                <span>→</span>
+            </button>
+
+            <p class="support">
+                Need access?
+
+                <a href="mailto:admin@pbxbridge.local">
+                    Contact your administrator
+                </a>
+            </p>
+
+        </form>
+    </section>
+</main>

@@ -1,0 +1,162 @@
+<div class="add-gateway">
+  <div class="add-gateway__header">
+    <div>
+      <h1 class="add-gateway__title">Add a gateway</h1>
+      <p class="add-gateway__subtitle">Connection details are encrypted and stored securely.</p>
+    </div>
+    <button type="button" class="add-gateway__back-btn" (click)="goBack()">← Back to gateways</button>
+  </div>
+
+  <form class="add-gateway__form" [formGroup]="gatewayForm" (ngSubmit)="gatewayFormSubmit(gatewayForm.value)">
+    <div class="add-gateway__grid">
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="gateway_name">Gateway name</label>
+        <input
+          id="gateway_name"
+          type="text"
+          class="add-gateway__input"
+          formControlName="gateway_name"
+          placeholder="e.g. FS-Primary"
+          [class.add-gateway__input--invalid]="gatewayForm.get('gateway_name')?.touched && gatewayForm.get('gateway_name')?.invalid"
+        />
+        @if (gatewayForm.get('gateway_name')?.touched && gatewayForm.get('gateway_name')?.invalid) {
+          <p class="add-gateway__error">Gateway name is required.</p>
+        }
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="enabled">Enabled</label>
+        <select id="enabled" class="add-gateway__select" formControlName="enabled">
+          <option value="true">Enabled</option>
+          <option value="false">Disabled</option>
+        </select>
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="proxy">Proxy</label>
+        <input
+          id="proxy"
+          type="text"
+          class="add-gateway__input"
+          formControlName="proxy"
+          placeholder="sip.provider.com"
+          [class.add-gateway__input--invalid]="gatewayForm.get('proxy')?.touched && gatewayForm.get('proxy')?.invalid"
+        />
+        @if (gatewayForm.get('proxy')?.touched && gatewayForm.get('proxy')?.invalid) {
+          <p class="add-gateway__error">Proxy is required.</p>
+        }
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="realm">Realm</label>
+        <input
+          id="realm"
+          type="text"
+          class="add-gateway__input"
+          formControlName="realm"
+          placeholder="sip.provider.com"
+        />
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="register_transport">Register transport</label>
+        <select id="register_transport" class="add-gateway__select" formControlName="register_transport">
+          <option value="1">UDP</option>
+          <option value="2">TCP</option>
+          <option value="3">TLS</option>
+        </select>
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="register">Register</label>
+        <select id="register" class="add-gateway__select" formControlName="register">
+          <option [ngValue]="true">Yes</option>
+          <option [ngValue]="false">No</option>
+        </select>
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="user_name">User name</label>
+        <input
+          id="user_name"
+          type="text"
+          class="add-gateway__input"
+          formControlName="user_name"
+          placeholder="SIP username"
+          autocomplete="off"
+          [class.add-gateway__input--invalid]="gatewayForm.get('user_name')?.touched && gatewayForm.get('user_name')?.invalid"
+        />
+        @if (gatewayForm.get('user_name')?.touched && gatewayForm.get('user_name')?.invalid) {
+          <p class="add-gateway__error">User name is required.</p>
+        }
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="gateway_password">Gateway password</label>
+        <input
+          id="gateway_password"
+          type="password"
+          class="add-gateway__input"
+          formControlName="gateway_password"
+          placeholder="SIP password"
+          autocomplete="new-password"
+          [class.add-gateway__input--invalid]="gatewayForm.get('gateway_password')?.touched && gatewayForm.get('gateway_password')?.invalid"
+        />
+        @if (gatewayForm.get('gateway_password')?.touched && gatewayForm.get('gateway_password')?.invalid) {
+          <p class="add-gateway__error">Gateway password is required.</p>
+        }
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="from_user">From user</label>
+        <input
+          id="from_user"
+          type="text"
+          class="add-gateway__input"
+          formControlName="from_user"
+          placeholder="Outbound caller ID user"
+        />
+      </div>
+
+      <div class="add-gateway__field">
+        <label class="add-gateway__label" for="from_domain">From domain</label>
+        <input
+          id="from_domain"
+          type="text"
+          class="add-gateway__input"
+          formControlName="from_domain"
+          placeholder="Outbound caller ID domain"
+        />
+      </div>
+
+      <div class="add-gateway__field add-gateway__field--full">
+        <label class="add-gateway__label" for="description">Description</label>
+        <textarea
+          id="description"
+          class="add-gateway__textarea"
+          formControlName="description"
+          rows="3"
+          placeholder="Optional notes about this gateway"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="add-gateway__actions">
+      <button type="button" class="add-gateway__cancel-btn" (click)="goBack()">Cancel</button>
+      <button type="submit" class="add-gateway__submit-btn" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <mat-progress-spinner
+            class="add-gateway__btn-spinner"
+            diameter="18"
+            strokeWidth="3"
+            mode="indeterminate"
+            aria-hidden="true"
+          ></mat-progress-spinner>
+          Saving...
+        } @else {
+          Save gateway
+        }
+      </button>
+    </div>
+  </form>
+</div>

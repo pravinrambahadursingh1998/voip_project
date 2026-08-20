@@ -1,0 +1,144 @@
+<div class="user-dash">
+  <div class="user-dash__header">
+    <div>
+      <h1 class="user-dash__title">User dashboard</h1>
+      <p class="user-dash__subtitle">
+        Overview of team access, roles, and recent account activity.
+      </p>
+    </div>
+    <div class="user-dash__header-actions">
+      <button type="button" class="user-dash__secondary-btn" (click)="goToUsers()">
+        View all users
+      </button>
+      <button type="button" class="user-dash__primary-btn" (click)="addUser()">
+        + Add user
+      </button>
+    </div>
+  </div>
+
+  <div class="user-dash__kpis">
+    <div class="user-dash__kpi">
+      <span class="user-dash__kpi-label">Total users</span>
+      <strong class="user-dash__kpi-value">{{ totalUsers }}</strong>
+      <span class="user-dash__kpi-meta">Across all roles</span>
+    </div>
+    <div class="user-dash__kpi">
+      <span class="user-dash__kpi-label">Active</span>
+      <strong class="user-dash__kpi-value user-dash__kpi-value--green">{{ activeUsers }}</strong>
+      <span class="user-dash__kpi-meta">{{ onlineNow }} online now</span>
+    </div>
+    <div class="user-dash__kpi">
+      <span class="user-dash__kpi-label">Pending invites</span>
+      <strong class="user-dash__kpi-value user-dash__kpi-value--yellow">{{ invitedUsers }}</strong>
+      <span class="user-dash__kpi-meta">Awaiting first login</span>
+    </div>
+    <div class="user-dash__kpi">
+      <span class="user-dash__kpi-label">Inactive</span>
+      <strong class="user-dash__kpi-value user-dash__kpi-value--red">{{ inactiveUsers }}</strong>
+      <span class="user-dash__kpi-meta">{{ adminUsers }} admins total</span>
+    </div>
+  </div>
+
+  <div class="user-dash__grid">
+    <section class="user-dash__card user-dash__card--roles">
+      <div class="user-dash__card-header">
+        <h2>Role distribution</h2>
+        <span>{{ totalUsers }} users</span>
+      </div>
+
+      <ul class="user-dash__role-list">
+        <li class="user-dash__role-item" *ngFor="let role of roleStats">
+          <div class="user-dash__role-top">
+            <span class="user-dash__role-name">{{ role.role }}</span>
+            <span class="user-dash__role-count">{{ role.count }} · {{ role.percent }}%</span>
+          </div>
+          <div class="user-dash__bar" aria-hidden="true">
+            <span class="user-dash__bar-fill" [style.width.%]="role.percent"></span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="user-dash__card user-dash__card--activity">
+      <div class="user-dash__card-header">
+        <h2>Recent activity</h2>
+        <button type="button" class="user-dash__link-btn" (click)="goToUsers()">Manage</button>
+      </div>
+
+      <ul class="user-dash__activity-list">
+        <li class="user-dash__activity-item" *ngFor="let item of recentActivity">
+          <span [class]="activityToneClass(item.tone)" aria-hidden="true"></span>
+          <div class="user-dash__activity-body">
+            <p class="user-dash__activity-text">
+              <strong>{{ item.user }}</strong> — {{ item.action }}
+            </p>
+            <span class="user-dash__activity-time">{{ item.time }}</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="user-dash__card user-dash__card--table">
+    <div class="user-dash__card-header">
+      <h2>Recently active users</h2>
+      <button type="button" class="user-dash__link-btn" (click)="goToUsers()">See all</button>
+    </div>
+
+    <div class="user-dash__table-wrap">
+      <table class="user-dash__table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Last login</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of recentUsers">
+            <td>
+              <div class="user-dash__user-cell">
+                <span class="user-dash__avatar" aria-hidden="true">
+                  {{ user.full_name.charAt(0) }}
+                </span>
+                <span class="user-dash__user-name">{{ user.full_name }}</span>
+              </div>
+            </td>
+            <td>{{ user.role }}</td>
+            <td>
+              <span [class]="statusBadgeClass(user.status)">{{ user.status }}</span>
+            </td>
+            <td>{{ user.last_login }}</td>
+            <td>
+              <button
+                type="button"
+                class="user-dash__action"
+                aria-label="Edit user"
+                (click)="editUser(user.id)"
+              >
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M11.5 2.5l2 2L5.5 12.5H3.5v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="user-dash__quick">
+    <div class="user-dash__quick-card">
+      <h3>Invite teammate</h3>
+      <p>Create a new user and assign role access in one step.</p>
+      <button type="button" class="user-dash__primary-btn" (click)="addUser()">Add user</button>
+    </div>
+    <div class="user-dash__quick-card">
+      <h3>Review access</h3>
+      <p>Open the full directory to filter by role, status, or extension.</p>
+      <button type="button" class="user-dash__secondary-btn" (click)="goToUsers()">Open users</button>
+    </div>
+  </div>
+</div>

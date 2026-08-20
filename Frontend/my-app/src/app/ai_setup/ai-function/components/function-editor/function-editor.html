@@ -1,0 +1,375 @@
+<form class="fn-editor" [formGroup]="functionForm" (ngSubmit)="onSubmit()">
+  <div class="fn-editor__header">
+    <div>
+      <h2 class="fn-editor__title">
+        {{ isCreating() ? 'New Function' : 'Function Editor' }}
+      </h2>
+      <p class="fn-editor__subtitle">
+        {{
+          isCreating()
+            ? 'Fill in the details below to create a new agent tool.'
+            : 'Configure name, endpoint, and parameters for this tool.'
+        }}
+      </p>
+    </div>
+    @if (!isCreating()) {
+      <div class="fn-editor__header-actions">
+        <button
+          type="button"
+          class="fn-editor__btn fn-editor__btn--ghost"
+          (click)="onDelete()"
+          [disabled]="isDeleting() || isSaving()"
+        >
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3.5 4.5h9M6 4.5V3.5h4v1M5.5 6.5v5.5M8 6.5v5.5M10.5 6.5v5.5M4.5 4.5l.5 9h6l.5-9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{ isDeleting() ? 'Deleting…' : 'Delete' }}
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="fn-editor__body">
+    <div class="fn-editor__grid">
+      <div class="fn-editor__field">
+        <label class="fn-editor__label" for="fn-name">Name</label>
+        <input
+          id="fn-name"
+          type="text"
+          class="fn-editor__input"
+          formControlName="name"
+          placeholder="e.g. check_availability"
+          [class.fn-editor__input--invalid]="isInvalid('name')"
+        />
+        @if (isInvalid('name')) {
+          <p class="fn-editor__error">
+            Use a lowercase snake_case name (e.g. check_availability).
+          </p>
+        }
+      </div>
+
+      <div class="fn-editor__field">
+        <label class="fn-editor__label" for="fn-method">Method</label>
+        <select
+          id="fn-method"
+          class="fn-editor__select"
+          formControlName="method"
+          [class.fn-editor__input--invalid]="isInvalid('method')"
+        >
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="PATCH">PATCH</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+      </div>
+
+      <div class="fn-editor__field fn-editor__field--full">
+        <label class="fn-editor__label" for="fn-desc">Description</label>
+        <textarea
+          id="fn-desc"
+          class="fn-editor__textarea"
+          rows="2"
+          formControlName="description"
+          placeholder="What this function does…"
+          [class.fn-editor__input--invalid]="isInvalid('description')"
+        ></textarea>
+        @if (isInvalid('description')) {
+          <p class="fn-editor__error">Description is required.</p>
+        }
+      </div>
+
+      <div class="fn-editor__field fn-editor__field--full">
+        <label class="fn-editor__label" for="fn-url">Endpoint URL</label>
+        <input
+          id="fn-url"
+          type="text"
+          class="fn-editor__input"
+          formControlName="url"
+          placeholder="https://api.example.com/…"
+          [class.fn-editor__input--invalid]="isInvalid('url')"
+        />
+        @if (isInvalid('url')) {
+          <p class="fn-editor__error">Enter a valid http(s) URL.</p>
+        }
+      </div>
+
+      <div class="fn-editor__field">
+        <label class="fn-editor__label" for="fn-type">Execution Type</label>
+        <select
+          id="fn-type"
+          class="fn-editor__select"
+          formControlName="type"
+          [class.fn-editor__input--invalid]="isInvalid('type')"
+        >
+          <option value="Sync">Sync</option>
+          <option value="Async">Async</option>
+        </select>
+      </div>
+
+      <div class="fn-editor__field">
+        <label class="fn-editor__label" for="fn-direction">Call direction</label>
+        <select
+          id="fn-direction"
+          class="fn-editor__select"
+          formControlName="direction"
+          [class.fn-editor__input--invalid]="isInvalid('direction')"
+        >
+          <option value="both">Both (inbound &amp; outbound)</option>
+          <option value="inbound">Inbound only</option>
+          <option value="outbound">Outbound only</option>
+        </select>
+      </div>
+
+      <div class="fn-editor__field">
+        <label class="fn-editor__label" for="fn-timeout">Timeout (ms)</label>
+        <input
+          id="fn-timeout"
+          type="number"
+          class="fn-editor__input"
+          formControlName="timeout"
+          placeholder="5000"
+          min="1"
+          [class.fn-editor__input--invalid]="isInvalid('timeout')"
+        />
+        @if (isInvalid('timeout')) {
+          <p class="fn-editor__error">Timeout must be at least 1 ms.</p>
+        }
+      </div>
+
+      <div class="fn-editor__field fn-editor__field--full">
+        <div class="fn-editor__toggle-row">
+          <div>
+            <span class="fn-editor__label">Enabled</span>
+            <p class="fn-editor__hint">Allow the agent to call this function during conversations.</p>
+          </div>
+          <label class="fn-editor__toggle">
+            <input type="checkbox" formControlName="enabled" />
+            <span class="fn-editor__toggle-track" aria-hidden="true"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="fn-editor__section fn-editor__params">
+      <div class="fn-editor__section-head">
+        <h3 class="fn-editor__section-title">Parameters</h3>
+        <button
+          type="button"
+          class="fn-editor__btn fn-editor__btn--sm fn-editor__params-add"
+          (click)="openParamDraft()"
+          [disabled]="showParamDraft()"
+        >
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Add Parameter
+        </button>
+      </div>
+
+      <div class="fn-editor__table-wrap">
+        <table class="fn-editor__table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Description</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (parameters.length === 0 && !showParamDraft()) {
+              <tr class="fn-editor__params-empty">
+                <td colspan="5" class="fn-editor__empty">
+                  No parameters yet. Click “Add Parameter” to define inputs.
+                </td>
+              </tr>
+            }
+
+            <ng-container formArrayName="parameters">
+              @for (param of parameters.controls; track $index; let i = $index) {
+                <tr [formGroupName]="i">
+                  <td>
+                    <input
+                      type="text"
+                      class="fn-editor__input fn-editor__input--table"
+                      formControlName="name"
+                      aria-label="Parameter name"
+                    />
+                  </td>
+                  <td>
+                    <select
+                      class="fn-editor__select fn-editor__select--table"
+                      formControlName="type"
+                      aria-label="Parameter type"
+                    >
+                      <option value="string">string</option>
+                      <option value="number">number</option>
+                      <option value="boolean">boolean</option>
+                      <option value="object">object</option>
+                      <option value="array">array</option>
+                    </select>
+                  </td>
+                  <td>
+                    <label class="fn-editor__req-check">
+                      <input type="checkbox" formControlName="required" />
+                      <span>Required</span>
+                    </label>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="fn-editor__input fn-editor__input--table"
+                      formControlName="description"
+                      placeholder="What this parameter is for…"
+                      aria-label="Parameter description"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="fn-editor__icon-btn"
+                      title="Remove"
+                      (click)="removeParameter(i)"
+                    >
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </ng-container>
+
+            @if (showParamDraft()) {
+              <tr class="fn-editor__params-draft" formGroupName="paramDraft">
+                <td>
+                  <input
+                    type="text"
+                    class="fn-editor__input fn-editor__input--table"
+                    formControlName="name"
+                    placeholder="param_name"
+                    aria-label="Parameter name"
+                    [class.fn-editor__input--invalid]="isDraftInvalid('name')"
+                  />
+                </td>
+                <td>
+                  <select
+                    class="fn-editor__select fn-editor__select--table"
+                    formControlName="type"
+                    aria-label="Parameter type"
+                  >
+                    <option value="string">string</option>
+                    <option value="number">number</option>
+                    <option value="boolean">boolean</option>
+                    <option value="object">object</option>
+                    <option value="array">array</option>
+                  </select>
+                </td>
+                <td>
+                  <label class="fn-editor__req-check">
+                    <input type="checkbox" formControlName="required" />
+                    <span>Required</span>
+                  </label>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="fn-editor__input fn-editor__input--table"
+                    formControlName="description"
+                    placeholder="What this parameter is for…"
+                    aria-label="Parameter description"
+                  />
+                </td>
+                <td class="fn-editor__draft-actions">
+                  <button
+                    type="button"
+                    class="fn-editor__icon-btn fn-editor__icon-btn--ok"
+                    title="Confirm"
+                    (click)="confirmParamDraft()"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="fn-editor__icon-btn"
+                    title="Cancel"
+                    (click)="cancelParamDraft()"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fn-editor__section">
+      <div class="fn-editor__section-head">
+        <h3 class="fn-editor__section-title">Headers</h3>
+      </div>
+      <div class="fn-editor__grid fn-editor__grid--2">
+        <div class="fn-editor__field">
+          <label class="fn-editor__label" for="fn-auth">Authorization</label>
+          <input
+            id="fn-auth"
+            type="text"
+            class="fn-editor__input"
+            formControlName="auth"
+            placeholder="Bearer …"
+          />
+        </div>
+        <div class="fn-editor__field">
+          <label class="fn-editor__label" for="fn-ctype">Content-Type</label>
+          <input
+            id="fn-ctype"
+            type="text"
+            class="fn-editor__input"
+            formControlName="contentType"
+            placeholder="application/json"
+            [class.fn-editor__input--invalid]="isInvalid('contentType')"
+          />
+          @if (isInvalid('contentType')) {
+            <p class="fn-editor__error">Content-Type is required.</p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fn-editor__footer">
+    <button
+      type="button"
+      class="fn-editor__btn fn-editor__btn--secondary"
+      (click)="resetForm()"
+      [disabled]="isSaving() || isDeleting()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8a5 5 0 019.5-2.2M13 8a5 5 0 01-9.5 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M12.5 3.5V5.8H10.2M3.5 12.5V10.2H5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Reset
+    </button>
+    <button
+      type="submit"
+      class="fn-editor__btn fn-editor__btn--primary"
+      [disabled]="isSaving() || isDeleting()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      @if (isSaving()) {
+        Saving…
+      } @else {
+        {{ isCreating() ? 'Create Function' : 'Save Function' }}
+      }
+    </button>
+  </div>
+</form>

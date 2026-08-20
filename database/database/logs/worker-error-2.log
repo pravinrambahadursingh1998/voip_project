@@ -1,0 +1,572 @@
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Error: Cannot find module '../queues/aiQueue'
+Require stack:
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Hook._require.Module.require (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/pravin/Documents/voip_project/database/workers/worker.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Object.<anonymous> (/home/pravin/.nvm/versions/node/v20.19.5/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/home/pravin/Documents/voip_project/database/workers/worker.js' ]
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+[Queue] Job 2 FAILED: Cannot find module '../controller/appointment_controller'
+Require stack:
+- /home/pravin/Documents/voip_project/database/queues/aiQueue.js
+- /home/pravin/Documents/voip_project/database/workers/worker.js
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+Redis error: Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}

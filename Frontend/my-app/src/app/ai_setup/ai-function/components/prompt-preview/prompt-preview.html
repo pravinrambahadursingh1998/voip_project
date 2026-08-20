@@ -1,0 +1,70 @@
+<div class="fn-preview">
+  <div class="fn-preview__header">
+    <div>
+      <h2 class="fn-preview__title">Prompt Preview</h2>
+      <p class="fn-preview__subtitle">
+        {{
+          isCreating()
+            ? 'Preview updates as you fill in the new function.'
+            : 'How this function appears to the AI agent.'
+        }}
+      </p>
+    </div>
+    <button
+      type="button"
+      class="fn-preview__test-btn"
+      (click)="onTest()"
+      [disabled]="isCreating() || isTesting() || !selectedId()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M4 3.5v9l8-4.5-8-4.5z" fill="currentColor"/>
+      </svg>
+      {{ isTesting() ? 'Testing…' : 'Test' }}
+    </button>
+  </div>
+
+  <div class="fn-preview__meta">
+    <span class="fn-preview__badge fn-preview__badge--method">{{ loadedFn().method || fn().method }}</span>
+    <span class="fn-preview__badge fn-preview__badge--type">{{ loadedFn().type || fn().type }}</span>
+    <span class="fn-preview__badge fn-preview__badge--type">
+      {{ loadedFn().direction || fn().direction || 'both' }}
+    </span>
+    @if ((selectedId() ? loadedFn().enabled : fn().enabled)) {
+      <span class="fn-preview__badge fn-preview__badge--on">Enabled</span>
+    } @else {
+      <span class="fn-preview__badge fn-preview__badge--type">Disabled</span>
+    }
+  </div>
+
+  <div class="fn-preview__editor">
+    <div class="fn-preview__toolbar" aria-hidden="true">
+      <span class="fn-preview__tool">B</span>
+      <span class="fn-preview__tool fn-preview__tool--italic">I</span>
+      <span class="fn-preview__tool">•</span>
+      <span class="fn-preview__tool">1.</span>
+      <span class="fn-preview__tool-sep"></span>
+      <span class="fn-preview__tool-label">tool schema</span>
+    </div>
+    <pre class="fn-preview__code">{{ schemaJson() }}</pre>
+  </div>
+
+  <div class="fn-preview__result">
+    <div class="fn-preview__result-head">
+      <span class="fn-preview__result-label">Sample Response</span>
+      <span
+        class="fn-preview__result-status"
+        [class.fn-preview__result-status--error]="
+          testStatus() === 'Failed' || testStatus() === 'Error'
+        "
+        [class.fn-preview__result-status--muted]="
+          testStatus() === 'Ready' ||
+          testStatus() === '—' ||
+          testStatus() === 'Testing…'
+        "
+      >
+        {{ testStatus() }}
+      </span>
+    </div>
+    <pre class="fn-preview__code fn-preview__code--sm">{{ testResponse() }}</pre>
+  </div>
+</div>

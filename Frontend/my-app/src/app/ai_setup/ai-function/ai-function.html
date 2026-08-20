@@ -1,0 +1,57 @@
+<div class="ai-function">
+  <div class="ai-function__header">
+    <div>
+      <h1 class="ai-function__title">AI Functions</h1>
+      <p class="ai-function__subtitle">
+        Define tools the voice agent can call during conversations.
+      </p>
+    </div>
+    <div class="ai-function__header-actions">
+      <button type="button" class="ai-function__btn ai-function__btn--secondary">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 3.5h10v2H3v-2zm0 3.5h10v2H3V7zm0 3.5h7v2H3v-2z" fill="currentColor"/>
+        </svg>
+        Import JSON
+      </button>
+      <button
+        type="button"
+        class="ai-function__btn ai-function__btn--primary"
+        (click)="startNewFunction()"
+      >
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        New Function
+      </button>
+    </div>
+  </div>
+
+  <div class="ai-function__split">
+    <aside class="ai-function__pane ai-function__pane--list">
+      <app-function-list
+        [selectedId]="selectedId()"
+        [isCreating]="isCreating()"
+        (selectFunction)="selectFunction($event)"
+        (createFunction)="startNewFunction()"
+      />
+    </aside>
+
+    <section class="ai-function__pane ai-function__pane--editor">
+      <app-function-editor
+        [fn]="activeFunction()"
+        [selectedId]="selectedId()"
+        [isCreating]="isCreating()"
+        (saved)="onFunctionSaved($event)"
+        (deleted)="onFunctionDeleted($event)"
+      />
+    </section>
+
+    <aside class="ai-function__pane ai-function__pane--preview">
+      <app-prompt-preview
+        [fn]="activeFunction()"
+        [selectedId]="selectedId()"
+        [isCreating]="isCreating()"
+      />
+    </aside>
+  </div>
+</div>

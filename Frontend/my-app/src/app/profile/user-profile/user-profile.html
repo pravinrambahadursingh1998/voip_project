@@ -1,0 +1,269 @@
+<div class="user-profile">
+  <div class="user-profile__header">
+    <h1 class="user-profile__title">User Profile</h1>
+  </div>
+
+  <div class="user-profile__grid">
+    <aside class="user-profile__summary card">
+      <div class="user-profile__photo" aria-hidden="true">{{ userInitials() }}</div>
+      <h2 class="user-profile__name">{{ displayName() }}</h2>
+      <p class="user-profile__role">{{ roleLabel() }}</p>
+    </aside>
+
+    <section class="user-profile__panel card">
+      <div class="user-profile__tabs" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          class="user-profile__tab"
+          [class.user-profile__tab--active]="activeTab() === 'settings'"
+          [attr.aria-selected]="activeTab() === 'settings'"
+          (click)="setTab('settings')"
+        >
+          Profile Setting
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="user-profile__tab"
+          [class.user-profile__tab--active]="activeTab() === 'password'"
+          [attr.aria-selected]="activeTab() === 'password'"
+          (click)="setTab('password')"
+        >
+          Change Password
+        </button>
+      </div>
+
+      @if (activeTab() === 'settings') {
+        <form class="user-profile__form" (ngSubmit)="onUpdateProfile()">
+          <p class="user-profile__note">
+            Notes: Select One Either Choose Image or Capture the Image
+          </p>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="profileImage">
+              Profile Image <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <div class="user-profile__file">
+                <label class="user-profile__file-btn" for="profileImage">Choose File</label>
+                <input
+                  id="profileImage"
+                  type="file"
+                  accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                  class="user-profile__file-input"
+                  (change)="onFileSelected($event)"
+                />
+                <span class="user-profile__file-name">{{ selectedFileName() }}</span>
+              </div>
+              <p class="user-profile__hint">
+                Note: Attachment Allowed Only .JPG, .JPEG And PNG. Maximum Size Of Image Is 500 MB
+              </p>
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <span class="user-profile__label">Capture Image</span>
+            <div class="user-profile__control">
+              <div class="user-profile__message-box">
+                <p class="user-profile__message-title">Messages:</p>
+                <p class="user-profile__message-text">Webcam not found</p>
+                <p class="user-profile__message-text">Only secure origins are allowed..</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="firstName">
+              First Name <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="firstName"
+                type="text"
+                class="user-profile__input"
+                [(ngModel)]="firstName"
+                name="firstName"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="lastName">
+              Last Name <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="lastName"
+                type="text"
+                class="user-profile__input"
+                [(ngModel)]="lastName"
+                name="lastName"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="address">
+              Address <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <textarea
+                id="address"
+                class="user-profile__textarea"
+                rows="3"
+                [(ngModel)]="address"
+                name="address"
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="email">
+              Email <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="email"
+                type="email"
+                class="user-profile__input"
+                [(ngModel)]="email"
+                name="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="mobile">
+              Mobile <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="mobile"
+                type="text"
+                class="user-profile__input"
+                [(ngModel)]="mobile"
+                name="mobile"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="country">
+              Country <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <select
+                id="country"
+                class="user-profile__select"
+                [(ngModel)]="country"
+                name="country"
+                required
+              >
+                <option value="India">India</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="state">State</label>
+            <div class="user-profile__control">
+              <select id="state" class="user-profile__select" [(ngModel)]="state" name="state">
+                <option value="">Select State</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Karnataka">Karnataka</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="city">City</label>
+            <div class="user-profile__control">
+              <select id="city" class="user-profile__select" [(ngModel)]="city" name="city">
+                <option value="">Select City</option>
+                <option value="Ajmer">Ajmer</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Bengaluru">Bengaluru</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="user-profile__actions">
+            <button type="submit" class="user-profile__submit">Update</button>
+          </div>
+        </form>
+      } @else {
+        <form class="user-profile__form" (ngSubmit)="onChangePassword()">
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="currentPassword">
+              Current Password <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="currentPassword"
+                type="password"
+                class="user-profile__input"
+                [(ngModel)]="currentPassword"
+                name="currentPassword"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="newPassword">
+              New Password <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="newPassword"
+                type="password"
+                class="user-profile__input"
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__row">
+            <label class="user-profile__label" for="confirmPassword">
+              Confirm Password <span class="user-profile__required">*</span>
+            </label>
+            <div class="user-profile__control">
+              <input
+                id="confirmPassword"
+                type="password"
+                class="user-profile__input"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="user-profile__actions">
+            <button type="submit" class="user-profile__submit">Update Password</button>
+          </div>
+        </form>
+      }
+    </section>
+  </div>
+</div>

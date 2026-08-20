@@ -1,0 +1,22 @@
+@if (visible()) {
+  <div class="spinner-overlay" role="status" aria-live="polite" [attr.aria-label]="'Loading ' + percent() + '%'">
+    <div class="spinner-disc">
+      <svg class="spinner-ring" viewBox="0 0 100 100" aria-hidden="true">
+        <!-- gray track -->
+        <circle class="track" cx="50" cy="50" r="40"></circle>
+
+        <!-- blue outer arc -->
+        <g class="spin-blue">
+          <circle class="progress" cx="50" cy="50" r="40"></circle>
+        </g>
+
+        <!-- red inner accent arc -->
+        <g class="spin-red">
+          <circle class="accent" cx="50" cy="50" r="32"></circle>
+        </g>
+      </svg>
+
+      <span class="spinner-percent">{{ percent() }}%</span>
+    </div>
+  </div>
+}

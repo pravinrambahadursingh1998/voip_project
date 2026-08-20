@@ -1,0 +1,123 @@
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  color: #93a0b4;
+  font-size: 13px;
+  width: 100%;
+}
+
+.pagination__left {
+  justify-self: start;
+}
+
+.pagination__size {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pagination__size-select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 64px;
+  height: 32px;
+  padding: 0 28px 0 12px;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+  background: #fff;
+  color: #4b5b73;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+}
+
+.pagination__size-select:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.15);
+}
+
+.pagination__size-icon {
+  position: absolute;
+  right: 8px;
+  width: 14px;
+  height: 14px;
+  color: #7b8799;
+  pointer-events: none;
+}
+
+.pagination__info {
+  text-align: center;
+  justify-self: center;
+  white-space: nowrap;
+}
+
+.pagination__controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-self: end;
+}
+
+.pagination__btn {
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid #d8dee8;
+  background: #fff;
+  color: #4b5b73;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  padding: 0 8px;
+}
+
+.pagination__btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.pagination__btn--active {
+  background: #2f80ed;
+  border-color: #2f80ed;
+  color: #fff;
+}
+
+.pagination__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination__btn:not(:disabled):hover {
+  background: #f1f4f8;
+}
+
+.pagination__btn--active:not(:disabled):hover {
+  background: #256fd4;
+  border-color: #256fd4;
+}
+
+@media (max-width: 700px) {
+  .pagination {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 10px;
+  }
+
+  .pagination__left,
+  .pagination__controls {
+    justify-self: center;
+  }
+
+  .pagination__controls {
+    justify-content: center;
+  }
+}

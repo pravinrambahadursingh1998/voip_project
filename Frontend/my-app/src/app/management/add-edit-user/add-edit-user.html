@@ -1,0 +1,139 @@
+<div class="add-user">
+  <div class="add-user__header">
+    <div>
+      <h1 class="add-user__title">{{ pageTitle }}</h1>
+      <p class="add-user__subtitle">{{ pageSubtitle }}</p>
+    </div>
+    <button type="button" class="add-user__back-btn" (click)="goBack()">← Back to users</button>
+  </div>
+
+  <form class="add-user__form" [formGroup]="userForm" (ngSubmit)="submitUser()">
+    <div class="add-user__grid">
+      <div class="add-user__field">
+        <label class="add-user__label" for="full_name">Full name</label>
+        <input
+          id="full_name"
+          type="text"
+          class="add-user__input"
+          formControlName="full_name"
+          placeholder="e.g. Alex Morgan"
+          [class.add-user__input--invalid]="userForm.get('full_name')?.touched && userForm.get('full_name')?.invalid"
+        />
+        @if (userForm.get('full_name')?.touched && userForm.get('full_name')?.invalid) {
+          <p class="add-user__error">Full name is required.</p>
+        }
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="add-user__input"
+          formControlName="email"
+          placeholder="name@company.com"
+          [class.add-user__input--invalid]="userForm.get('email')?.touched && userForm.get('email')?.invalid"
+        />
+        @if (userForm.get('email')?.touched && userForm.get('email')?.invalid) {
+          <p class="add-user__error">A valid email is required.</p>
+        }
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          class="add-user__input"
+          formControlName="username"
+          placeholder="login username"
+          autocomplete="off"
+          [class.add-user__input--invalid]="userForm.get('username')?.touched && userForm.get('username')?.invalid"
+        />
+        @if (userForm.get('username')?.touched && userForm.get('username')?.invalid) {
+          <p class="add-user__error">Username is required.</p>
+        }
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="role">Role</label>
+        <select id="role" class="add-user__select" formControlName="role">
+          <option value="Admin">Admin</option>
+          <option value="Supervisor">Supervisor</option>
+          <option value="Agent">Agent</option>
+          <option value="Viewer">Viewer</option>
+        </select>
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="status">Status</label>
+        <select id="status" class="add-user__select" formControlName="status">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Invited">Invited</option>
+        </select>
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="extension">Extension</label>
+        <input
+          id="extension"
+          type="text"
+          class="add-user__input"
+          formControlName="extension"
+          placeholder="e.g. 1001"
+        />
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="phone">Phone</label>
+        <input
+          id="phone"
+          type="text"
+          class="add-user__input"
+          formControlName="phone"
+          placeholder="+1 555 0100"
+        />
+      </div>
+
+      <div class="add-user__field">
+        <label class="add-user__label" for="password">
+          Password
+          @if (isEditMode()) {
+            <span class="add-user__optional">(optional)</span>
+          }
+        </label>
+        <input
+          id="password"
+          type="password"
+          class="add-user__input"
+          formControlName="password"
+          [placeholder]="isEditMode() ? 'Leave blank to keep current' : 'Min. 6 characters'"
+          autocomplete="new-password"
+          [class.add-user__input--invalid]="userForm.get('password')?.touched && userForm.get('password')?.invalid"
+        />
+        @if (userForm.get('password')?.touched && userForm.get('password')?.invalid) {
+          <p class="add-user__error">Password must be at least 6 characters.</p>
+        }
+      </div>
+    </div>
+
+    <div class="add-user__actions">
+      <button type="button" class="add-user__cancel-btn" (click)="goBack()">Cancel</button>
+      <button type="submit" class="add-user__submit-btn" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <mat-progress-spinner
+            class="add-user__btn-spinner"
+            diameter="18"
+            strokeWidth="3"
+            mode="indeterminate"
+            aria-hidden="true"
+          ></mat-progress-spinner>
+          Saving...
+        } @else {
+          {{ isEditMode() ? 'Save changes' : 'Create user' }}
+        }
+      </button>
+    </div>
+  </form>
+</div>

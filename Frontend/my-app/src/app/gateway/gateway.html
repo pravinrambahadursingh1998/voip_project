@@ -1,0 +1,151 @@
+<div class="gateway">
+  <div class="gateway__header">
+    <div>
+      <h1 class="gateway__title">PBX Gateways</h1>
+      <p class="gateway__subtitle">Configure and monitor your connected telephony platforms.</p>
+    </div>
+    <button type="button" class="gateway__primary-btn" (click)="addGateway()">+ Add gateway</button>
+  </div>
+
+  <div class="gateway__stats">
+    <div class="gateway__stat">
+      <span class="gateway__stat-dot gateway__stat-dot--green"></span>
+      <strong>2</strong>
+      <span>Online gateways</span>
+    </div>
+    <div class="gateway__stat">
+      <span class="gateway__stat-dot gateway__stat-dot--yellow"></span>
+      <strong>1</strong>
+      <span>Standby gateway</span>
+    </div>
+    <div class="gateway__stat">
+      <span class="gateway__stat-dot gateway__stat-dot--red"></span>
+      <strong>1</strong>
+      <span>Needs attention</span>
+    </div>
+  </div>
+
+  <div class="gateway__toolbar">
+    <div class="gateway__search">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M14 14l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input type="text" placeholder="Search gateways..." readonly />
+    </div>
+
+    <div class="gateway__toolbar-right">
+      <div class="gateway__select">
+        <span>All statuses</span>
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <button type="button" class="gateway__filters-btn">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 5h14M6 10h8M8 15h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Filters
+      </button>
+    </div>
+  </div>
+
+  <div class="gateway__meta">
+    <button type="button" class="gateway__refresh" (click)="getGatewayStatusList()">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M13 8a5 5 0 1 1-1.3-3.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M13 3v3.2H9.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Refresh
+    </button>
+    <span>Last sync: Today, 10:42 AM</span>
+  </div>
+
+  <div class="gateway__table-wrap">
+    <table class="gateway__table">
+      <thead>
+        <tr>
+          <th>
+            <span class="gateway__th-label">Gateway name</span>
+            <input
+              type="text"
+              class="gateway__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.gateway_name"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="gateway__th-label">Domain</span>
+            <input
+              type="text"
+              class="gateway__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.proxy"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="gateway__th-label">From User</span>
+            <input
+              type="text"
+              class="gateway__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.username"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="gateway__th-label">Status</span>
+            <input
+              type="text"
+              class="gateway__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.gateway_status"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="gateway__th-label">Actions</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let gateway of pagedGateways">
+          <td>
+            <div class="gateway__name">{{ gateway.gateway_name }}</div>
+          </td>
+          <td>{{ gateway.proxy }}</td>
+          <td>{{ gateway.username }}</td>
+          <td>
+            <span class="gateway__badge gateway__badge--online">
+              {{ gateway.gateway_status }}
+            </span>
+          </td>
+          <td>
+            <div class="gateway__actions">
+              <button type="button" class="gateway__action" aria-label="Edit" (click)="editGateway(gateway.id)">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5l2 2L5.5 12.5H3.5v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              </button>
+              <button type="button" class="gateway__action gateway__action--danger" aria-label="Delete">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5.5 4.5l.5 8h4l.5-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="pagedGateways.length === 0">
+          <td colspan="5" class="gateway__empty">No gateways found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination
+    [totalItems]="filteredGateways.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    itemLabel="entries"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+  />
+</div>

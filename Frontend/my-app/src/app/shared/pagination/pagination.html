@@ -1,0 +1,60 @@
+<div class="pagination">
+  <div class="pagination__left">
+    <div class="pagination__size">
+      <select
+        class="pagination__size-select"
+        [value]="pageSize()"
+        (change)="onPageSizeChange($event)"
+        aria-label="Rows per page"
+      >
+        @for (size of pageSizeOptions(); track size) {
+          <option [value]="size">{{ size }}</option>
+        }
+      </select>
+      <svg class="pagination__size-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <span class="pagination__info">
+    Showing {{ startItem() }} to {{ endItem() }} of {{ totalItems() }} {{ itemLabel() }}
+  </span>
+
+  <div class="pagination__controls">
+    <button
+      type="button"
+      class="pagination__btn"
+      aria-label="Previous page"
+      [disabled]="!canGoPrev()"
+      (click)="prev()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    @for (page of pages(); track page) {
+      <button
+        type="button"
+        class="pagination__btn"
+        [class.pagination__btn--active]="page === currentPage()"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+    }
+
+    <button
+      type="button"
+      class="pagination__btn"
+      aria-label="Next page"
+      [disabled]="!canGoNext()"
+      (click)="next()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>

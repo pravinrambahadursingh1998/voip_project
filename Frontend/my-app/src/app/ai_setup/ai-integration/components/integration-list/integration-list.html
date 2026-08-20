@@ -1,0 +1,121 @@
+<div class="int-list">
+  <div class="int-list__toolbar">
+    <div class="int-list__search">
+      <svg class="int-list__search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        class="int-list__search-input"
+        placeholder="Search by provider…"
+        aria-label="Search integrations"
+      />
+    </div>
+
+    <button
+      type="button"
+      class="int-list__add-btn"
+      title="Add integration"
+      (click)="createIntegration.emit()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Add
+    </button>
+  </div>
+
+  <div class="int-list__table-wrap">
+    <table class="int-list__table">
+      <thead>
+        <tr>
+          <th scope="col">Provider</th>
+          <th scope="col">Base URL</th>
+          <th scope="col">API Key</th>
+          <th scope="col">Status</th>
+          <th scope="col" class="int-list__th-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of integrations(); track item.id) {
+          <tr>
+            <td>
+              <span class="int-list__provider">{{ providerLabel(item.provider) }}</span>
+            </td>
+            <td>
+              <span class="int-list__url" [title]="item.base_url || ''">{{ item.base_url || '—' }}</span>
+            </td>
+            <td>
+              <code class="int-list__key">{{ maskApiKey(item.api_key) }}</code>
+            </td>
+            <td>
+              <span
+                class="int-list__status"
+                [class.int-list__status--active]="item.is_active"
+                [class.int-list__status--inactive]="!item.is_active"
+              >
+                {{ item.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="int-list__actions">
+              <div class="int-list__action-group">
+                <button
+                  type="button"
+                  class="int-list__action-btn"
+                  title="Edit"
+                  aria-label="Edit integration"
+                  (click)="editIntegration.emit(item.id)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M11.2 2.8a1.2 1.2 0 011.7 0l.3.3a1.2 1.2 0 010 1.7L6.1 11.9 3 12.9l1-3.1 7.2-7z"
+                      stroke="currentColor"
+                      stroke-width="1.35"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Edit</span>
+                </button>
+                <button
+                  type="button"
+                  class="int-list__action-btn int-list__action-btn--danger"
+                  title="Delete"
+                  aria-label="Delete integration"
+                  (click)="deleteIntegration.emit(item.id)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M3.5 4.5h9M6.2 4.5V3.4h3.6v1.1M5.4 4.5l.5 8.1h4.2l.5-8.1M7 7v4M9 7v4"
+                      stroke="currentColor"
+                      stroke-width="1.35"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr class="int-list__empty-row">
+            <td colspan="5">
+              <div class="int-list__empty">
+                <p class="int-list__empty-title">No integrations yet</p>
+                <p class="int-list__empty-text">Add an OpenDental (or clinic) API integration to get started.</p>
+                <button type="button" class="int-list__add-btn" (click)="createIntegration.emit()">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                  Add
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

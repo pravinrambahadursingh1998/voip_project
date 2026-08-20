@@ -1,0 +1,185 @@
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 162480
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[Queue Worker] Started — PID 162585
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[Queue Worker] Started — PID 162767
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 162808
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[Queue Worker] Started — PID 162899
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 162968
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 163009
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[Queue Worker] Started — PID 163088
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 163178
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 163214
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 163284
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 163340
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 163396
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[Queue Worker] Started — PID 163444
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[Queue Worker] Started — PID 163496
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 163530
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 163583
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 12761
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[Queue Worker] Started — PID 19958
+[Queue Worker] Shutting down PID 19958
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 1143
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[Queue Worker] Started — PID 1140
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[Queue Worker] Started — PID 21681
+[Queue] Processing job 3 | UUID: bad372ad-a86d-4495-9586-80e92ed0b7bc
+[Queue] STT done: "Book Appointment"
+[Queue] GPT done: {
+  reply: 'Could you please provide a specific date and time for your appointment?',
+  date: '',
+  time: '',
+  action: 'SLOTS'
+}
+[Queue] Job 3 complete. Reply written.
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[Queue Worker] Started — PID 31527
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2125
+[Queue] Processing job 4 | UUID: bad372ad-a86d-4495-9586-80e92ed0b7bc
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2765
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[Queue Worker] Started — PID 774227
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 1231132
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2118
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[Queue Worker] Started — PID 2142
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1161
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1231
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[Queue Worker] Started — PID 1184
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 1198
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2007
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 1247
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[Queue Worker] Started — PID 1253
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[Queue Worker] Started — PID 2133
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1266
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 1141
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1144
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[Queue Worker] Started — PID 1298
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[Queue Worker] Started — PID 2092
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[Queue Worker] Started — PID 2810
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 2076
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 216721
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[Queue Worker] Started — PID 2091
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[Queue Worker] Started — PID 98414
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[Queue Worker] Started — PID 2323
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1191
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 813620
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1195
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 1237
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[Queue Worker] Started — PID 1264
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2796
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 2778
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2049
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[Queue Worker] Started — PID 1222
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2083
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1178
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1258
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1276
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1269
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2034
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 2060
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[Queue Worker] Started — PID 1266
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[Queue Worker] Started — PID 2124
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1153
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[Queue Worker] Started — PID 1182
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1230
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[Queue Worker] Started — PID 1306
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[Queue Worker] Started — PID 1202
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 2057
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 1872
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2072
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2004
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1182
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 1552
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[Queue Worker] Started — PID 1207
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[Queue Worker] Started — PID 2093
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[Queue Worker] Started — PID 1235
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Queue Worker] Started — PID 1271
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Queue Worker] Started — PID 1993
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[Queue Worker] Started — PID 1224
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[Queue Worker] Started — PID 2105
+[dotenv@17.2.3] injecting env (18) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[Queue Worker] Started — PID 1195
+[dotenv@17.2.3] injecting env (18) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[Queue Worker] Started — PID 2162
+[dotenv@17.2.3] injecting env (20) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[Queue Worker] Started — PID 1211

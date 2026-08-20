@@ -1,0 +1,60 @@
+<div class="ai-prompt">
+  <div class="ai-prompt__header">
+    <div>
+      <h1 class="ai-prompt__title">AI Prompts</h1>
+      <p class="ai-prompt__subtitle">
+        Manage system prompts per extension for your voice agents.
+      </p>
+    </div>
+    <div class="ai-prompt__header-actions">
+      <button type="button" class="ai-prompt__btn ai-prompt__btn--secondary">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 3.5h10v2H3v-2zm0 3.5h10v2H3V7zm0 3.5h7v2H3v-2z" fill="currentColor"/>
+        </svg>
+        Import
+      </button>
+      <button
+        type="button"
+        class="ai-prompt__btn ai-prompt__btn--primary"
+        (click)="startNewPrompt()"
+      >
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        New Prompt
+      </button>
+    </div>
+  </div>
+
+  <div class="ai-prompt__split">
+    <aside class="ai-prompt__pane ai-prompt__pane--list">
+      <app-prompt-list
+        [selectedId]="selectedId()"
+        [isCreating]="isCreating()"
+        [reloadKey]="listReloadKey()"
+        (selectPrompt)="selectPrompt($event)"
+        (createPrompt)="startNewPrompt()"
+      />
+    </aside>
+
+    <section class="ai-prompt__pane ai-prompt__pane--editor">
+      <app-prompt-editor
+        [selectedId]="selectedId()"
+        [isCreating]="isCreating()"
+        [insertVariable]="insertVariableToken()"
+        (saved)="onPromptSaved($event)"
+        (deleted)="onPromptDeleted($event)"
+        (draftChange)="onDraftChange($event)"
+      />
+    </section>
+
+    <aside class="ai-prompt__pane ai-prompt__pane--aside">
+      <app-prompt-aside
+        [selectedId]="selectedId()"
+        [isCreating]="isCreating()"
+        [draft]="draftPrompt()"
+        (insertVariable)="onInsertVariable($event)"
+      />
+    </aside>
+  </div>
+</div>

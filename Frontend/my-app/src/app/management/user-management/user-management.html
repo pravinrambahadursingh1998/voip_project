@@ -1,0 +1,209 @@
+<div class="users">
+  <div class="users__header">
+    <div>
+      <h1 class="users__title">User management</h1>
+      <p class="users__subtitle">Create, update, and control access for your PBX Bridge team.</p>
+    </div>
+    <button type="button" class="users__primary-btn" (click)="addUser()">+ Add user</button>
+  </div>
+
+  <div class="users__stats">
+    <div class="users__stat">
+      <span class="users__stat-dot users__stat-dot--green"></span>
+      <strong>{{ activeCount }}</strong>
+      <span>Active users</span>
+    </div>
+    <div class="users__stat">
+      <span class="users__stat-dot users__stat-dot--yellow"></span>
+      <strong>{{ invitedCount }}</strong>
+      <span>Pending invites</span>
+    </div>
+    <div class="users__stat">
+      <span class="users__stat-dot users__stat-dot--red"></span>
+      <strong>{{ inactiveCount }}</strong>
+      <span>Inactive users</span>
+    </div>
+  </div>
+
+  <div class="users__toolbar">
+    <div class="users__search">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M14 14l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Search users..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    <div class="users__toolbar-right">
+      <label class="users__select" for="statusFilter">
+        <select
+          id="statusFilter"
+          [(ngModel)]="statusFilter"
+          (ngModelChange)="onStatusFilterChange()"
+        >
+          <option value="">All statuses</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Invited">Invited</option>
+        </select>
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </label>
+      <button type="button" class="users__filters-btn">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 5h14M6 10h8M8 15h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Filters
+      </button>
+    </div>
+  </div>
+
+  <div class="users__meta">
+    <button type="button" class="users__refresh" (click)="refreshUsers()">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M13 8a5 5 0 1 1-1.3-3.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M13 3v3.2H9.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Refresh
+    </button>
+    <span>{{ filteredUsers.length }} user{{ filteredUsers.length === 1 ? '' : 's' }} shown</span>
+  </div>
+
+  <div class="users__table-wrap">
+    <table class="users__table">
+      <thead>
+        <tr>
+          <th>
+            <span class="users__th-label">Full name</span>
+            <input
+              type="text"
+              class="users__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.full_name"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="users__th-label">Email</span>
+            <input
+              type="text"
+              class="users__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.email"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="users__th-label">Username</span>
+            <input
+              type="text"
+              class="users__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.username"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="users__th-label">Role</span>
+            <input
+              type="text"
+              class="users__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.role"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="users__th-label">Extension</span>
+            <input
+              type="text"
+              class="users__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.extension"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="users__th-label">Status</span>
+            <input
+              type="text"
+              class="users__th-search"
+              placeholder="Search..."
+              [(ngModel)]="filters.status"
+              (ngModelChange)="onFilterChange()"
+            />
+          </th>
+          <th>
+            <span class="users__th-label">Last login</span>
+          </th>
+          <th>
+            <span class="users__th-label">Actions</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of pagedUsers">
+          <td>
+            <div class="users__name-cell">
+              <span class="users__avatar" aria-hidden="true">
+                {{ user.full_name.charAt(0) }}
+              </span>
+              <div>
+                <div class="users__name">{{ user.full_name }}</div>
+                <div class="users__name-sub">ID {{ user.id }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.extension }}</td>
+          <td>
+            <span [class]="statusBadgeClass(user.status)">
+              {{ user.status }}
+            </span>
+          </td>
+          <td>{{ user.last_login }}</td>
+          <td>
+            <div class="users__actions">
+              <button
+                type="button"
+                class="users__action"
+                aria-label="Edit"
+                (click)="editUser(user.id)"
+              >
+                <svg viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5l2 2L5.5 12.5H3.5v-2L11.5 2.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              </button>
+              <button
+                type="button"
+                class="users__action users__action--danger"
+                aria-label="Delete"
+                (click)="deleteUser(user)"
+              >
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5.5 4.5l.5 8h4l.5-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="pagedUsers.length === 0">
+          <td colspan="8" class="users__empty">No users found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination
+    [totalItems]="filteredUsers.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    itemLabel="users"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+  />
+</div>

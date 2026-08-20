@@ -1,0 +1,777 @@
+<div class="api-test">
+  <div class="api-test__header">
+    <div>
+      <h1 class="api-test__title">API Tester</h1>
+      <p class="api-test__subtitle">
+        Build and send HTTP requests, then inspect status, headers, and body.
+      </p>
+    </div>
+  </div>
+
+  <div class="api-test__layout">
+    <!-- Collections sidebar -->
+    <aside class="api-test__sidebar" aria-label="Collections">
+      <div class="api-test__sidebar-head">
+        <h2 class="api-test__sidebar-title">Collections</h2>
+        <div class="api-test__sidebar-actions">
+          <button
+            type="button"
+            class="api-test__icon-btn"
+            title="New request"
+            (click)="newUntitledRequest()"
+          >
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 2.5h5.5L13 6v7.5H4V2.5z" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M9.5 2.5V6H13" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="api-test__icon-btn api-test__icon-btn--accent"
+            title="New collection"
+            (click)="startCreateCollection()"
+          >
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="api-test__sidebar-search">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <input
+          type="search"
+          placeholder="Search collections…"
+          [ngModel]="collectionSearch()"
+          (ngModelChange)="collectionSearch.set($event)"
+          aria-label="Search collections"
+        />
+      </div>
+
+      @if (creatingCollection()) {
+        <div class="api-test__inline-form">
+          <input
+            class="api-test__input"
+            placeholder="Collection name"
+            [ngModel]="newCollectionName()"
+            (ngModelChange)="newCollectionName.set($event)"
+            (keydown.enter)="confirmCreateCollection()"
+            (keydown.escape)="cancelCreateCollection()"
+            autofocus
+          />
+          <div class="api-test__inline-form-actions">
+            <button type="button" class="api-test__mini-btn api-test__mini-btn--primary" (click)="confirmCreateCollection()">
+              Create
+            </button>
+            <button type="button" class="api-test__mini-btn" (click)="cancelCreateCollection()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      }
+
+      <div class="api-test__collections">
+        @for (collection of filteredCollections(); track collection.id) {
+          <div class="api-test__collection" [class.api-test__collection--active]="activeCollectionId() === collection.id">
+            <div class="api-test__collection-row" (click)="toggleCollection(collection.id)">
+              <button type="button" class="api-test__chevron" [class.api-test__chevron--open]="collection.expanded" aria-label="Toggle collection">
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M4 2.5L8 6 4 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              @if (renamingCollectionId() === collection.id) {
+                <input
+                  class="api-test__input api-test__rename-input"
+                  [ngModel]="renameCollectionValue()"
+                  (ngModelChange)="renameCollectionValue.set($event)"
+                  (click)="$event.stopPropagation()"
+                  (keydown.enter)="confirmRenameCollection()"
+                  (keydown.escape)="cancelRenameCollection()"
+                  (blur)="confirmRenameCollection()"
+                />
+              } @else {
+                <span class="api-test__collection-name">{{ collection.name }}</span>
+                <span class="api-test__collection-count">{{ collection.requests.length }}</span>
+              }
+
+              <div class="api-test__collection-tools" (click)="$event.stopPropagation()">
+                <button
+                  type="button"
+                  class="api-test__icon-btn"
+                  title="Add request"
+                  (click)="addBlankRequestToCollection(collection.id, $event)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="api-test__icon-btn"
+                  title="Rename"
+                  (click)="startRenameCollection(collection, $event)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M11.2 2.8a1.2 1.2 0 011.7 0l.3.3a1.2 1.2 0 010 1.7L6.1 11.9 3 12.9l1-3.1 7.2-7z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="api-test__icon-btn"
+                  title="Delete collection"
+                  (click)="deleteCollection(collection.id, $event)"
+                >
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3.5 4.5h9M6.2 4.5V3.4h3.6v1.1M5.4 4.5l.5 8.1h4.2l.5-8.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            @if (collection.expanded) {
+              <div class="api-test__requests">
+                @for (req of collection.requests; track req.id) {
+                  <button
+                    type="button"
+                    class="api-test__request-item"
+                    [class.api-test__request-item--active]="activeRequestId() === req.id"
+                    (click)="openRequest(collection.id, req.id)"
+                  >
+                    <span class="api-test__req-method" [ngClass]="methodClass(req.snapshot.method)">
+                      {{ req.snapshot.method }}
+                    </span>
+                    <span class="api-test__req-name">{{ req.name }}</span>
+                    <span
+                      class="api-test__icon-btn api-test__req-delete"
+                      title="Delete request"
+                      role="button"
+                      tabindex="0"
+                      (click)="deleteRequest(collection.id, req.id, $event)"
+                      (keydown.enter)="deleteRequest(collection.id, req.id, $event)"
+                    >
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                } @empty {
+                  <div class="api-test__requests-empty">No requests yet</div>
+                }
+              </div>
+            }
+          </div>
+        } @empty {
+          <div class="api-test__collections-empty">
+            <p>No collections yet</p>
+            <button type="button" class="api-test__mini-btn api-test__mini-btn--primary" (click)="startCreateCollection()">
+              Create collection
+            </button>
+          </div>
+        }
+      </div>
+    </aside>
+
+    <div class="api-test__workspace">
+      <!-- Request bar -->
+      <div class="api-test__request-toolbar">
+        <input
+          class="api-test__request-name"
+          [ngModel]="requestName()"
+          (ngModelChange)="requestName.set($event)"
+          placeholder="Request name"
+          aria-label="Request name"
+        />
+
+        <div class="api-test__save-wrap">
+          <div class="api-test__save-group">
+            <button type="button" class="api-test__save-btn" (click)="saveCurrentRequest()">
+              Save
+            </button>
+            <button
+              type="button"
+              class="api-test__save-btn api-test__save-btn--caret"
+              title="Save as…"
+              (click)="toggleSaveMenu()"
+            >
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M3 4.5L6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          @if (saveMenuOpen()) {
+            <div class="api-test__save-menu" role="menu">
+              <div class="api-test__save-menu-label">Save to collection</div>
+              @for (collection of collections(); track collection.id) {
+                <button
+                  type="button"
+                  class="api-test__save-menu-item"
+                  role="menuitem"
+                  (click)="saveAsNewInCollection(collection.id)"
+                >
+                  {{ collection.name }}
+                </button>
+              } @empty {
+                <div class="api-test__save-menu-empty">No collections</div>
+              }
+              <button
+                type="button"
+                class="api-test__save-menu-item api-test__save-menu-item--accent"
+                role="menuitem"
+                (click)="saveAsNewCollection()"
+              >
+                + New collection
+              </button>
+            </div>
+            <button type="button" class="api-test__save-backdrop" aria-label="Close save menu" (click)="closeSaveMenu()"></button>
+          }
+        </div>
+      </div>
+
+      <div class="api-test__request-bar">
+        <select
+          class="api-test__method"
+          [ngClass]="methodClass(method())"
+          [ngModel]="method()"
+          (ngModelChange)="method.set($event)"
+          aria-label="HTTP method"
+        >
+          @for (m of methods; track m) {
+            <option [value]="m">{{ m }}</option>
+          }
+        </select>
+
+        <input
+          type="url"
+          class="api-test__url"
+          [ngModel]="url()"
+          (ngModelChange)="url.set($event)"
+          placeholder="https://api.example.com/endpoint"
+          spellcheck="false"
+          aria-label="Request URL"
+        />
+
+        <button
+          type="button"
+          class="api-test__send"
+          (click)="onSend()"
+          [disabled]="isSending()"
+        >
+          {{ isSending() ? 'Sending…' : 'Send' }}
+        </button>
+      </div>
+
+      <div class="api-test__panels">
+        <!-- Request panel -->
+        <section class="api-test__panel api-test__panel--request">
+          <div class="api-test__tabs" role="tablist" aria-label="Request options">
+            <button
+              type="button"
+              role="tab"
+              class="api-test__tab"
+              [class.api-test__tab--active]="activeRequestTab() === 'params'"
+              [attr.aria-selected]="activeRequestTab() === 'params'"
+              (click)="setRequestTab('params')"
+            >
+              Params
+              @if (enabledParamCount() > 0) {
+                <span class="api-test__badge">{{ enabledParamCount() }}</span>
+              }
+            </button>
+            <button
+              type="button"
+              role="tab"
+              class="api-test__tab"
+              [class.api-test__tab--active]="activeRequestTab() === 'headers'"
+              [attr.aria-selected]="activeRequestTab() === 'headers'"
+              (click)="setRequestTab('headers')"
+            >
+              Headers
+              @if (enabledHeaderCount() > 0) {
+                <span class="api-test__badge">{{ enabledHeaderCount() }}</span>
+              }
+            </button>
+            <button
+              type="button"
+              role="tab"
+              class="api-test__tab"
+              [class.api-test__tab--active]="activeRequestTab() === 'body'"
+              [attr.aria-selected]="activeRequestTab() === 'body'"
+              (click)="setRequestTab('body')"
+            >
+              Body
+            </button>
+            <button
+              type="button"
+              role="tab"
+              class="api-test__tab"
+              [class.api-test__tab--active]="activeRequestTab() === 'auth'"
+              [attr.aria-selected]="activeRequestTab() === 'auth'"
+              (click)="setRequestTab('auth')"
+            >
+              Auth
+            </button>
+          </div>
+
+          <div class="api-test__tab-body">
+            @if (activeRequestTab() === 'params') {
+              <div class="api-test__kv">
+                <div class="api-test__kv-head">
+                  <span class="api-test__kv-check"></span>
+                  <span>Key</span>
+                  <span>Value</span>
+                  <span>Description</span>
+                  <span class="api-test__kv-action"></span>
+                </div>
+                @for (row of params(); track row.id) {
+                  <div class="api-test__kv-row">
+                    <label class="api-test__check">
+                      <input
+                        type="checkbox"
+                        [checked]="row.enabled"
+                        (change)="updateRow('params', row.id, { enabled: $any($event.target).checked })"
+                      />
+                    </label>
+                    <input
+                      class="api-test__input"
+                      placeholder="Key"
+                      [ngModel]="row.key"
+                      (ngModelChange)="updateRow('params', row.id, { key: $event })"
+                    />
+                    <input
+                      class="api-test__input"
+                      placeholder="Value"
+                      [ngModel]="row.value"
+                      (ngModelChange)="updateRow('params', row.id, { value: $event })"
+                    />
+                    <input
+                      class="api-test__input"
+                      placeholder="Description"
+                      [ngModel]="row.description"
+                      (ngModelChange)="updateRow('params', row.id, { description: $event })"
+                    />
+                    <button
+                      type="button"
+                      class="api-test__icon-btn"
+                      title="Remove"
+                      (click)="removeRow('params', row.id)"
+                    >
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                }
+                <button type="button" class="api-test__add-row" (click)="addRow('params')">
+                  + Add param
+                </button>
+              </div>
+            }
+
+            @if (activeRequestTab() === 'headers') {
+              <div class="api-test__kv">
+                <div class="api-test__kv-head">
+                  <span class="api-test__kv-check"></span>
+                  <span>Key</span>
+                  <span>Value</span>
+                  <span>Description</span>
+                  <span class="api-test__kv-action"></span>
+                </div>
+                @for (row of headers(); track row.id) {
+                  <div class="api-test__kv-row">
+                    <label class="api-test__check">
+                      <input
+                        type="checkbox"
+                        [checked]="row.enabled"
+                        (change)="updateRow('headers', row.id, { enabled: $any($event.target).checked })"
+                      />
+                    </label>
+                    <input
+                      class="api-test__input"
+                      placeholder="Header"
+                      [ngModel]="row.key"
+                      (ngModelChange)="updateRow('headers', row.id, { key: $event })"
+                    />
+                    <input
+                      class="api-test__input"
+                      placeholder="Value"
+                      [ngModel]="row.value"
+                      (ngModelChange)="updateRow('headers', row.id, { value: $event })"
+                    />
+                    <input
+                      class="api-test__input"
+                      placeholder="Description"
+                      [ngModel]="row.description"
+                      (ngModelChange)="updateRow('headers', row.id, { description: $event })"
+                    />
+                    <button
+                      type="button"
+                      class="api-test__icon-btn"
+                      title="Remove"
+                      (click)="removeRow('headers', row.id)"
+                    >
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                }
+                <button type="button" class="api-test__add-row" (click)="addRow('headers')">
+                  + Add header
+                </button>
+              </div>
+            }
+
+            @if (activeRequestTab() === 'body') {
+              <div class="api-test__body">
+                <div class="api-test__body-modes" role="radiogroup" aria-label="Body type">
+                  @for (mode of ['none', 'raw', 'form-data', 'x-www-form-urlencoded']; track mode) {
+                    <label class="api-test__radio">
+                      <input
+                        type="radio"
+                        name="bodyMode"
+                        [value]="mode"
+                        [checked]="bodyMode() === mode"
+                        (change)="setBodyMode($any(mode))"
+                      />
+                      <span>{{ mode }}</span>
+                    </label>
+                  }
+                </div>
+
+                @if (bodyMode() === 'none') {
+                  <div class="api-test__empty">
+                    <p>This request does not have a body.</p>
+                  </div>
+                }
+
+                @if (bodyMode() === 'raw') {
+                  <div class="api-test__raw-wrap">
+                    <div class="api-test__raw-meta">
+                      <span class="api-test__chip">JSON</span>
+                    </div>
+                    <textarea
+                      class="api-test__textarea"
+                      [ngModel]="rawBody()"
+                      (ngModelChange)="rawBody.set($event)"
+                      spellcheck="false"
+                      rows="12"
+                      placeholder='{ "key": "value" }'
+                    ></textarea>
+                  </div>
+                }
+
+                @if (bodyMode() === 'form-data') {
+                  <div class="api-test__kv">
+                    <div class="api-test__kv-head">
+                      <span class="api-test__kv-check"></span>
+                      <span>Key</span>
+                      <span>Value</span>
+                      <span>Description</span>
+                      <span class="api-test__kv-action"></span>
+                    </div>
+                    @for (row of formDataRows(); track row.id) {
+                      <div class="api-test__kv-row">
+                        <label class="api-test__check">
+                          <input
+                            type="checkbox"
+                            [checked]="row.enabled"
+                            (change)="updateRow('form-data', row.id, { enabled: $any($event.target).checked })"
+                          />
+                        </label>
+                        <input
+                          class="api-test__input"
+                          placeholder="Key"
+                          [ngModel]="row.key"
+                          (ngModelChange)="updateRow('form-data', row.id, { key: $event })"
+                        />
+                        <input
+                          class="api-test__input"
+                          placeholder="Value"
+                          [ngModel]="row.value"
+                          (ngModelChange)="updateRow('form-data', row.id, { value: $event })"
+                        />
+                        <input
+                          class="api-test__input"
+                          placeholder="Description"
+                          [ngModel]="row.description"
+                          (ngModelChange)="updateRow('form-data', row.id, { description: $event })"
+                        />
+                        <button
+                          type="button"
+                          class="api-test__icon-btn"
+                          title="Remove"
+                          (click)="removeRow('form-data', row.id)"
+                        >
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                      </div>
+                    }
+                    <button type="button" class="api-test__add-row" (click)="addRow('form-data')">
+                      + Add field
+                    </button>
+                  </div>
+                }
+
+                @if (bodyMode() === 'x-www-form-urlencoded') {
+                  <div class="api-test__kv">
+                    <div class="api-test__kv-head">
+                      <span class="api-test__kv-check"></span>
+                      <span>Key</span>
+                      <span>Value</span>
+                      <span>Description</span>
+                      <span class="api-test__kv-action"></span>
+                    </div>
+                    @for (row of urlEncodedRows(); track row.id) {
+                      <div class="api-test__kv-row">
+                        <label class="api-test__check">
+                          <input
+                            type="checkbox"
+                            [checked]="row.enabled"
+                            (change)="updateRow('urlencoded', row.id, { enabled: $any($event.target).checked })"
+                          />
+                        </label>
+                        <input
+                          class="api-test__input"
+                          placeholder="Key"
+                          [ngModel]="row.key"
+                          (ngModelChange)="updateRow('urlencoded', row.id, { key: $event })"
+                        />
+                        <input
+                          class="api-test__input"
+                          placeholder="Value"
+                          [ngModel]="row.value"
+                          (ngModelChange)="updateRow('urlencoded', row.id, { value: $event })"
+                        />
+                        <input
+                          class="api-test__input"
+                          placeholder="Description"
+                          [ngModel]="row.description"
+                          (ngModelChange)="updateRow('urlencoded', row.id, { description: $event })"
+                        />
+                        <button
+                          type="button"
+                          class="api-test__icon-btn"
+                          title="Remove"
+                          (click)="removeRow('urlencoded', row.id)"
+                        >
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                      </div>
+                    }
+                    <button type="button" class="api-test__add-row" (click)="addRow('urlencoded')">
+                      + Add field
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (activeRequestTab() === 'auth') {
+              <div class="api-test__auth">
+                <div class="api-test__field">
+                  <label class="api-test__label" for="auth-type">Auth type</label>
+                  <select
+                    id="auth-type"
+                    class="api-test__select"
+                    [ngModel]="authType()"
+                    (ngModelChange)="authType.set($event)"
+                  >
+                    <option value="none">No Auth</option>
+                    <option value="bearer">Bearer Token</option>
+                    <option value="basic">Basic Auth</option>
+                    <option value="api-key">API Key</option>
+                  </select>
+                </div>
+
+                @if (authType() === 'none') {
+                  <div class="api-test__empty">
+                    <p>This request does not use authorization.</p>
+                  </div>
+                }
+
+                @if (authType() === 'bearer') {
+                  <div class="api-test__field">
+                    <label class="api-test__label" for="bearer-token">Token</label>
+                    <input
+                      id="bearer-token"
+                      type="password"
+                      class="api-test__input"
+                      [ngModel]="bearerToken()"
+                      (ngModelChange)="bearerToken.set($event)"
+                      placeholder="Paste bearer token"
+                    />
+                  </div>
+                }
+
+                @if (authType() === 'basic') {
+                  <div class="api-test__auth-grid">
+                    <div class="api-test__field">
+                      <label class="api-test__label" for="basic-user">Username</label>
+                      <input
+                        id="basic-user"
+                        class="api-test__input"
+                        [ngModel]="basicUsername()"
+                        (ngModelChange)="basicUsername.set($event)"
+                        placeholder="Username"
+                      />
+                    </div>
+                    <div class="api-test__field">
+                      <label class="api-test__label" for="basic-pass">Password</label>
+                      <input
+                        id="basic-pass"
+                        type="password"
+                        class="api-test__input"
+                        [ngModel]="basicPassword()"
+                        (ngModelChange)="basicPassword.set($event)"
+                        placeholder="Password"
+                      />
+                    </div>
+                  </div>
+                }
+
+                @if (authType() === 'api-key') {
+                  <div class="api-test__auth-grid">
+                    <div class="api-test__field">
+                      <label class="api-test__label" for="api-key-name">Key</label>
+                      <input
+                        id="api-key-name"
+                        class="api-test__input"
+                        [ngModel]="apiKeyName()"
+                        (ngModelChange)="apiKeyName.set($event)"
+                        placeholder="X-API-Key"
+                      />
+                    </div>
+                    <div class="api-test__field">
+                      <label class="api-test__label" for="api-key-value">Value</label>
+                      <input
+                        id="api-key-value"
+                        class="api-test__input"
+                        [ngModel]="apiKeyValue()"
+                        (ngModelChange)="apiKeyValue.set($event)"
+                        placeholder="Value"
+                      />
+                    </div>
+                    <div class="api-test__field">
+                      <label class="api-test__label" for="api-key-in">Add to</label>
+                      <select
+                        id="api-key-in"
+                        class="api-test__select"
+                        [ngModel]="apiKeyIn()"
+                        (ngModelChange)="apiKeyIn.set($event)"
+                      >
+                        <option value="header">Header</option>
+                        <option value="query">Query Params</option>
+                      </select>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Response panel -->
+        <section class="api-test__panel api-test__panel--response">
+          <div class="api-test__response-head">
+            <div class="api-test__tabs" role="tablist" aria-label="Response">
+              <button
+                type="button"
+                role="tab"
+                class="api-test__tab"
+                [class.api-test__tab--active]="activeResponseTab() === 'body'"
+                [attr.aria-selected]="activeResponseTab() === 'body'"
+                (click)="setResponseTab('body')"
+              >
+                Response
+              </button>
+              <button
+                type="button"
+                role="tab"
+                class="api-test__tab"
+                [class.api-test__tab--active]="activeResponseTab() === 'headers'"
+                [attr.aria-selected]="activeResponseTab() === 'headers'"
+                (click)="setResponseTab('headers')"
+              >
+                Headers
+              </button>
+            </div>
+
+            <div class="api-test__meta">
+              @if (response(); as res) {
+                <span class="api-test__meta-item" [ngClass]="statusClass()">
+                  Status
+                  {{ res.status != null ? res.status : '—' }}
+                  @if (res.statusText) {
+                    {{ res.statusText }}
+                  }
+                </span>
+                <span class="api-test__meta-item">Time {{ res.timeMs }} ms</span>
+                <span class="api-test__meta-item">Size {{ formatSize(res.sizeBytes) }}</span>
+              } @else {
+                <span class="api-test__meta-item api-test__meta-item--muted">Status —</span>
+                <span class="api-test__meta-item api-test__meta-item--muted">Time —</span>
+                <span class="api-test__meta-item api-test__meta-item--muted">Size —</span>
+              }
+            </div>
+          </div>
+
+          <div class="api-test__response-body">
+            @if (isSending()) {
+              <div class="api-test__placeholder">
+                <h3>Sending request…</h3>
+                <p>Waiting for the server response.</p>
+              </div>
+            } @else if (!hasResponse()) {
+              <div class="api-test__placeholder">
+                <div class="api-test__placeholder-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="12" width="32" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 20h16M16 26h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <h3>No response yet</h3>
+                <p>Enter a URL and hit Send to see the response here.</p>
+              </div>
+            } @else if (response(); as res) {
+              @if (res.errorMessage && !res.bodyText) {
+                <div class="api-test__empty api-test__empty--error">
+                  <p>{{ res.errorMessage }}</p>
+                </div>
+              } @else if (activeResponseTab() === 'body') {
+                @if (res.errorMessage) {
+                  <div class="api-test__alert">{{ res.errorMessage }}</div>
+                }
+                <pre class="api-test__pre">{{ res.bodyText || '(empty body)' }}</pre>
+              } @else {
+                @if (res.headers.length === 0) {
+                  <div class="api-test__empty">
+                    <p>No response headers.</p>
+                  </div>
+                } @else {
+                  <div class="api-test__resp-headers">
+                    @for (h of res.headers; track h.key) {
+                      <div class="api-test__resp-header">
+                        <span class="api-test__resp-header-key">{{ h.key }}</span>
+                        <span class="api-test__resp-header-val">{{ h.value }}</span>
+                      </div>
+                    }
+                  </div>
+                }
+              }
+            }
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

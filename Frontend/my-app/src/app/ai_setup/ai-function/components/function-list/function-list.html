@@ -1,0 +1,62 @@
+<div class="fn-list">
+  <div class="fn-list__header">
+    <h2 class="fn-list__title">Functions</h2>
+    <button
+      type="button"
+      class="fn-list__add-btn"
+      title="Add function"
+      (click)="createFunction.emit()"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Add
+    </button>
+  </div>
+
+  <div class="fn-list__search">
+    <svg class="fn-list__search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <input type="text" class="fn-list__search-input" placeholder="Search functions…" />
+  </div>
+
+  @if (isCreating()) {
+    <div class="fn-list__draft">
+      <span class="fn-list__draft-dot" aria-hidden="true"></span>
+      Creating new function…
+    </div>
+  }
+
+  <ul class="fn-list__items" role="listbox" aria-label="Function list">
+    @for (fn of functions; track fn.id) {
+      <li
+        class="fn-list__item"
+        [class.fn-list__item--active]="!isCreating() && selectedId() === fn.id"
+        role="option"
+        [attr.aria-selected]="!isCreating() && selectedId() === fn.id"
+        (click)="selectFunction.emit(fn.id)"
+      >
+        <div class="fn-list__item-top">
+          <span class="fn-list__name">{{ fn.name }}</span>
+          <span
+            class="fn-list__badge"
+            [class.fn-list__badge--post]="fn.method === 'POST'"
+            [class.fn-list__badge--get]="fn.method === 'GET'"
+          >{{ fn.method }}</span>
+        </div>
+        <p class="fn-list__desc">{{ fn.description }}</p>
+        <div class="fn-list__meta">
+          <span class="fn-list__type">{{ fn.type }}</span>
+          <span
+            class="fn-list__direction"
+            [class.fn-list__direction--inbound]="fn.direction === 'inbound'"
+            [class.fn-list__direction--outbound]="fn.direction === 'outbound'"
+            [class.fn-list__direction--both]="!fn.direction || fn.direction === 'both'"
+          >{{ fn.direction || 'both' }}</span>
+        </div>
+      </li>
+    }
+  </ul>
+</div>

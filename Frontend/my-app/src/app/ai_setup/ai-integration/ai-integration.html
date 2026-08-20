@@ -1,0 +1,149 @@
+<div class="ai-integration">
+  <div class="ai-integration__header">
+    <div>
+      <h1 class="ai-integration__title">Integrations</h1>
+      <p class="ai-integration__subtitle">
+        @if (viewMode() === 'list') {
+          Manage clinic API credentials (OpenDental and more).
+        } @else {
+          Configure clinic API key and base URL for this company.
+        }
+      </p>
+    </div>
+
+    @if (viewMode() === 'form') {
+      <button type="button" class="ai-integration__back-btn" (click)="showList()">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to list
+      </button>
+    }
+  </div>
+
+  @if (viewMode() === 'list') {
+    <app-integration-list
+      [integrations]="integrations"
+      (createIntegration)="showForm()"
+      (editIntegration)="onEditIntegration($event)"
+      (deleteIntegration)="onDeleteIntegration($event)"
+    />
+  } @else {
+    <form
+      class="ai-integration__form"
+      [formGroup]="integrationForm"
+      (ngSubmit)="integrationFormSubmit()"
+    >
+      <div class="ai-integration__grid">
+        <div class="ai-integration__field">
+          <label class="ai-integration__label" for="provider">Provider</label>
+          <ng-select
+            id="provider"
+            class="ai-integration__ng-select"
+            formControlName="provider"
+            [items]="providers"
+            bindLabel="label"
+            bindValue="value"
+            placeholder="Select provider"
+            [searchable]="true"
+            [clearable]="false"
+            (change)="onProviderChange()"
+            [class.ai-integration__input--invalid]="isInvalid('provider')"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{ item.label }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <span>{{ item.label }}</span>
+            </ng-template>
+          </ng-select>
+          @if (isInvalid('provider')) {
+            <p class="ai-integration__error">Provider is required.</p>
+          }
+        </div>
+
+        <div class="ai-integration__field">
+          <label class="ai-integration__label" for="api_key">API Key</label>
+          <input
+            id="api_key"
+            type="password"
+            class="ai-integration__input"
+            formControlName="api_key"
+            placeholder="Your OpenDental API key"
+            autocomplete="new-password"
+            (input)="isVerified.set(false)"
+            [class.ai-integration__input--invalid]="isInvalid('api_key')"
+          />
+          @if (isInvalid('api_key')) {
+            <p class="ai-integration__error">API key is required.</p>
+          }
+        </div>
+
+        <div class="ai-integration__field ai-integration__field--full">
+          <label class="ai-integration__label" for="base_url">Base URL</label>
+          <input
+            id="base_url"
+            type="url"
+            class="ai-integration__input"
+            formControlName="base_url"
+            placeholder="https://api.opendental.com/api/v1"
+            (input)="isVerified.set(false)"
+            [class.ai-integration__input--invalid]="isInvalid('base_url')"
+          />
+          @if (isInvalid('base_url')) {
+            <p class="ai-integration__error">Base URL is required.</p>
+          }
+        </div>
+
+        <div class="ai-integration__field">
+          <label class="ai-integration__label" for="is_active">Status</label>
+          <label class="ai-integration__toggle" for="is_active">
+            <input id="is_active" type="checkbox" formControlName="is_active" />
+            <span>{{ integrationForm.get('is_active')?.value ? 'Active' : 'Inactive' }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="ai-integration__actions">
+        <button
+          type="button"
+          class="ai-integration__test-btn"
+          (click)="testConnection()"
+          [disabled]="isTesting() || isSaving()"
+        >
+          @if (isTesting()) {
+            <mat-progress-spinner
+              class="ai-integration__btn-spinner"
+              diameter="18"
+              strokeWidth="3"
+              mode="indeterminate"
+              aria-hidden="true"
+            ></mat-progress-spinner>
+            Testing...
+          } @else {
+            Test Connection
+          }
+        </button>
+
+        <button
+          type="submit"
+          class="ai-integration__submit-btn"
+          [disabled]="!isVerified() || isSaving()"
+        >
+          @if (isSaving()) {
+            <mat-progress-spinner
+              class="ai-integration__btn-spinner"
+              diameter="18"
+              strokeWidth="3"
+              mode="indeterminate"
+              aria-hidden="true"
+            ></mat-progress-spinner>
+            Saving...
+          } @else {
+            Save integration
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>
