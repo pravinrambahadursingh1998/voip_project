@@ -19,6 +19,7 @@ router.post('/ai-prompt/create', authMiddleware, ai.createAiPrompt);
 router.get('/ai-prompt/list', authMiddleware, ai.getAiPrompts);
 router.get('/ai-prompt/get/:id', authMiddleware, ai.getAiPrompt);
 router.delete('/ai-prompt/delete/:id', authMiddleware, ai.deleteAiPrompt);
+router.get('/extensions/list', authMiddleware, ai.getExtensionList);
 
 
 

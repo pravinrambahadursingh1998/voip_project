@@ -12,7 +12,7 @@
   --sidebar-active-bg: rgba(61, 122, 214, 0.22);
   --sidebar-active-border: #3d7ad6;
   --sidebar-logo: #2d89ec;
-  --sidebar-width: 248px;
+  --sidebar-width: 210px;
   --sidebar-collapsed-width: 72px;
 
   width: var(--sidebar-width);

@@ -10,6 +10,8 @@ const  aiSetting  = require("../models/ai_setting_modal")
 const AiFunction = require("../models/ai_function_modal");
 const AiFunctionParameter = require("../models/ai_function_parameter_modal");
 const AiPrompt = require("../models/ai_prompt_modal");
+const Extension = require("../models/v_extensions");
+const Gateway = require("../models/gate_way");
 const bookshelf = require('../config/bookshelf');
 require('dotenv').config();
 
@@ -1322,10 +1324,70 @@ const deleteAiPrompt = async (req, res) => {
   }
 };
 
+const getExtensionList = async (req, res) => {
+  try {
+    const company_id = req.query.company_id || req.body.company_id || null;
+    const extensionSet = new Set();
+    const result = [];
+
+    // 1. Fetch from extensions table
+    let extQuery = Extension;
+    if (company_id) {
+      extQuery = extQuery.where({ company_id });
+    }
+    const extRecords = await extQuery.fetchAll({ require: false });
+    if (extRecords) {
+      extRecords.toJSON().forEach((item) => {
+        const val = String(item.extension || '').trim();
+        if (val && !extensionSet.has(val)) {
+          extensionSet.add(val);
+          result.push({
+            value: val,
+            label: item.description ? `${val} — ${item.description}` : val,
+          });
+        }
+      });
+    }
+
+    // 2. Fetch extensions configured on Gateways
+    let gwQuery = Gateway;
+    if (company_id) {
+      gwQuery = gwQuery.where({ company_id });
+    }
+    const gwRecords = await gwQuery.fetchAll({ require: false });
+    if (gwRecords) {
+      gwRecords.toJSON().forEach((item) => {
+        const val = String(item.extension || '').trim();
+        if (val && !extensionSet.has(val)) {
+          extensionSet.add(val);
+          result.push({
+            value: val,
+            label: item.gateway_name ? `${val} — Gateway: ${item.gateway_name}` : val,
+          });
+        }
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Extensions fetched successfully.',
+      data: result,
+    });
+  } catch (error) {
+    console.log('getExtensionList error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch extensions',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   aiAgent, greet,
   checkAvailability, bookappointment,
    fetchModels, addAiSeeting, getAiSettingList, getAiSettingById, updateAiSetting, deleteAiSetting,
    createAiFunction, getAiFunctions, getAiFunction, testAiFunction,
-   createAiPrompt, getAiPrompts, getAiPrompt, deleteAiPrompt
+   createAiPrompt, getAiPrompts, getAiPrompt, deleteAiPrompt,
+   getExtensionList
 }

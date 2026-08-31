@@ -42,4 +42,10 @@ export class AiPromptService {
       headers: this.getAuthHeaders(),
     });
   }
+
+  getExtensions(query: string = ''): Observable<any> {
+    return this.http.get(`${this.apiUrl}/extensions/list${query}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
 }

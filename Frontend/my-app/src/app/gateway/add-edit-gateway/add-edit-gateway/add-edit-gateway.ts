@@ -46,6 +46,7 @@ export class AddEditGatewayComponent implements OnInit {
       register: [''],
       user_name: ['', Validators.required],
       gateway_password: ['', Validators.required],
+      extension: [''],
       from_user: [''],
       from_domain: [''],
     });
@@ -79,6 +80,7 @@ export class AddEditGatewayComponent implements OnInit {
           register: response.data.register,
           user_name: response.data.username,
           gateway_password: response.data.password,
+          extension: response.data.extension,
           from_user: response.data.from_user,
           from_domain: response.data.from_domain,
         });

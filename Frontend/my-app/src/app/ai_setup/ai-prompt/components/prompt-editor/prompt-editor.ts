@@ -77,12 +77,7 @@ export class PromptEditor implements OnInit {
     enabled: [true],
   });
 
-  readonly extensions = [
-    { value: '1006', label: '1006 — EmailSMS' },
-    { value: '1001', label: '1001 — Main Queue' },
-    { value: '2040', label: '2040 — Sales' },
-    { value: '3012', label: '3012 — Billing' },
-  ];
+  extensions: { value: string; label: string }[] = [];
 
   private syncedId: string | null = null;
   private lastInsertAt = 0;
@@ -125,11 +120,27 @@ export class PromptEditor implements OnInit {
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
+    this.loadExtensions();
     this.promptForm.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.emitDraft();
       });
+  }
+
+  loadExtensions(): void {
+    const companyId = this.token?.company?.id ? `?company_id=${this.token.company.id}` : '';
+    this.aiPromptService.getExtensions(companyId).subscribe({
+      next: (res: any) => {
+        if (res?.success && Array.isArray(res.data)) {
+          this.extensions = res.data;
+          this.cd.detectChanges();
+        }
+      },
+      error: (err: any) => {
+        console.error('Failed to load extensions', err);
+      },
+    });
   }
 
   get lineCount(): number {

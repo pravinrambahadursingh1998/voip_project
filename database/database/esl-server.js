@@ -181,6 +181,7 @@ const net = require("net");
 const esl = require("modesl");
 const session = require("./session");
 const axios = require("axios");
+const Extension = require("./models/v_extensions");
 
 const PORT = 8084;
 
@@ -235,10 +236,20 @@ net.createServer((socket) => {
                 conn.getInfo().getHeader("Caller-Destination-Number") ||
                 conn.getInfo().getHeader("variable_destination_number") ||
                 conn.getInfo().getHeader("Caller-Callee-ID-Number") ||
-                process.env.AI_EXTENSION ||
+                conn.getInfo().getHeader("variable_sip_to_user") ||
                 null;
 
-            const companyId = process.env.AI_COMPANY_ID || null;
+            let companyId = null;
+            if (extension) {
+                try {
+                    const extRecord = await Extension.where({ extension: String(extension) }).fetch({ require: false });
+                    if (extRecord) {
+                        companyId = extRecord.get("company_id") || null;
+                    }
+                } catch (err) {
+                    console.log("⚠️ Failed to lookup extension company_id:", err.message);
+                }
+            }
 
             let patientData = null;
 

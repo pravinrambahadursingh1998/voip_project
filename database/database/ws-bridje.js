@@ -322,14 +322,12 @@ function resolveCallContext(mem, pending, reqUrl) {
         mem.company_id ??
         pending?.company_id ??
         qs.company_id ??
-        process.env.AI_COMPANY_ID ??
         null;
 
     const extension =
         mem.extension ||
         pending?.extension ||
         qs.extension ||
-        process.env.AI_EXTENSION ||
         null;
 
     return { companyId, extension };

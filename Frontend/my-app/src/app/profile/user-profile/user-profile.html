@@ -36,15 +36,11 @@
 
       @if (activeTab() === 'settings') {
         <form class="user-profile__form" (ngSubmit)="onUpdateProfile()">
-          <p class="user-profile__note">
-            Notes: Select One Either Choose Image or Capture the Image
-          </p>
-
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="profileImage">
-              Profile Image <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+          <div class="user-profile__media">
+            <div class="user-profile__media-item">
+              <label class="user-profile__label" for="profileImage">
+                Profile Image <span class="user-profile__required">*</span>
+              </label>
               <div class="user-profile__file">
                 <label class="user-profile__file-btn" for="profileImage">Choose File</label>
                 <input
@@ -56,28 +52,24 @@
                 />
                 <span class="user-profile__file-name">{{ selectedFileName() }}</span>
               </div>
-              <p class="user-profile__hint">
-                Note: Attachment Allowed Only .JPG, .JPEG And PNG. Maximum Size Of Image Is 500 MB
-              </p>
+              <p class="user-profile__hint">JPG, JPEG or PNG · Max 500 MB</p>
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <span class="user-profile__label">Capture Image</span>
-            <div class="user-profile__control">
-              <div class="user-profile__message-box">
-                <p class="user-profile__message-title">Messages:</p>
-                <p class="user-profile__message-text">Webcam not found</p>
-                <p class="user-profile__message-text">Only secure origins are allowed..</p>
+            <div class="user-profile__media-item">
+              <span class="user-profile__label">Capture Image</span>
+              <div class="user-profile__alert" role="status">
+                Webcam unavailable. Use HTTPS or upload a file instead.
               </div>
             </div>
           </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="firstName">
-              First Name <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+          <p class="user-profile__note">Select either a file upload or image capture.</p>
+
+          <div class="user-profile__fields">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="firstName">
+                First Name <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="firstName"
                 type="text"
@@ -87,13 +79,11 @@
                 required
               />
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="lastName">
-              Last Name <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="lastName">
+                Last Name <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="lastName"
                 type="text"
@@ -103,29 +93,25 @@
                 required
               />
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="address">
-              Address <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field user-profile__field--full">
+              <label class="user-profile__label" for="address">
+                Address <span class="user-profile__required">*</span>
+              </label>
               <textarea
                 id="address"
                 class="user-profile__textarea"
-                rows="3"
+                rows="2"
                 [(ngModel)]="address"
                 name="address"
                 required
               ></textarea>
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="email">
-              Email <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="email">
+                Email <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="email"
                 type="email"
@@ -135,13 +121,11 @@
                 required
               />
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="mobile">
-              Mobile <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="mobile">
+                Mobile <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="mobile"
                 type="text"
@@ -151,13 +135,11 @@
                 required
               />
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="country">
-              Country <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="country">
+                Country <span class="user-profile__required">*</span>
+              </label>
               <select
                 id="country"
                 class="user-profile__select"
@@ -172,11 +154,9 @@
                 <option value="Australia">Australia</option>
               </select>
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="state">State</label>
-            <div class="user-profile__control">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="state">State</label>
               <select id="state" class="user-profile__select" [(ngModel)]="state" name="state">
                 <option value="">Select State</option>
                 <option value="Rajasthan">Rajasthan</option>
@@ -186,11 +166,9 @@
                 <option value="Karnataka">Karnataka</option>
               </select>
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="city">City</label>
-            <div class="user-profile__control">
+            <div class="user-profile__field">
+              <label class="user-profile__label" for="city">City</label>
               <select id="city" class="user-profile__select" [(ngModel)]="city" name="city">
                 <option value="">Select City</option>
                 <option value="Ajmer">Ajmer</option>
@@ -207,12 +185,12 @@
           </div>
         </form>
       } @else {
-        <form class="user-profile__form" (ngSubmit)="onChangePassword()">
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="currentPassword">
-              Current Password <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+        <form class="user-profile__form user-profile__form--password" (ngSubmit)="onChangePassword()">
+          <div class="user-profile__fields user-profile__fields--password">
+            <div class="user-profile__field user-profile__field--full">
+              <label class="user-profile__label" for="currentPassword">
+                Current Password <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="currentPassword"
                 type="password"
@@ -223,13 +201,11 @@
                 required
               />
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="newPassword">
-              New Password <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field user-profile__field--full">
+              <label class="user-profile__label" for="newPassword">
+                New Password <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="newPassword"
                 type="password"
@@ -240,13 +216,11 @@
                 required
               />
             </div>
-          </div>
 
-          <div class="user-profile__row">
-            <label class="user-profile__label" for="confirmPassword">
-              Confirm Password <span class="user-profile__required">*</span>
-            </label>
-            <div class="user-profile__control">
+            <div class="user-profile__field user-profile__field--full">
+              <label class="user-profile__label" for="confirmPassword">
+                Confirm Password <span class="user-profile__required">*</span>
+              </label>
               <input
                 id="confirmPassword"
                 type="password"

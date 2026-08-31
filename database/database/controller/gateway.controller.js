@@ -12,22 +12,23 @@ const createGateway = async (req, res) => {
       ? `${req.body.from_domain}:${req.body.proxy}`
       : req.body.from_domain;
 
-  await Gateway.forge({
-    gateway_name: !!req.body.gateway_name ? req.body.gateway_name: null,
-    username : !!req.body.user_name ? req.body.user_name : null,
-    password : !!req.body.gateway_password ? req.body.gateway_password : null ,
-    realm: !!req.body.from_domain ? req.body.from_domain : null,
-    proxy : proxy,
-    register: !!req.body.register ? req.body.register : false,
-    from_user: !!req.body.from_user ? req.body.from_user : null,
-    from_domain: !!req.body.from_domain ? req.body.from_domain : null,
-    enabled: !!req.body.enabled ? req.body.enabled : false,
-    description: !!req.body.description ? req.body.description : null,
-    register_transport: !!req.body.register_transport ? req.body.register_transport : null,
-    created_by: !!req.body.user_id ? req.body.user_id : null,
-    created_at :  created_at,
-    company_id: !!req.body.company_id ? req.body.company_id : null
-  }).save();
+    await Gateway.forge({
+      gateway_name: !!req.body.gateway_name ? req.body.gateway_name : null,
+      username: !!req.body.user_name ? req.body.user_name : null,
+      password: !!req.body.gateway_password ? req.body.gateway_password : null,
+      extension: !!req.body.extension ? req.body.extension : null,
+      realm: !!req.body.from_domain ? req.body.from_domain : null,
+      proxy: proxy,
+      register: !!req.body.register ? req.body.register : false,
+      from_user: !!req.body.from_user ? req.body.from_user : null,
+      from_domain: !!req.body.from_domain ? req.body.from_domain : null,
+      enabled: !!req.body.enabled ? req.body.enabled : false,
+      description: !!req.body.description ? req.body.description : null,
+      register_transport: !!req.body.register_transport ? req.body.register_transport : null,
+      created_by: !!req.body.user_id ? req.body.user_id : null,
+      created_at: created_at,
+      company_id: !!req.body.company_id ? req.body.company_id : null
+    }).save();
 
   // Pick up new gateway from DB via xml_curl + register with FreeSWITCH
   await gatewayService.refreshFreeSWITCH();
@@ -225,6 +226,7 @@ const updateGateway = async (req, res) => {
       gateway_name: !!req.body.gateway_name ? req.body.gateway_name : gateway.gateway_name,
       username: !!req.body.user_name ? req.body.user_name : null,
       password: !!req.body.gateway_password ? req.body.gateway_password : null,
+      extension: !!req.body.extension ? req.body.extension : null,
       realm: !!req.body.realm ? req.body.realm : null,
       proxy: !!req.body.proxy ? req.body.proxy : null,
       register: !!req.body.register ? req.body.register : false,

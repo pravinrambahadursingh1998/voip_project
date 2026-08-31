@@ -168,13 +168,13 @@
 .layout__content {
   flex: 1;
   min-height: 0;
-  padding: 28px 32px 40px;
+  padding: 20px 28px 24px;
   overflow: auto;
 }
 
 @media (max-width: 900px) {
   .layout__content {
-    padding: 20px 16px 32px;
+    padding: 16px 14px 20px;
   }
 
   .layout__topbar {
