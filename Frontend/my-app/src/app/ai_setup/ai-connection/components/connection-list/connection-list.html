@@ -44,7 +44,7 @@
         @for (item of connections; track item.id) {
           <tr>
             <td>
-              <span class="conn-list__provider">{{ providerLabel(item.provider) }}</span>
+              <span class="conn-list__provider">{{ providerLabel(item.ai_provider || item.provider) }}</span>
             </td>
             <td>
               <span class="conn-list__model">{{ item.model || '—' }}</span>

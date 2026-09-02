@@ -55,6 +55,39 @@
   box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.12);
 }
 
+.int-list__toolbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.int-list__refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #d5dce7;
+  background: #fff;
+  color: #1d2f4f;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 6px;
+  padding: 7px 11px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.int-list__refresh-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.int-list__refresh-btn:hover {
+  background: #f7f9fc;
+  border-color: #c8d0dc;
+}
+
 .int-list__add-btn {
   display: inline-flex;
   align-items: center;
@@ -135,6 +168,17 @@
   font-weight: 600;
   font-size: 13px;
   color: #12254a;
+}
+
+.int-list__ext {
+  display: inline-block;
+  font-weight: 600;
+  color: #20407a;
+  background: #edf2fb;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  border: 1px solid #dbe5f5;
 }
 
 .int-list__url {
@@ -275,4 +319,185 @@
   .int-list__add-btn {
     justify-content: center;
   }
+}
+
+/* View Toggle Bar */
+.int-list__view-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: #edf2f8;
+  padding: 3px;
+  border-radius: 7px;
+  gap: 2px;
+}
+
+.int-list__toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background: transparent;
+  color: #5d6f8a;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.int-list__toggle-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.int-list__toggle-btn--active {
+  background: #fff;
+  color: #12254a;
+  box-shadow: 0 1px 3px rgba(18, 37, 74, 0.08);
+}
+
+.int-list__toggle-btn:hover:not(.int-list__toggle-btn--active) {
+  color: #12254a;
+}
+
+/* Card View */
+.int-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.int-card {
+  background: #fff;
+  border: 1px solid #e3e9f2;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(18, 37, 74, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.int-card:hover {
+  border-color: #ccd6e4;
+  box-shadow: 0 4px 12px rgba(18, 37, 74, 0.07);
+  transform: translateY(-2px);
+}
+
+.int-card__header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #f0f4f9;
+  background: #fafbfd;
+  border-radius: 10px 10px 0 0;
+}
+
+.int-card__head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.int-card__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  background: #edf4ff;
+  color: #2f80ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.int-card__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.int-card__title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #12254a;
+}
+
+.int-card__ext-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #5d6f8a;
+  background: #eef2f7;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.int-card__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.int-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.int-card__label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #8b97ab;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.int-card__value {
+  font-size: 12.5px;
+  color: #1d2f4f;
+  word-break: break-all;
+}
+
+.int-card__value--url {
+  color: #2f80ed;
+}
+
+.int-card__key {
+  display: inline-block;
+  font-size: 12px;
+  color: #4a5c78;
+  background: #f4f6f9;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid #e3e8f0;
+  width: fit-content;
+}
+
+.int-card__footer {
+  padding: 10px 16px;
+  border-top: 1px solid #f0f4f9;
+  background: #fafbfd;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.int-cards__empty {
+  grid-column: 1 / -1;
+  background: #fff;
+  border: 1px dashed #d5dce7;
+  border-radius: 10px;
+  padding: 40px 20px;
+  text-align: center;
+  color: #8b97ab;
 }

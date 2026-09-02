@@ -62,7 +62,7 @@ export class ConnectionList implements OnInit {
         this.spinner.hide();
         this.cd.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.toast.error(err.error?.message || 'Failed to load connections.');
         this.spinner.hide();
         this.cd.detectChanges();

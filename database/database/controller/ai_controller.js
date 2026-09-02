@@ -10,6 +10,7 @@ const  aiSetting  = require("../models/ai_setting_modal")
 const AiFunction = require("../models/ai_function_modal");
 const AiFunctionParameter = require("../models/ai_function_parameter_modal");
 const AiPrompt = require("../models/ai_prompt_modal");
+const AiIntegration = require("../models/ai_integration_modal");
 const Extension = require("../models/v_extensions");
 const Gateway = require("../models/gate_way");
 const bookshelf = require('../config/bookshelf');
@@ -219,16 +220,20 @@ const getAiSettingList = async (req, res) => {
 // Get singl record
 const getAiSettingById = async (req, res) => {
   try {
-    const aiSetting = await aiSetting
-      .where({
-        id: req.body.id,
-        company_id: req.body.company_id
-      })
+    const id = req.params.id || req.body?.id;
+    const where = { id: id };
+    const company_id = req.query?.company_id || req.body?.company_id;
+    if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+      where.company_id = company_id;
+    }
+
+    const setting = await aiSetting
+      .where(where)
       .fetch({
         require: false
       });
 
-    if (!aiSetting) {
+    if (!setting) {
       return res.status(404).json({
         success: false,
         message: 'AI setting not found.'
@@ -238,7 +243,7 @@ const getAiSettingById = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'AI setting fetched successfully.',
-      data: aiSetting.toJSON()
+      data: setting.toJSON()
     });
 
   } catch (error) {
@@ -256,41 +261,44 @@ const getAiSettingById = async (req, res) => {
 const updateAiSetting = async (req, res) => {
   try {
     const updated_at = new Date();
+    const id = req.params.id || req.body?.id;
+    const where = { id: id };
+    const company_id = req.body?.company_id || req.query?.company_id;
+    if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+      where.company_id = company_id;
+    }
 
-    const aiSettings = await aiSetting
-      .where({
-        id: req.body.id,
-        company_id: req.body.company_id
-      })
+    const setting = await aiSetting
+      .where(where)
       .fetch({
         require: false
       });
 
-    if (!aiSetting) {
+    if (!setting) {
       return res.status(404).json({
         success: false,
         message: 'AI setting not found.'
       });
     }
 
-    await aiSetting.save(
+    await setting.save(
       {
-        ai_provider: !!req.body.provider ? req.body.provider : aiSetting.attributes.ai_provider,
-        api_key: !!req.body.api_key ? req.body.api_key : aiSetting.attributes.api_key,
-        base_url: !!req.body.base_url ? req.body.base_url : aiSetting.attributes.base_url,
-        model: !!req.body.model ? req.body.model : aiSetting.attributes.model,
-        temperature: !!req.body.temperature ? req.body.temperature : aiSetting.attributes.temperature,
-        max_tokens: !!req.body.max_tokens ? req.body.max_tokens : aiSetting.attributes.max_tokens,
-        confidence_threshold: !!req.body.confidence_threshold
+        ai_provider: req.body?.provider !== undefined ? req.body.provider : (req.body?.ai_provider !== undefined ? req.body.ai_provider : setting.attributes.ai_provider),
+        api_key: req.body?.api_key !== undefined ? req.body.api_key : setting.attributes.api_key,
+        base_url: req.body?.base_url !== undefined ? req.body.base_url : setting.attributes.base_url,
+        model: req.body?.model !== undefined ? req.body.model : setting.attributes.model,
+        temperature: req.body?.temperature !== undefined ? req.body.temperature : setting.attributes.temperature,
+        max_tokens: req.body?.max_tokens !== undefined ? req.body.max_tokens : setting.attributes.max_tokens,
+        confidence_threshold: req.body?.confidence_threshold !== undefined
           ? req.body.confidence_threshold
-          : aiSetting.attributes.confidence_threshold,
-        similarity_threshold: !!req.body.similarity_threshold
+          : setting.attributes.confidence_threshold,
+        similarity_threshold: req.body?.similarity_threshold !== undefined
           ? req.body.similarity_threshold
-          : aiSetting.attributes.similarity_threshold,
-        od_slots_path: req.body.od_slots_path !== undefined
+          : setting.attributes.similarity_threshold,
+        od_slots_path: req.body?.od_slots_path !== undefined
           ? req.body.od_slots_path
-          : aiSetting.attributes.od_slots_path,
-        updated_by: !!req.body.user_id ? req.body.user_id : aiSetting.attributes.updated_by,
+          : setting.attributes.od_slots_path,
+        updated_by: req.body?.user_id !== undefined ? req.body.user_id : setting.attributes.updated_by,
         updated_at: updated_at
       },
       {
@@ -317,24 +325,27 @@ const updateAiSetting = async (req, res) => {
 //Delete the ai setting
 const deleteAiSetting = async (req, res) => {
   try {
+    const id = req.params.id || req.body?.id;
+    const where = { id: id };
+    const company_id = req.body?.company_id || req.query?.company_id;
+    if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+      where.company_id = company_id;
+    }
 
-    const aiSetting = await aiSetting
-      .where({
-        id: !!req.body.id ? req.body.id : null,
-        company_id: !!req.body.company_id ? req.body.company_id : null
-      })
+    const setting = await aiSetting
+      .where(where)
       .fetch({
         require: false
       });
 
-    if (!aiSetting) {
+    if (!setting) {
       return res.status(404).json({
         success: false,
         message: 'AI setting not found.'
       });
     }
 
-    await aiSetting.destroy();
+    await setting.destroy();
 
     return res.status(200).json({
       success: true,
@@ -1326,46 +1337,79 @@ const deleteAiPrompt = async (req, res) => {
 
 const getExtensionList = async (req, res) => {
   try {
-    const company_id = req.query.company_id || req.body.company_id || null;
+    const company_id = req.query?.company_id || req.body?.company_id || null;
     const extensionSet = new Set();
     const result = [];
 
-    // 1. Fetch from extensions table
-    let extQuery = Extension;
-    if (company_id) {
-      extQuery = extQuery.where({ company_id });
-    }
-    const extRecords = await extQuery.fetchAll({ require: false });
-    if (extRecords) {
-      extRecords.toJSON().forEach((item) => {
-        const val = String(item.extension || '').trim();
-        if (val && !extensionSet.has(val)) {
-          extensionSet.add(val);
-          result.push({
-            value: val,
-            label: item.description ? `${val} — ${item.description}` : val,
+    // 1. Try to fetch from extensions / v_extensions table if it exists
+    try {
+      const hasExtensions = await bookshelf.knex.schema.hasTable('extensions');
+      if (hasExtensions) {
+        let extQuery = Extension;
+        if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+          extQuery = extQuery.where({ company_id });
+        }
+        const extRecords = await extQuery.fetchAll({ require: false });
+        if (extRecords) {
+          extRecords.toJSON().forEach((item) => {
+            const val = String(item.extension || '').trim();
+            if (val && !extensionSet.has(val)) {
+              extensionSet.add(val);
+              result.push({
+                value: val,
+                label: item.description ? `${val} — ${item.description}` : val,
+              });
+            }
           });
         }
-      });
+      } else {
+        const hasVExtensions = await bookshelf.knex.schema.hasTable('v_extensions');
+        if (hasVExtensions) {
+          const q = bookshelf.knex('v_extensions');
+          if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+            q.where({ company_id });
+          }
+          const rows = await q;
+          (rows || []).forEach((item) => {
+            const val = String(item.extension || '').trim();
+            if (val && !extensionSet.has(val)) {
+              extensionSet.add(val);
+              result.push({
+                value: val,
+                label: item.description ? `${val} — ${item.description}` : val,
+              });
+            }
+          });
+        }
+      }
+    } catch (extErr) {
+      console.log('Notice: extensions table query skipped:', extErr.message);
     }
 
-    // 2. Fetch extensions configured on Gateways
-    let gwQuery = Gateway;
-    if (company_id) {
-      gwQuery = gwQuery.where({ company_id });
-    }
-    const gwRecords = await gwQuery.fetchAll({ require: false });
-    if (gwRecords) {
-      gwRecords.toJSON().forEach((item) => {
-        const val = String(item.extension || '').trim();
-        if (val && !extensionSet.has(val)) {
-          extensionSet.add(val);
-          result.push({
-            value: val,
-            label: item.gateway_name ? `${val} — Gateway: ${item.gateway_name}` : val,
+    // 2. Fetch extensions configured on Gateways (v_gateways)
+    try {
+      const hasGateways = await bookshelf.knex.schema.hasTable('v_gateways');
+      if (hasGateways) {
+        let gwQuery = Gateway;
+        if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+          gwQuery = gwQuery.where({ company_id });
+        }
+        const gwRecords = await gwQuery.fetchAll({ require: false });
+        if (gwRecords) {
+          gwRecords.toJSON().forEach((item) => {
+            const val = String(item.extension || '').trim();
+            if (val && !extensionSet.has(val)) {
+              extensionSet.add(val);
+              result.push({
+                value: val,
+                label: item.gateway_name ? `${val} — Gateway: ${item.gateway_name}` : val,
+              });
+            }
           });
         }
-      });
+      }
+    } catch (gwErr) {
+      console.log('Notice: gateways extension query skipped:', gwErr.message);
     }
 
     return res.status(200).json({
@@ -1383,11 +1427,304 @@ const getExtensionList = async (req, res) => {
   }
 };
 
+// -------------------- AI Integrations (OpenDental, etc.) --------------------
+const createAiIntegration = async (req, res) => {
+  try {
+    const created_at = new Date();
+    const company_id = req.body.company_id ?? null;
+    const provider = req.body.provider ? String(req.body.provider).trim() : 'opendental';
+    const api_key = req.body.api_key ? String(req.body.api_key).trim() : null;
+    const base_url = req.body.base_url ? String(req.body.base_url).trim() : 'https://api.opendental.com/api/v1';
+    const extension = req.body.extension ? String(req.body.extension).trim() : null;
+    const is_active = req.body.is_active !== undefined ? !!req.body.is_active : true;
+    const user_id = req.body.user_id ?? null;
+
+    if (!provider || !api_key || !base_url) {
+      return res.status(400).json({
+        success: false,
+        message: 'Provider, API Key, and Base URL are required.',
+      });
+    }
+
+    let integrationData;
+    const isUpdate = !!req.body.id;
+
+    if (isUpdate) {
+      integrationData = await AiIntegration.where({ id: req.body.id }).fetch({
+        require: false,
+      });
+
+      if (!integrationData) {
+        return res.status(404).json({
+          success: false,
+          message: 'AI Integration not found.',
+        });
+      }
+
+      await integrationData.save(
+        {
+          company_id: company_id !== undefined ? company_id : integrationData.get('company_id'),
+          provider,
+          api_key,
+          base_url,
+          extension,
+          is_active,
+          updated_by: user_id,
+          updated_at: created_at,
+        },
+        { patch: true }
+      );
+    } else {
+      integrationData = await new AiIntegration({
+        company_id,
+        provider,
+        api_key,
+        base_url,
+        extension,
+        is_active,
+        created_by: user_id,
+        created_at,
+        updated_at: created_at,
+      }).save();
+    }
+
+    const item = integrationData.toJSON();
+
+    return res.status(isUpdate ? 200 : 201).json({
+      success: true,
+      message: isUpdate
+        ? 'AI Integration updated successfully.'
+        : 'AI Integration created successfully.',
+      data: {
+        id: item.id,
+        company_id: item.company_id,
+        provider: item.provider,
+        api_key: item.api_key,
+        base_url: item.base_url,
+        extension: item.extension,
+        is_active: !!item.is_active,
+      },
+    });
+  } catch (error) {
+    console.log('createAiIntegration error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong.',
+      error: error.message,
+    });
+  }
+};
+
+const getAiIntegrations = async (req, res) => {
+  try {
+    const company_id = req.query.company_id;
+
+    let query = AiIntegration;
+    if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+      query = query.where(function () {
+        this.where('company_id', company_id).orWhereNull('company_id');
+      });
+    }
+
+    const integrations = await query.fetchAll({ require: false });
+    const data = (integrations ? integrations.toJSON() : []).map((item) => ({
+      id: item.id,
+      company_id: item.company_id,
+      provider: item.provider,
+      api_key: item.api_key,
+      base_url: item.base_url,
+      extension: item.extension,
+      is_active: !!item.is_active,
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+    }));
+
+    return res.status(200).json({
+      success: true,
+      message: 'AI Integrations fetched successfully.',
+      data,
+    });
+  } catch (error) {
+    console.log('getAiIntegrations error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong.',
+      error: error.message,
+    });
+  }
+};
+
+const getAiIntegration = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Integration id is required.',
+      });
+    }
+
+    const where = { id };
+    const company_id = req.query.company_id;
+    if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+      where.company_id = company_id;
+    }
+
+    const record = await AiIntegration.where(where).fetch({ require: false });
+    if (!record) {
+      return res.status(404).json({
+        success: false,
+        message: 'AI Integration not found.',
+      });
+    }
+
+    const item = record.toJSON();
+    return res.status(200).json({
+      success: true,
+      message: 'AI Integration fetched successfully.',
+      data: {
+        id: item.id,
+        company_id: item.company_id,
+        provider: item.provider,
+        api_key: item.api_key,
+        base_url: item.base_url,
+        extension: item.extension,
+        is_active: !!item.is_active,
+      },
+    });
+  } catch (error) {
+    console.log('getAiIntegration error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong.',
+      error: error.message,
+    });
+  }
+};
+
+const updateAiIntegration = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updated_at = new Date();
+
+    const record = await AiIntegration.where({ id }).fetch({ require: false });
+    if (!record) {
+      return res.status(404).json({
+        success: false,
+        message: 'AI Integration not found.',
+      });
+    }
+
+    await record.save(
+      {
+        provider: req.body.provider !== undefined ? req.body.provider : record.get('provider'),
+        api_key: req.body.api_key !== undefined ? req.body.api_key : record.get('api_key'),
+        base_url: req.body.base_url !== undefined ? req.body.base_url : record.get('base_url'),
+        extension: req.body.extension !== undefined ? req.body.extension : record.get('extension'),
+        is_active: req.body.is_active !== undefined ? !!req.body.is_active : record.get('is_active'),
+        updated_by: req.body.user_id ?? null,
+        updated_at,
+      },
+      { patch: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'AI Integration updated successfully.',
+    });
+  } catch (error) {
+    console.log('updateAiIntegration error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong.',
+      error: error.message,
+    });
+  }
+};
+
+const deleteAiIntegration = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Integration id is required.',
+      });
+    }
+
+    const record = await AiIntegration.where({ id }).fetch({ require: false });
+    if (!record) {
+      return res.status(404).json({
+        success: false,
+        message: 'AI Integration not found.',
+      });
+    }
+
+    await record.destroy();
+
+    return res.status(200).json({
+      success: true,
+      message: 'AI Integration deleted successfully.',
+    });
+  } catch (error) {
+    console.log('deleteAiIntegration error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong.',
+      error: error.message,
+    });
+  }
+};
+
+// Fetch extensions specifically from Gateway table (v_gateways)
+const getGatewayExtensions = async (req, res) => {
+  try {
+    const company_id = req.query?.company_id || req.body?.company_id || null;
+    let gwQuery = Gateway;
+    if (company_id && company_id !== 'null' && company_id !== 'undefined') {
+      gwQuery = gwQuery.where({ company_id });
+    }
+
+    const gwRecords = await gwQuery.fetchAll({ require: false });
+    const extensionSet = new Set();
+    const result = [];
+
+    if (gwRecords) {
+      gwRecords.toJSON().forEach((item) => {
+        const val = String(item.extension || '').trim();
+        if (val && !extensionSet.has(val)) {
+          extensionSet.add(val);
+          result.push({
+            value: val,
+            label: item.gateway_name ? `${val} — Gateway: ${item.gateway_name}` : val,
+            gateway_name: item.gateway_name || null,
+          });
+        }
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Gateway extensions fetched successfully.',
+      data: result,
+    });
+  } catch (error) {
+    console.log('getGatewayExtensions error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch gateway extensions',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   aiAgent, greet,
   checkAvailability, bookappointment,
    fetchModels, addAiSeeting, getAiSettingList, getAiSettingById, updateAiSetting, deleteAiSetting,
    createAiFunction, getAiFunctions, getAiFunction, testAiFunction,
    createAiPrompt, getAiPrompts, getAiPrompt, deleteAiPrompt,
-   getExtensionList
+   getExtensionList,
+   createAiIntegration, getAiIntegrations, getAiIntegration, updateAiIntegration, deleteAiIntegration,
+   getGatewayExtensions
 }

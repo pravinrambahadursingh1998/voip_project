@@ -1,0 +1,395 @@
+<div class="ext-grid">
+  <!-- Page Header -->
+  <div class="ext-grid__header">
+    <div>
+      <h1 class="ext-grid__title">Extension AI Overview</h1>
+      <p class="ext-grid__subtitle">
+        Visual map of prompts, functions, and integrations linked to each phone extension.
+      </p>
+    </div>
+  </div>
+
+  <!-- KPI Stats Bar -->
+  <div class="ext-grid__stats">
+    <div class="ext-grid__stat-card">
+      <div class="ext-grid__stat-icon ext-grid__stat-icon--blue">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 3h10v10H3V3z" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M6 3v10M10 3v10M3 6h10M3 10h10" stroke="currentColor" stroke-width="1.1"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ext-grid__stat-value">{{ totalExtensions }}</div>
+        <div class="ext-grid__stat-label">Total Extensions</div>
+      </div>
+    </div>
+
+    <div class="ext-grid__stat-card">
+      <div class="ext-grid__stat-icon ext-grid__stat-icon--green">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3.5 4h9v8.5H3.5V4z" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M5.5 7l2 2 3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ext-grid__stat-value">{{ configuredPromptsCount }}</div>
+        <div class="ext-grid__stat-label">Active Prompts</div>
+      </div>
+    </div>
+
+    <div class="ext-grid__stat-card">
+      <div class="ext-grid__stat-icon ext-grid__stat-icon--purple">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 4.5h8M4 8h8M4 11.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ext-grid__stat-value">{{ totalFunctionsCount }}</div>
+        <div class="ext-grid__stat-label">Available Functions</div>
+      </div>
+    </div>
+
+    <div class="ext-grid__stat-card">
+      <div class="ext-grid__stat-icon ext-grid__stat-icon--amber">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 8h8M8 4v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <rect x="2.5" y="2.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ext-grid__stat-value">{{ integrationsCount }}</div>
+        <div class="ext-grid__stat-label">Integrations Linked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter & Search Toolbar -->
+  <div class="ext-grid__toolbar">
+    <div class="ext-grid__search">
+      <svg class="ext-grid__search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        class="ext-grid__search-input"
+        placeholder="Search by extension, prompt, function or gateway…"
+        [value]="searchQuery"
+        (input)="onSearch($event)"
+        aria-label="Search extensions"
+      />
+    </div>
+
+    <div class="ext-grid__filters">
+      <!-- Status Tabs -->
+      <div class="ext-grid__tab-group">
+        <button
+          type="button"
+          class="ext-grid__tab"
+          [class.ext-grid__tab--active]="selectedFilter === 'all'"
+          (click)="setFilter('all')"
+        >
+          All ({{ cards.length }})
+        </button>
+        <button
+          type="button"
+          class="ext-grid__tab"
+          [class.ext-grid__tab--active]="selectedFilter === 'configured'"
+          (click)="setFilter('configured')"
+        >
+          Configured ({{ configuredPromptsCount }})
+        </button>
+        <button
+          type="button"
+          class="ext-grid__tab"
+          [class.ext-grid__tab--active]="selectedFilter === 'unconfigured'"
+          (click)="setFilter('unconfigured')"
+        >
+          Needs Setup ({{ cards.length - configuredPromptsCount }})
+        </button>
+      </div>
+
+      <!-- View Toggle: Grid (Default) vs Cards -->
+      <div class="ext-grid__view-toggle" role="group" aria-label="View toggle">
+        <button
+          type="button"
+          class="ext-grid__toggle-btn"
+          [class.ext-grid__toggle-btn--active]="viewMode === 'grid'"
+          (click)="setViewMode('grid')"
+          title="Grid view (Table)"
+        >
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 3.5h11v9h-11z" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2.5 6.5h11M6.5 6.5v6" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>Grid</span>
+        </button>
+
+        <button
+          type="button"
+          class="ext-grid__toggle-btn"
+          [class.ext-grid__toggle-btn--active]="viewMode === 'card'"
+          (click)="setViewMode('card')"
+          title="Card view"
+        >
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="9" y="2.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="2.5" y="9" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="9" y="9" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>Cards</span>
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="ext-grid__refresh-btn"
+        title="Refresh data"
+        (click)="loadData()"
+      >
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13 8a5 5 0 1 1-1.3-3.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M13 3v3.2H9.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- 1. GRID TABLE VIEW (DEFAULT) -->
+  @if (viewMode === 'grid') {
+    <div class="ext-grid__table-wrap">
+      <table class="ext-grid__table">
+        <thead>
+          <tr>
+            <th scope="col">Extension</th>
+            <th scope="col">Assigned Prompt</th>
+            <th scope="col">AI Functions</th>
+            <th scope="col">Integration</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (card of filteredCards; track card.extension) {
+            <tr>
+              <td>
+                <div class="ext-grid__td-ext">
+                  <span class="ext-card__badge">Ext {{ card.extension }}</span>
+                  @if (card.gatewayName) {
+                    <span class="ext-card__gw-name" [title]="card.gatewayName">{{ card.gatewayName }}</span>
+                  }
+                </div>
+              </td>
+              <td>
+                @if (card.prompt) {
+                  <div class="ext-grid__td-prompt">
+                    <div class="ext-grid__prompt-title">
+                      <strong>{{ card.prompt.name }}</strong>
+                      <span
+                        class="ext-card__tag"
+                        [class.ext-card__tag--green]="card.prompt.enabled"
+                        [class.ext-card__tag--gray]="!card.prompt.enabled"
+                      >
+                        {{ card.prompt.enabled ? 'Enabled' : 'Disabled' }}
+                      </span>
+                    </div>
+                    @if (card.prompt.introduction) {
+                      <div class="ext-grid__prompt-intro" [title]="card.prompt.introduction">
+                        💬 "{{ card.prompt.introduction }}"
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <span class="ext-grid__none-text">No prompt assigned</span>
+                }
+              </td>
+              <td>
+                <div class="ext-card__functions-list">
+                  @for (fn of card.functions; track fn.name) {
+                    <span
+                      class="ext-card__fn-chip"
+                      [class.ext-card__fn-chip--builtin]="fn.isDefault"
+                      [class.ext-card__fn-chip--custom]="!fn.isDefault"
+                      [title]="(fn.description || '') + ' (' + fn.type + ')'"
+                    >
+                      <span class="ext-card__fn-dot"></span>
+                      <code>{{ fn.name }}</code>
+                    </span>
+                  }
+                </div>
+              </td>
+              <td>
+                @if (card.integration) {
+                  <span class="ext-card__integ-badge">
+                    <span class="ext-card__integ-name">{{ card.integration.provider | titlecase }}</span>
+                  </span>
+                } @else {
+                  <span class="ext-grid__none-text">—</span>
+                }
+              </td>
+              <td>
+                @if (card.status === 'configured') {
+                  <span class="ext-card__status-pill ext-card__status-pill--active">
+                    <span class="ext-card__status-dot"></span>
+                    Active
+                  </span>
+                } @else {
+                  <span class="ext-card__status-pill ext-card__status-pill--warning">
+                    <span class="ext-card__status-dot"></span>
+                    Needs Prompt
+                  </span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr class="ext-grid__empty-row">
+              <td colspan="5">
+                <div class="ext-grid__empty">
+                  <h3 class="ext-grid__empty-title">No extensions match your filter</h3>
+                  <p class="ext-grid__empty-text">Try changing your search keywords or resetting the status filter.</p>
+                  <button type="button" class="ext-grid__btn ext-grid__btn--primary" (click)="searchQuery = ''; setFilter('all')">
+                    Reset Filter
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <!-- 2. CARDS VIEW -->
+    <div class="ext-grid__cards">
+      @for (card of filteredCards; track card.extension) {
+        <div class="ext-card" [class.ext-card--unconfigured]="card.status === 'unconfigured'">
+          <!-- Card Header -->
+          <div class="ext-card__header">
+            <div class="ext-card__title-group">
+              <span class="ext-card__badge">Ext {{ card.extension }}</span>
+              @if (card.gatewayName) {
+                <span class="ext-card__gw-name" [title]="card.gatewayName">{{ card.gatewayName }}</span>
+              }
+            </div>
+
+            <div class="ext-card__status-wrap">
+              @if (card.status === 'configured') {
+                <span class="ext-card__status-pill ext-card__status-pill--active">
+                  <span class="ext-card__status-dot"></span>
+                  Active
+                </span>
+              } @else {
+                <span class="ext-card__status-pill ext-card__status-pill--warning">
+                  <span class="ext-card__status-dot"></span>
+                  Needs Prompt
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="ext-card__body">
+            <!-- 1. Assigned Prompt -->
+            <div class="ext-card__section">
+              <div class="ext-card__section-label">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3.5 4h9v8.5H3.5V4z" stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M5.5 6.5h5M5.5 9h3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Assigned AI Prompt
+              </div>
+
+              @if (card.prompt) {
+                <div class="ext-card__prompt-box">
+                  <div class="ext-card__prompt-head">
+                    <span class="ext-card__prompt-name">{{ card.prompt.name }}</span>
+                    <span
+                      class="ext-card__tag"
+                      [class.ext-card__tag--green]="card.prompt.enabled"
+                      [class.ext-card__tag--gray]="!card.prompt.enabled"
+                    >
+                      {{ card.prompt.enabled ? 'Enabled' : 'Disabled' }}
+                    </span>
+                  </div>
+
+                  @if (card.prompt.introduction) {
+                    <div class="ext-card__intro-bubble" [title]="card.prompt.introduction">
+                      💬 "{{ card.prompt.introduction }}"
+                    </div>
+                  }
+
+                  @if (card.prompt.prompt) {
+                    <p class="ext-card__prompt-snippet">
+                      {{ card.prompt.prompt.slice(0, 140) }}{{ card.prompt.prompt.length > 140 ? '…' : '' }}
+                    </p>
+                  }
+                </div>
+              } @else {
+                <div class="ext-card__empty-prompt">
+                  <p>No prompt assigned to this extension yet.</p>
+                </div>
+              }
+            </div>
+
+            <!-- 2. Available Functions -->
+            <div class="ext-card__section">
+              <div class="ext-card__section-label">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 4.5h8M4 8h8M4 11.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                AI Functions ({{ card.functions.length }})
+              </div>
+
+              <div class="ext-card__functions-list">
+                @for (fn of card.functions; track fn.name) {
+                  <span
+                    class="ext-card__fn-chip"
+                    [class.ext-card__fn-chip--builtin]="fn.isDefault"
+                    [class.ext-card__fn-chip--custom]="!fn.isDefault"
+                    [title]="(fn.description || '') + ' (' + fn.type + ')'"
+                  >
+                    <span class="ext-card__fn-dot"></span>
+                    <code>{{ fn.name }}</code>
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- 3. Integration Link (if any) -->
+            @if (card.integration) {
+              <div class="ext-card__section">
+                <div class="ext-card__section-label">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M4 8h8M8 4v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    <rect x="2.5" y="2.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/>
+                  </svg>
+                  Integration
+                </div>
+                <div class="ext-card__integ-badge">
+                  <span class="ext-card__integ-name">{{ card.integration.provider | titlecase }}</span>
+                  @if (card.integration.base_url) {
+                    <span class="ext-card__integ-url" [title]="card.integration.base_url">
+                      {{ card.integration.base_url }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="ext-grid__empty">
+          <svg class="ext-grid__empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h3 class="ext-grid__empty-title">No extensions match your filter</h3>
+          <p class="ext-grid__empty-text">Try changing your search keywords or resetting the status filter.</p>
+          <button type="button" class="ext-grid__btn ext-grid__btn--primary" (click)="searchQuery = ''; setFilter('all')">
+            Reset Filter
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>
