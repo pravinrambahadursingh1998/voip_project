@@ -61,9 +61,11 @@ export class AiIntegration implements OnInit {
   ) {
     this.integrationForm = this.fb.group({
       provider: ['opendental', Validators.required],
-      extension: ['', Validators.required],
+      extension: [''],
       api_key: ['', Validators.required],
       base_url: ['https://api.opendental.com/api/v1', Validators.required],
+      headers: [''],
+      content_type: ['application/json', Validators.required],
       is_active: [true],
     });
   }
@@ -129,40 +131,44 @@ export class AiIntegration implements OnInit {
       extension: this.gatewayExtensions.length === 1 ? this.gatewayExtensions[0].value : '',
       api_key: '',
       base_url: 'https://api.opendental.com/api/v1',
+      headers: '',
+      content_type: 'application/json',
       is_active: true,
     });
     this.viewMode.set('form');
   }
 
-  onEditIntegration(id: string): void {
-    const item = this.integrations.find((i) => String(i.id) === String(id));
-    this.editingId.set(id);
+  onEditIntegration(target: any): void {
+    let item: AiIntegrationItem | undefined;
+    let editId: string | null = null;
+
+    if (target && typeof target === 'object') {
+      item = target;
+      editId = target.id != null ? String(target.id) : null;
+    } else if (target != null) {
+      editId = String(target);
+      item = this.integrations.find((i) => String(i.id) === editId);
+    }
+
+    if (!editId) {
+      console.error('Invalid integration target:', target);
+      return;
+    }
+
+    this.editingId.set(editId);
 
     if (item) {
-      this.integrationForm.reset({
-        provider: item.provider,
-        extension: item.extension ?? '',
-        api_key: item.api_key ?? '',
-        base_url: item.base_url ?? 'https://api.opendental.com/api/v1',
-        is_active: item.is_active !== undefined ? item.is_active : true,
-      });
+      this.populateForm(item);
       this.viewMode.set('form');
       return;
     }
 
     this.spinner.show();
-    this.aiIntegrationService.getIntegration(id).subscribe({
+    this.aiIntegrationService.getIntegration(editId).subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (res?.success && res.data) {
-          const data = res.data;
-          this.integrationForm.reset({
-            provider: data.provider,
-            extension: data.extension ?? '',
-            api_key: data.api_key ?? '',
-            base_url: data.base_url ?? 'https://api.opendental.com/api/v1',
-            is_active: data.is_active !== undefined ? data.is_active : true,
-          });
+          this.populateForm(res.data);
           this.viewMode.set('form');
         } else {
           this.toast.error(res?.message || 'Failed to fetch integration details.');
@@ -175,25 +181,21 @@ export class AiIntegration implements OnInit {
     });
   }
 
+  private populateForm(data: any): void {
+    this.integrationForm.reset({
+      provider: data.provider || 'opendental',
+      extension: data.extension ?? '',
+      api_key: data.api_key ?? '',
+      base_url: data.base_url ?? 'https://api.opendental.com/api/v1',
+      headers: data.headers ?? '',
+      content_type: data.content_type ?? 'application/json',
+      is_active: data.is_active !== undefined ? !!data.is_active : true,
+    });
+  }
+
   onDeleteIntegration(id: string): void {
     if (!id) return;
-
-    this.spinner.show();
-    this.aiIntegrationService.deleteIntegration(id).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        if (res?.success) {
-          this.toast.success(res.message || 'Integration deleted successfully.');
-          this.loadIntegrations();
-        } else {
-          this.toast.error(res?.message || 'Failed to delete integration.');
-        }
-      },
-      error: (err: any) => {
-        this.spinner.hide();
-        this.toast.error(err.error?.message || 'Failed to delete integration.');
-      },
-    });
+    this.loadIntegrations();
   }
 
   isInvalid(controlName: string): boolean {
@@ -246,9 +248,9 @@ export class AiIntegration implements OnInit {
         if (res?.success) {
           this.toast.success(
             res.message ||
-              (editId
-                ? 'Integration updated successfully.'
-                : 'Integration saved successfully.')
+            (editId
+              ? 'Integration updated successfully.'
+              : 'Integration saved successfully.')
           );
           this.loadIntegrations();
           this.showList();

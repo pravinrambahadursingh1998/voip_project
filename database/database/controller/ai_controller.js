@@ -6,7 +6,7 @@ const fs = require("fs")
 const session = require('../session')
 const aiQueue = require("../queues/aiQueue");
 const { execSync } = require("child_process");
-const  aiSetting  = require("../models/ai_setting_modal")
+const aiSetting = require("../models/ai_setting_modal")
 const AiFunction = require("../models/ai_function_modal");
 const AiFunctionParameter = require("../models/ai_function_parameter_modal");
 const AiPrompt = require("../models/ai_prompt_modal");
@@ -164,7 +164,7 @@ const addAiSeeting = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'AI setting added successfully.',
-      
+
     });
 
   } catch (error) {
@@ -1434,6 +1434,8 @@ const createAiIntegration = async (req, res) => {
     const company_id = req.body.company_id ?? null;
     const provider = req.body.provider ? String(req.body.provider).trim() : 'opendental';
     const api_key = req.body.api_key ? String(req.body.api_key).trim() : null;
+    const content_type = req.body.content_type ? String(req.body.content_type).trim() : 'application/json';
+    const headers = req.body.headers !== undefined ? (req.body.headers ? String(req.body.headers).trim() : null) : null;
     const base_url = req.body.base_url ? String(req.body.base_url).trim() : 'https://api.opendental.com/api/v1';
     const extension = req.body.extension ? String(req.body.extension).trim() : null;
     const is_active = req.body.is_active !== undefined ? !!req.body.is_active : true;
@@ -1466,6 +1468,8 @@ const createAiIntegration = async (req, res) => {
           company_id: company_id !== undefined ? company_id : integrationData.get('company_id'),
           provider,
           api_key,
+          headers,
+          content_type,
           base_url,
           extension,
           is_active,
@@ -1479,6 +1483,8 @@ const createAiIntegration = async (req, res) => {
         company_id,
         provider,
         api_key,
+        headers,
+        content_type,
         base_url,
         extension,
         is_active,
@@ -1500,6 +1506,8 @@ const createAiIntegration = async (req, res) => {
         company_id: item.company_id,
         provider: item.provider,
         api_key: item.api_key,
+        headers: item.headers,
+        content_type: item.content_type || 'application/json',
         base_url: item.base_url,
         extension: item.extension,
         is_active: !!item.is_active,
@@ -1532,6 +1540,8 @@ const getAiIntegrations = async (req, res) => {
       company_id: item.company_id,
       provider: item.provider,
       api_key: item.api_key,
+      headers: item.headers,
+      content_type: item.content_type || 'application/json',
       base_url: item.base_url,
       extension: item.extension,
       is_active: !!item.is_active,
@@ -1587,6 +1597,8 @@ const getAiIntegration = async (req, res) => {
         company_id: item.company_id,
         provider: item.provider,
         api_key: item.api_key,
+        headers: item.headers,
+        content_type: item.content_type || 'application/json',
         base_url: item.base_url,
         extension: item.extension,
         is_active: !!item.is_active,
@@ -1619,6 +1631,8 @@ const updateAiIntegration = async (req, res) => {
       {
         provider: req.body.provider !== undefined ? req.body.provider : record.get('provider'),
         api_key: req.body.api_key !== undefined ? req.body.api_key : record.get('api_key'),
+        headers: req.body.headers !== undefined ? (req.body.headers ? String(req.body.headers).trim() : null) : record.get('headers'),
+        content_type: req.body.content_type !== undefined ? (req.body.content_type ? String(req.body.content_type).trim() : 'application/json') : record.get('content_type'),
         base_url: req.body.base_url !== undefined ? req.body.base_url : record.get('base_url'),
         extension: req.body.extension !== undefined ? req.body.extension : record.get('extension'),
         is_active: req.body.is_active !== undefined ? !!req.body.is_active : record.get('is_active'),
@@ -1721,10 +1735,10 @@ const getGatewayExtensions = async (req, res) => {
 module.exports = {
   aiAgent, greet,
   checkAvailability, bookappointment,
-   fetchModels, addAiSeeting, getAiSettingList, getAiSettingById, updateAiSetting, deleteAiSetting,
-   createAiFunction, getAiFunctions, getAiFunction, testAiFunction,
-   createAiPrompt, getAiPrompts, getAiPrompt, deleteAiPrompt,
-   getExtensionList,
-   createAiIntegration, getAiIntegrations, getAiIntegration, updateAiIntegration, deleteAiIntegration,
-   getGatewayExtensions
+  fetchModels, addAiSeeting, getAiSettingList, getAiSettingById, updateAiSetting, deleteAiSetting,
+  createAiFunction, getAiFunctions, getAiFunction, testAiFunction,
+  createAiPrompt, getAiPrompts, getAiPrompt, deleteAiPrompt,
+  getExtensionList,
+  createAiIntegration, getAiIntegrations, getAiIntegration, updateAiIntegration, deleteAiIntegration,
+  getGatewayExtensions
 }

@@ -11,6 +11,8 @@ exports.up = async function (knex) {
     table.integer('company_id').nullable().index();
     table.string('provider', 100).notNullable().defaultTo('opendental');
     table.text('api_key').notNullable();
+    table.text('headers').nullable();
+    table.string('content_type', 100).notNullable().defaultTo('application/json');
     table.string('base_url', 255).notNullable().defaultTo('https://api.opendental.com/api/v1');
     table.string('extension', 100).nullable().index();
     table.boolean('is_active').notNullable().defaultTo(true);

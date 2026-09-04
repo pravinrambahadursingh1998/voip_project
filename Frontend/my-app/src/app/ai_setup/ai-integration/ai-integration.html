@@ -4,151 +4,122 @@
       <h1 class="ai-integration__title">Integrations</h1>
       <p class="ai-integration__subtitle">
         @if (viewMode() === 'list') {
-          Manage clinic API credentials (OpenDental and more).
+        Manage clinic API credentials (OpenDental and more).
         } @else {
-          Configure clinic API key, extension, and base URL for this company.
+        Configure clinic API key, extension, and base URL for this company.
         }
       </p>
     </div>
 
     @if (viewMode() === 'form') {
-      <button type="button" class="ai-integration__back-btn" (click)="showList()">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Back to list
-      </button>
+    <button type="button" class="ai-integration__back-btn" (click)="showList()">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      Back to list
+    </button>
     }
   </div>
 
   @if (viewMode() === 'list') {
-    <app-integration-list
-      [integrations]="integrations"
-      (createIntegration)="showForm()"
-      (editIntegration)="onEditIntegration($event)"
-      (deleteIntegration)="onDeleteIntegration($event)"
-    />
+  <app-integration-list [integrations]="integrations" (createIntegration)="showForm()"
+    (editIntegration)="onEditIntegration($event)" (deleteIntegration)="onDeleteIntegration($event)" />
   } @else {
-    <form
-      class="ai-integration__form"
-      [formGroup]="integrationForm"
-      (ngSubmit)="integrationFormSubmit()"
-    >
-      <div class="ai-integration__grid">
-        <div class="ai-integration__field">
-          <label class="ai-integration__label" for="provider">Provider</label>
-          <ng-select
-            id="provider"
-            class="ai-integration__ng-select"
-            formControlName="provider"
-            [items]="providers"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select provider"
-            [searchable]="true"
-            [clearable]="false"
-            (change)="onProviderChange()"
-            [class.ai-integration__input--invalid]="isInvalid('provider')"
-          >
-            <ng-template ng-label-tmp let-item="item">
-              <span>{{ item.label }}</span>
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <span>{{ item.label }}</span>
-            </ng-template>
-          </ng-select>
-          @if (isInvalid('provider')) {
-            <p class="ai-integration__error">Provider is required.</p>
-          }
-        </div>
-
-        <div class="ai-integration__field">
-          <label class="ai-integration__label" for="extension">Extension</label>
-          <ng-select
-            id="extension"
-            class="ai-integration__ng-select"
-            formControlName="extension"
-            [items]="gatewayExtensions"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select gateway extension"
-            [searchable]="true"
-            [clearable]="true"
-            [loading]="isLoadingExtensions()"
-            [class.ai-integration__input--invalid]="isInvalid('extension')"
-          >
-            <ng-template ng-label-tmp let-item="item">
-              <span>{{ item.label }}</span>
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <span>{{ item.label }}</span>
-            </ng-template>
-          </ng-select>
-          @if (isInvalid('extension')) {
-            <p class="ai-integration__error">Extension is required.</p>
-          }
-        </div>
-
-        <div class="ai-integration__field">
-          <label class="ai-integration__label" for="api_key">API Key</label>
-          <input
-            id="api_key"
-            type="password"
-            class="ai-integration__input"
-            formControlName="api_key"
-            placeholder="Your OpenDental API key"
-            autocomplete="new-password"
-            [class.ai-integration__input--invalid]="isInvalid('api_key')"
-          />
-          @if (isInvalid('api_key')) {
-            <p class="ai-integration__error">API key is required.</p>
-          }
-        </div>
-
-        <div class="ai-integration__field">
-          <label class="ai-integration__label" for="is_active">Status</label>
-          <label class="ai-integration__toggle" for="is_active">
-            <input id="is_active" type="checkbox" formControlName="is_active" />
-            <span>{{ integrationForm.get('is_active')?.value ? 'Active' : 'Inactive' }}</span>
-          </label>
-        </div>
-
-        <div class="ai-integration__field ai-integration__field--full">
-          <label class="ai-integration__label" for="base_url">Base URL</label>
-          <input
-            id="base_url"
-            type="url"
-            class="ai-integration__input"
-            formControlName="base_url"
-            placeholder="https://api.opendental.com/api/v1"
-            [class.ai-integration__input--invalid]="isInvalid('base_url')"
-          />
-          @if (isInvalid('base_url')) {
-            <p class="ai-integration__error">Base URL is required.</p>
-          }
-        </div>
+  <form class="ai-integration__form" [formGroup]="integrationForm" (ngSubmit)="integrationFormSubmit()">
+    <div class="ai-integration__grid">
+      <div class="ai-integration__field">
+        <label class="ai-integration__label" for="provider">Provider</label>
+        <ng-select id="provider" class="ai-integration__ng-select" formControlName="provider" [items]="providers"
+          bindLabel="label" bindValue="value" placeholder="Select provider" [searchable]="true" [clearable]="false"
+          (change)="onProviderChange()" [class.ai-integration__input--invalid]="isInvalid('provider')">
+          <ng-template ng-label-tmp let-item="item">
+            <span>{{ item.label }}</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <span>{{ item.label }}</span>
+          </ng-template>
+        </ng-select>
+        @if (isInvalid('provider')) {
+        <p class="ai-integration__error">Provider is required.</p>
+        }
       </div>
 
-      <div class="ai-integration__actions">
-        <button
-          type="submit"
-          class="ai-integration__submit-btn"
-          [disabled]="integrationForm.invalid || isSaving()"
-        >
-          @if (isSaving()) {
-            <mat-progress-spinner
-              class="ai-integration__btn-spinner"
-              diameter="18"
-              strokeWidth="3"
-              mode="indeterminate"
-              aria-hidden="true"
-            ></mat-progress-spinner>
-            Saving...
-          } @else {
-            {{ editingId() ? 'Update integration' : 'Save integration' }}
-          }
-        </button>
+      <div class="ai-integration__field">
+        <label class="ai-integration__label" for="extension">Extension</label>
+        <ng-select id="extension" class="ai-integration__ng-select" formControlName="extension"
+          [items]="gatewayExtensions" bindLabel="label" bindValue="value" placeholder="Select gateway extension (optional)"
+          [searchable]="true" [clearable]="true" [loading]="isLoadingExtensions()">
+          <ng-template ng-label-tmp let-item="item">
+            <span>{{ item.label }}</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <span>{{ item.label }}</span>
+          </ng-template>
+        </ng-select>
       </div>
-    </form>
+
+      <div class="ai-integration__field">
+        <label class="ai-integration__label" for="api_key">API Key</label>
+        <input id="api_key" type="password" class="ai-integration__input" formControlName="api_key"
+          placeholder="Your OpenDental API key" autocomplete="new-password"
+          [class.ai-integration__input--invalid]="isInvalid('api_key')" />
+        @if (isInvalid('api_key')) {
+        <p class="ai-integration__error">API key is required.</p>
+        }
+      </div>
+
+      <div class="ai-integration__field">
+        <label class="ai-integration__label" for="content_type">Content-Type</label>
+        <input id="content_type" type="text" class="ai-integration__input" formControlName="content_type"
+          placeholder="application/json" [class.ai-integration__input--invalid]="isInvalid('content_type')" />
+        @if (isInvalid('content_type')) {
+        <p class="ai-integration__error">Content-Type is required.</p>
+        }
+      </div>
+
+      <div class="ai-integration__field">
+        <label class="ai-integration__label" for="is_active">Status</label>
+        <label class="ai-integration__toggle" for="is_active">
+          <input id="is_active" type="checkbox" formControlName="is_active" />
+          <span>{{ integrationForm.get('is_active')?.value ? 'Active' : 'Inactive' }}</span>
+        </label>
+      </div>
+
+      <div class="ai-integration__field ai-integration__field--full">
+        <label class="ai-integration__label" for="base_url">Base URL</label>
+        <input id="base_url" type="url" class="ai-integration__input" formControlName="base_url"
+          placeholder="https://api.opendental.com/api/v1"
+          [class.ai-integration__input--invalid]="isInvalid('base_url')" />
+        @if (isInvalid('base_url')) {
+        <p class="ai-integration__error">Base URL is required.</p>
+        }
+      </div>
+
+      <div class="ai-integration__field ai-integration__field--full">
+        <label class="ai-integration__label" for="headers">Headers / Auth Header</label>
+        <input id="headers" type="text" class="ai-integration__input" formControlName="headers"
+          placeholder='e.g. ODFHIR your_api_key or {"Authorization": "ODFHIR ..."}' autocomplete="off" />
+        <p class="ai-integration__hint">
+          Optional custom header or JSON object. If left blank, it defaults to: <code>ODFHIR &lt;api_key&gt;</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="ai-integration__actions">
+      <button type="button" class="ai-integration__cancel-btn" (click)="showList()">
+        Cancel
+      </button>
+      <button type="submit" class="ai-integration__submit-btn" [disabled]="integrationForm.invalid || isSaving()">
+        @if (isSaving()) {
+        <mat-progress-spinner class="ai-integration__btn-spinner" diameter="18" strokeWidth="3" mode="indeterminate"
+          aria-hidden="true"></mat-progress-spinner>
+        Saving...
+        } @else {
+        {{ editingId() ? 'Update integration' : 'Save integration' }}
+        }
+      </button>
+    </div>
+  </form>
   }
 </div>

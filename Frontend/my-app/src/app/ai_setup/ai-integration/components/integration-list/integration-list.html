@@ -86,6 +86,7 @@
             <th scope="col">Extension</th>
             <th scope="col">Base URL</th>
             <th scope="col">API Key</th>
+            <th scope="col">Header</th>
             <th scope="col">Status</th>
             <th scope="col" class="int-list__th-actions">Actions</th>
           </tr>
@@ -106,6 +107,9 @@
                 <code class="int-list__key">{{ maskApiKey(item.api_key) }}</code>
               </td>
               <td>
+                <code class="int-list__key" [title]="item.headers || ''">{{ formatHeaderDisplay(item) }}</code>
+              </td>
+              <td>
                 <span
                   class="int-list__status"
                   [class.int-list__status--active]="item.is_active"
@@ -121,7 +125,7 @@
                     class="int-list__action-btn"
                     title="Edit"
                     aria-label="Edit integration"
-                    (click)="editIntegration.emit(item.id.toString())"
+                    (click)="editIntegration.emit(item)"
                   >
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
                       <path
@@ -157,7 +161,7 @@
             </tr>
           } @empty {
             <tr class="int-list__empty-row">
-              <td colspan="6">
+              <td colspan="7">
                 <div class="int-list__empty">
                   <p class="int-list__empty-title">
                     {{ searchQuery ? 'No matching integrations found' : 'No integrations yet' }}
@@ -220,13 +224,18 @@
               <span class="int-card__label">API Key</span>
               <code class="int-card__key">{{ maskApiKey(item.api_key) }}</code>
             </div>
+
+            <div class="int-card__field">
+              <span class="int-card__label">Header</span>
+              <code class="int-card__key" [title]="item.headers || ''">{{ formatHeaderDisplay(item) }}</code>
+            </div>
           </div>
 
           <div class="int-card__footer">
             <button
               type="button"
               class="int-list__action-btn"
-              (click)="editIntegration.emit(item.id.toString())"
+              (click)="editIntegration.emit(item)"
             >
               <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path

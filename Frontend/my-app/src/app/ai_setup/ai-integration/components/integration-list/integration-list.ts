@@ -10,6 +10,8 @@ export interface AiIntegrationItem {
   company_id?: string | number | null;
   provider: string;
   api_key?: string;
+  headers?: string;
+  content_type?: string;
   base_url?: string;
   extension?: string;
   is_active?: boolean | number;
@@ -26,7 +28,7 @@ export interface AiIntegrationItem {
 })
 export class IntegrationList implements OnInit {
   @Input() set integrations(data: AiIntegrationItem[] | null | undefined) {
-    if (data && data.length > 0) {
+    if (Array.isArray(data)) {
       this.integrationsList = data;
       this.filterData();
     }
@@ -39,7 +41,7 @@ export class IntegrationList implements OnInit {
   displayMode: 'grid' | 'card' = 'grid';
 
   readonly createIntegration = output<void>();
-  readonly editIntegration = output<string>();
+  readonly editIntegration = output<AiIntegrationItem>();
   readonly deleteIntegration = output<string>();
 
   setDisplayMode(mode: 'grid' | 'card'): void {
@@ -53,7 +55,7 @@ export class IntegrationList implements OnInit {
     private spinner: SpinnerService,
     private authService: AuthService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
@@ -146,5 +148,16 @@ export class IntegrationList implements OnInit {
       opendental: 'OpenDental',
     };
     return labels[value] || value || '—';
+  }
+
+  formatHeaderDisplay(item: AiIntegrationItem): string {
+    if (item.headers && item.headers.trim()) {
+      const h = item.headers.trim();
+      return h.length > 28 ? `${h.slice(0, 16)}…` : h;
+    }
+    if (item.provider === 'opendental' && item.api_key) {
+      return `ODFHIR ${this.maskApiKey(item.api_key)}`;
+    }
+    return '—';
   }
 }

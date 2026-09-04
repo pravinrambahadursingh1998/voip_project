@@ -182,16 +182,54 @@ const esl = require("modesl");
 const session = require("./session");
 const axios = require("axios");
 const Extension = require("./models/v_extensions");
+const AiIntegration = require("./models/ai_integration_modal");
+
 
 const PORT = 8084;
 
-// OpenDental API
-const API_KEY = "5NFqWGJn7dHhG6QT/UxCxmPrzy7xnBpH7"; // your key only
-const BASE_URL = "https://api.opendental.com/api/v1";
-const headers = {
+// OpenDental API Defaults (Fallback if not configured in database)
+const DEFAULT_API_KEY = "5NFqWGJn7dHhG6QT/UxCxmPrzy7xnBpH7";
+const DEFAULT_BASE_URL = "https://api.opendental.com/api/v1";
+const DEFAULT_PATIENT_ENDPOINT = "/patients?Phone=";
+const DEFAULT_HEADERS = {
     "Content-Type": "application/json",
-    "Authorization": `ODFHIR ${API_KEY}` // correct format!
+    "Authorization": `ODFHIR ${DEFAULT_API_KEY}`
 };
+
+function buildLookupUrl(baseUrl, endpoint, caller) {
+    const rawEndpoint = (endpoint || DEFAULT_PATIENT_ENDPOINT).trim();
+    const encodedCaller = encodeURIComponent(caller || "");
+
+    // If endpoint has a placeholder like {phone}, {caller}, {Phone}
+    if (/\{(phone|caller|Phone)\}/i.test(rawEndpoint)) {
+        const pathWithCaller = rawEndpoint.replace(/\{(phone|caller|Phone)\}/gi, encodedCaller);
+        if (/^https?:\/\//i.test(pathWithCaller)) {
+            return pathWithCaller;
+        }
+        const cleanBase = (baseUrl || "").replace(/\/+$/, "");
+        const cleanPath = pathWithCaller.replace(/^\/+/, "");
+        return `${cleanBase}/${cleanPath}`;
+    }
+
+    // Determine the base endpoint URL
+    let fullUrl = "";
+    if (/^https?:\/\//i.test(rawEndpoint)) {
+        fullUrl = rawEndpoint;
+    } else {
+        const cleanBase = (baseUrl || "").replace(/\/+$/, "");
+        const cleanPath = rawEndpoint.replace(/^\/+/, "");
+        fullUrl = `${cleanBase}/${cleanPath}`;
+    }
+
+    // Append caller parameter
+    if (fullUrl.endsWith("=") || fullUrl.endsWith("&")) {
+        return `${fullUrl}${encodedCaller}`;
+    } else if (fullUrl.includes("?")) {
+        return `${fullUrl}=${encodedCaller}`;
+    } else {
+        return `${fullUrl}?Phone=${encodedCaller}`;
+    }
+}
 
 net.createServer((socket) => {
     console.log("📞 Incoming ESL connection");
@@ -249,6 +287,70 @@ net.createServer((socket) => {
                 } catch (err) {
                     console.log("⚠️ Failed to lookup extension company_id:", err.message);
                 }
+            }
+
+            // Fetch AI Integration (OpenDental credentials) from database
+            let integration = null;
+            if (extension) {
+                try {
+                    integration = await AiIntegration.where({ extension: String(extension), is_active: true }).fetch({ require: false });
+                } catch (err) {
+                    console.log("⚠️ Failed to lookup AiIntegration by extension:", err.message);
+                }
+            }
+            if (!integration && companyId) {
+                try {
+                    integration = await AiIntegration.where({ company_id: companyId, is_active: true }).fetch({ require: false });
+                } catch (err) {
+                    console.log("⚠️ Failed to lookup AiIntegration by company_id:", err.message);
+                }
+            }
+
+            let apiBaseUrl = DEFAULT_BASE_URL;
+            let apiHeaders = { ...DEFAULT_HEADERS };
+            let patientEndpoint = DEFAULT_PATIENT_ENDPOINT;
+
+            if (integration) {
+                const dbBaseUrl = integration.get("base_url");
+                const dbApiKey = integration.get("api_key");
+                const dbHeaders = integration.get("headers");
+                const dbContentType = integration.get("content_type");
+                const dbPatientEndpoint = integration.get("patient_endpoint");
+
+                if (dbBaseUrl) {
+                    apiBaseUrl = dbBaseUrl;
+                }
+
+                if (dbPatientEndpoint) {
+                    patientEndpoint = dbPatientEndpoint;
+                }
+
+                if (dbContentType) {
+                    apiHeaders["Content-Type"] = dbContentType;
+                }
+
+                if (dbHeaders) {
+                    try {
+                        const parsed = typeof dbHeaders === "string" ? JSON.parse(dbHeaders) : dbHeaders;
+                        if (parsed && typeof parsed === "object") {
+                            apiHeaders = { ...apiHeaders, ...parsed };
+                        } else if (typeof parsed === "string") {
+                            const trimmed = parsed.trim();
+                            apiHeaders["Authorization"] = trimmed.startsWith("ODFHIR") || trimmed.startsWith("Bearer")
+                                ? trimmed
+                                : `ODFHIR ${trimmed}`;
+                        }
+                    } catch {
+                        const trimmed = String(dbHeaders).trim();
+                        apiHeaders["Authorization"] = trimmed.startsWith("ODFHIR") || trimmed.startsWith("Bearer")
+                            ? trimmed
+                            : `ODFHIR ${trimmed}`;
+                    }
+                } else if (dbApiKey) {
+                    apiHeaders["Authorization"] = `ODFHIR ${dbApiKey}`;
+                }
+
+                console.log(`🔑 Using AiIntegration (id: ${integration.get("id")}) for extension: ${extension || "N/A"}, company: ${companyId || "N/A"} | Content-Type: ${apiHeaders["Content-Type"]} | Endpoint: ${patientEndpoint}`);
             }
 
             let patientData = null;
@@ -317,43 +419,54 @@ net.createServer((socket) => {
             if (!isOutbound) {
                 try {
                     const t0 = Date.now();
-                    // const { data } = await axios.get(
-                    //     `${BASE_URL}/patients?Phone=${encodeURIComponent(caller)}`,
-                    //     { headers }
-                    // );
-
-                    const { data } = await fetch(`${BASE_URL}/patients?Phone=1002`, { headers });
+                    const requestUrl = buildLookupUrl(apiBaseUrl, patientEndpoint, caller);
+                    console.log(`🔍 Fetching customer/patient from: ${requestUrl}`);
+                    const { data } = await axios.get(
+                        requestUrl,
+                        { headers: apiHeaders }
+                    );
 
                     console.log("API call:", Date.now() - t0, "ms");
 
-                    if (data?.length > 0) {
-                        const p = data[0];
+                    let p = null;
+                    if (Array.isArray(data) && data.length > 0) {
+                        p = data[0];
+                    } else if (data && typeof data === "object" && !Array.isArray(data)) {
+                        if (Array.isArray(data.data) && data.data.length > 0) {
+                            p = data.data[0];
+                        } else if (Array.isArray(data.patients) && data.patients.length > 0) {
+                            p = data.patients[0];
+                        } else if (Array.isArray(data.customers) && data.customers.length > 0) {
+                            p = data.customers[0];
+                        } else if (data.PatNum || data.FName || data.name || data.id || data.email) {
+                            p = data;
+                        }
+                    }
 
-                        // patientData = {
-                        //     patNum: p.PatNum,
-                        //     patientName: `${p.FName} ${p.LName}`.trim(),
-                        //     patient_dob: p.Birthdate,
-                        //     email: p.Email
-                        // };
+                    if (p) {
+                        const patNum = p.PatNum || p.patNum || p.id || p.customer_id || null;
+                        const patientName = `${p.FName || p.first_name || p.name || ""} ${p.LName || p.last_name || ""}`.trim() || p.name || "Customer";
+                        const patient_dob = p.Birthdate || p.birthdate || p.dob || null;
+                        const email = p.Email || p.email || null;
 
                         const t1 = Date.now();
                         await session.set(uuid, {
                             patientData: {
-                                patNum: p.PatNum,
-                                patientName: `${p.FName} ${p.LName}`.trim(),
-                                patient_dob: p.Birthdate,
-                                email: p.Email
+                                patNum,
+                                patientName,
+                                patient_dob,
+                                email
                             },
                             date: null,
                             time: null,
                             slots: []
                         });
                         console.log("session.set:", Date.now() - t1, "ms");
-                        // console.log("✅ Patient found:", patientData.patientName);
+                        console.log("✅ Patient/Customer found:", patientName);
                     }
 
                 } catch (err) {
-                    console.log("❌ Patient lookup failed:", err);
+                    console.log("❌ Patient/Customer lookup failed:", err.message || err);
                 }
             } else {
                 console.log(`⏭️  Outbound call — using pre-seeded patientData | UUID: ${uuid}`);
@@ -405,7 +518,7 @@ net.createServer((socket) => {
                 `${uuid} start ws://127.0.0.1:8085/${uuid} mono 8000`,
                 (res) => console.log("🎙️ WS STREAM:", res.getBody())
             );
-            
+
 
             // ✅ Step 6: Park ONCE — keep call alive
             // await exec(conn, uuid, "park", "");
