@@ -60,6 +60,6 @@ function connectESL() {
 
 
 
-// connectESL(); // FreeSWITCH ESL connection disabled
+connectESL(); // FreeSWITCH ESL connection disabled
 
 module.exports = () => fsConn;
