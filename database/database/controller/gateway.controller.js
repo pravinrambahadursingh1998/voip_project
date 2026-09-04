@@ -121,14 +121,14 @@ const GatewayStatus = async (req, res) => {
     const rows = await Gateway.fetchAll();
     const gateways = rows.toJSON();
 
-    // const conn = fsConn();
+    const conn = fsConn();
 
-    // if (!conn) {
-    //   return res.status(500).json({
-    //     success: false,
-    //     message: "ESL not connected"
-    //   });
-    // }
+    if (!conn) {
+      return res.status(500).json({
+        success: false,
+        message: "ESL not connected"
+      });
+    }
 
     const result = [];
 
@@ -138,26 +138,26 @@ const GatewayStatus = async (req, res) => {
       let status = "Not Loaded";
       let raw = "";
 
-      // if (gatewayName) {
+      if (gatewayName) {
 
-      //   raw = await new Promise((resolve) => {
-      //     conn.api(`sofia status gateway ${gatewayName}`, (response) => {
-      //       resolve(response.getBody());
-      //     });
-      //   });
+        raw = await new Promise((resolve) => {
+          conn.api(`sofia status gateway ${gatewayName}`, (response) => {
+            resolve(response.getBody());
+          });
+        });
 
-      //   if (/REGED/i.test(raw)) {
-      //     status = "Connected";
-      //   } else if (/FAILED/i.test(raw)) {
-      //     status = "Failed";
-      //   } else if (/UNREGED/i.test(raw)) {
-      //     status = "Unregistered";
-      //   } else if (/Invalid Gateway/i.test(raw)) {
-      //     status = "Not Loaded";
-      //   } else {
-      //     status = "Not Connected";
-      //   }
-      // }
+        if (/REGED/i.test(raw)) {
+          status = "Connected";
+        } else if (/FAILED/i.test(raw)) {
+          status = "Failed";
+        } else if (/UNREGED/i.test(raw)) {
+          status = "Unregistered";
+        } else if (/Invalid Gateway/i.test(raw)) {
+          status = "Not Loaded";
+        } else {
+          status = "Not Connected";
+        }
+      }
 
       result.push({
         ...gateway,
@@ -224,18 +224,18 @@ const updateGateway = async (req, res) => {
 
     await gateway.save({
       gateway_name: !!req.body.gateway_name ? req.body.gateway_name : gateway.gateway_name,
-      username: !!req.body.user_name ? req.body.user_name : null,
-      password: !!req.body.gateway_password ? req.body.gateway_password : null,
-      extension: !!req.body.extension ? req.body.extension : null,
-      realm: !!req.body.realm ? req.body.realm : null,
-      proxy: !!req.body.proxy ? req.body.proxy : null,
-      register: !!req.body.register ? req.body.register : false,
-      from_user: !!req.body.from_user ? req.body.from_user : null,
-      from_domain: !!req.body.from_domain ? req.body.from_domain : null,
-      enabled: !!req.body.enabled ? req.body.enabled : false,
-      description: !!req.body.description ? req.body.description : null,
-      register_transport: !!req.body.register_transport ? req.body.register_transport : null,
-      company_id: !!req.body.company_id ? req.body.company_id : null,
+      username: !!req.body.user_name ? req.body.user_name : gateway.username,
+      password: !!req.body.gateway_password ? req.body.gateway_password : gateway.password,
+      extension: !!req.body.extension ? req.body.extension : gateway.extension,
+      realm: !!req.body.realm ? req.body.realm : gateway.realm,
+      proxy: !!req.body.proxy ? req.body.proxy : gateway.proxy,
+      register: !!req.body.register ? req.body.register : gateway.register,
+      from_user: !!req.body.from_user ? req.body.from_user : gateway.from_user,
+      from_domain: !!req.body.from_domain ? req.body.from_domain : gateway.from_domain,
+      enabled: !!req.body.enabled ? req.body.enabled : gateway.enabled,
+      description: !!req.body.description ? req.body.description : gateway.description,
+      register_transport: !!req.body.register_transport ? req.body.register_transport : gateway.register_transport,
+      company_id: !!req.body.company_id ? req.body.company_id : gateway.company_id,
       updated_at: updated_at
     });
 
