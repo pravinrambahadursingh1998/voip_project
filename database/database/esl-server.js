@@ -193,43 +193,8 @@ const DEFAULT_BASE_URL = "https://api.opendental.com/api/v1";
 const DEFAULT_PATIENT_ENDPOINT = "/patients?Phone=";
 const DEFAULT_HEADERS = {
     "Content-Type": "application/json",
-    "Authorization": `ODFHIR ${DEFAULT_API_KEY}`
+    "Authorization": `ODFHIR ${API_KEY}` // correct format!
 };
-
-function buildLookupUrl(baseUrl, endpoint, caller) {
-    const rawEndpoint = (endpoint || DEFAULT_PATIENT_ENDPOINT).trim();
-    const encodedCaller = encodeURIComponent(caller || "");
-
-    // If endpoint has a placeholder like {phone}, {caller}, {Phone}
-    if (/\{(phone|caller|Phone)\}/i.test(rawEndpoint)) {
-        const pathWithCaller = rawEndpoint.replace(/\{(phone|caller|Phone)\}/gi, encodedCaller);
-        if (/^https?:\/\//i.test(pathWithCaller)) {
-            return pathWithCaller;
-        }
-        const cleanBase = (baseUrl || "").replace(/\/+$/, "");
-        const cleanPath = pathWithCaller.replace(/^\/+/, "");
-        return `${cleanBase}/${cleanPath}`;
-    }
-
-    // Determine the base endpoint URL
-    let fullUrl = "";
-    if (/^https?:\/\//i.test(rawEndpoint)) {
-        fullUrl = rawEndpoint;
-    } else {
-        const cleanBase = (baseUrl || "").replace(/\/+$/, "");
-        const cleanPath = rawEndpoint.replace(/^\/+/, "");
-        fullUrl = `${cleanBase}/${cleanPath}`;
-    }
-
-    // Append caller parameter
-    if (fullUrl.endsWith("=") || fullUrl.endsWith("&")) {
-        return `${fullUrl}${encodedCaller}`;
-    } else if (fullUrl.includes("?")) {
-        return `${fullUrl}=${encodedCaller}`;
-    } else {
-        return `${fullUrl}?Phone=${encodedCaller}`;
-    }
-}
 
 net.createServer((socket) => {
     console.log("📞 Incoming ESL connection");
@@ -419,12 +384,12 @@ net.createServer((socket) => {
             if (!isOutbound) {
                 try {
                     const t0 = Date.now();
-                    const requestUrl = buildLookupUrl(apiBaseUrl, patientEndpoint, caller);
-                    console.log(`🔍 Fetching customer/patient from: ${requestUrl}`);
                     const { data } = await axios.get(
-                        requestUrl,
-                        { headers: apiHeaders }
+                        `${BASE_URL}/patients?Phone=${encodeURIComponent(caller)}`,
+                        { headers }
                     );
+
+                    // const { data } = await fetch(`${BASE_URL}/patients?Phone=1002`, { headers });
 
                     console.log("API call:", Date.now() - t0, "ms");
 
