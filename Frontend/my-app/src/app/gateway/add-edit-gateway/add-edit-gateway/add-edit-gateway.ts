@@ -25,8 +25,8 @@ import { SpinnerService } from '../../../shared/spinner/spinner.service';
 export class AddEditGatewayComponent implements OnInit {
   gatewayForm!: FormGroup;
   readonly isLoading = signal(false);
-  token : any;
-  id : any;
+  token: any;
+  id: any;
   constructor(
     private fb: FormBuilder,
     private gatewayService: GatewayService,
@@ -76,7 +76,7 @@ export class AddEditGatewayComponent implements OnInit {
           proxy: response.data.proxy,
           realm: response.data.realm,
           // register_transport: response.data.register_transport == 1 ? 'udp' : response.data.register_transport == 2 ? 'tcp' : 'tls',
-          register_transport : response.data.register_transport,
+          register_transport: response.data.register_transport,
           register: response.data.register,
           user_name: response.data.username,
           gateway_password: response.data.password,
@@ -110,57 +110,56 @@ export class AddEditGatewayComponent implements OnInit {
       company_id: this.token?.company?.id ?? null,
     };
     this.spinner.show()
-    if(this.id){
-      payload.id = this.id
+    if (this.id) {
+      payload.id = this.id;
       this.gatewayService
-      .updateGateway(payload)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.toast.success(response.message || 'Gateway created successfully');
-             this.spinner.hide()
-            this.gatewayForm.reset();
-            this.gatewayForm.markAsPristine();
-            this.gatewayForm.markAsUntouched();
-            this.router.navigate(['/gateways']);
-          } else {
+        .updateGateway(payload)
+        .pipe(finalize(() => this.isLoading.set(false)))
+        .subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              this.toast.success(response.message || 'Gateway updated successfully');
+              this.spinner.hide()
+              this.gatewayForm.reset();
+              this.gatewayForm.markAsPristine();
+              this.gatewayForm.markAsUntouched();
+              this.router.navigate(['/gateways']);
+            } else {
+              this.spinner.hide()
+              this.toast.error(response.message || 'Failed to update gateway');
+            }
+          },
+          error: (error: any) => {
             this.spinner.hide()
-            this.toast.error(response.message || 'Failed to create gateway');
-          }
-        },
-        error: (error: any) => {
-          this.spinner.hide()
-          this.toast.error(error?.error?.message || 'Something went wrong');
-        },
-      });
+            this.toast.error(error?.error?.message || 'Something went wrong');
+          },
+        });
     }
-    else{
+    else {
       this.gatewayService
-      .addGateway(payload)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.toast.success(response.message || 'Gateway created successfully');
-             this.spinner.hide()
-            this.gatewayForm.reset();
-            this.gatewayForm.markAsPristine();
-            this.gatewayForm.markAsUntouched();
-            this.router.navigate(['/gateways']);
-          } else {
+        .addGateway(payload)
+        .pipe(finalize(() => this.isLoading.set(false)))
+        .subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              this.toast.success(response.message || 'Gateway created successfully');
+              this.spinner.hide()
+              this.gatewayForm.reset();
+              this.gatewayForm.markAsPristine();
+              this.gatewayForm.markAsUntouched();
+              this.router.navigate(['/gateways']);
+            } else {
+              this.spinner.hide()
+              this.toast.error(response.message || 'Failed to create gateway');
+            }
+          },
+          error: (error: any) => {
             this.spinner.hide()
-            this.toast.error(response.message || 'Failed to create gateway');
-          }
-        },
-        error: (error: any) => {
-          this.spinner.hide()
-          this.toast.error(error?.error?.message || 'Something went wrong');
-        },
-      });
+            this.toast.error(error?.error?.message || 'Something went wrong');
+          },
+        });
     }
-   
   }
 
- 
+
 }

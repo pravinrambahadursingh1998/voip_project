@@ -8,47 +8,47 @@ import { AuthService } from '../auth';
   providedIn: 'root'
 })
 export class GatewayService {
-    private apiUrl = environment.gatewayApiUrl;
+  private apiUrl = environment.gatewayApiUrl;
 
-    constructor(private http: HttpClient, private authService: AuthService) {}
-    getAuthHeaders(): HttpHeaders {
-      const session = JSON.parse(localStorage.getItem('session') || '{}');
-    
-      return new HttpHeaders({
-        Authorization: `Bearer ${session.token}`
-      });
-    };
+  constructor(private http: HttpClient, private authService: AuthService) { }
+  getAuthHeaders(): HttpHeaders {
+    const session = JSON.parse(localStorage.getItem('session') || '{}');
 
-    getGatewaysInfo(): Observable<any> {
-      console.log('getGatewaysInfo', this.apiUrl);
-        return this.http.get(`${this.apiUrl}/gateway_list`,
-           { headers: this.getAuthHeaders() });
-    }
+    return new HttpHeaders({
+      Authorization: `Bearer ${session.token}`
+    });
+  };
 
-    //Monitor Gateways
-    monitorGateways(): Observable<any> {
-      return this.http.get(`${this.apiUrl}/monitor_gateways`,
-         { headers: this.getAuthHeaders() });
-    }
+  getGatewaysInfo(): Observable<any> {
+    console.log('getGatewaysInfo', this.apiUrl);
+    return this.http.get(`${this.apiUrl}/gateway_list`,
+      { headers: this.getAuthHeaders() });
+  }
 
-    //Gateway Status List
-    getGatewayStatusList(): Observable<any> {
-      return this.http.get(`${this.apiUrl}/gateway_status_list`,
-         { headers: this.getAuthHeaders() });
-    }
+  //Monitor Gateways
+  monitorGateways(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/monitor_gateways`,
+      { headers: this.getAuthHeaders() });
+  }
 
-    addGateway(data: any): Observable<any> {
-      return this.http.post(`${this.apiUrl}/add_gateway`, data,
-        { headers: this.getAuthHeaders() });
-    }
-    //Get Single Gateway
-    getSingleGateway(id: any): Observable<any> {
-      return this.http.get(`${this.apiUrl}/gateway_edit/${id}`,
-        { headers: this.getAuthHeaders() });
-    }
-    //Update Gateway
-    updateGateway(data: any): Observable<any> {
-      return this.http.put(`${this.apiUrl}/update_gateway`, data,
-        { headers: this.getAuthHeaders() });
-    }
+  //Gateway Status List
+  getGatewayStatusList(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gateway_status_list`,
+      { headers: this.getAuthHeaders() });
+  }
+
+  addGateway(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/add_gateway`, data,
+      { headers: this.getAuthHeaders() });
+  }
+  //Get Single Gateway
+  getSingleGateway(id: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gateway_edit/${id}`,
+      { headers: this.getAuthHeaders() });
+  }
+  //Update Gateway
+  updateGateway(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/gateway_update`, data,
+      { headers: this.getAuthHeaders() });
+  }
 }

@@ -46,4 +46,13 @@ export const AI_CONNECTION_ROUTES: Routes = [
       breadcrumb: 'AI Setup / Integrations',
     },
   },
+  {
+    path: 'ai-setup/overview',
+    loadComponent: () =>
+      import('./extension-grid/extension-grid').then((m) => m.ExtensionGrid),
+    data: {
+      title: 'Extension Overview',
+      breadcrumb: 'AI Setup / Extension Overview',
+    },
+  },
 ];

@@ -11,16 +11,11 @@
     <div class="add-gateway__grid">
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="gateway_name">Gateway name</label>
-        <input
-          id="gateway_name"
-          type="text"
-          class="add-gateway__input"
-          formControlName="gateway_name"
+        <input id="gateway_name" type="text" class="add-gateway__input" formControlName="gateway_name"
           placeholder="e.g. FS-Primary"
-          [class.add-gateway__input--invalid]="gatewayForm.get('gateway_name')?.touched && gatewayForm.get('gateway_name')?.invalid"
-        />
+          [class.add-gateway__input--invalid]="gatewayForm.get('gateway_name')?.touched && gatewayForm.get('gateway_name')?.invalid" />
         @if (gatewayForm.get('gateway_name')?.touched && gatewayForm.get('gateway_name')?.invalid) {
-          <p class="add-gateway__error">Gateway name is required.</p>
+        <p class="add-gateway__error">Gateway name is required.</p>
         }
       </div>
 
@@ -34,28 +29,17 @@
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="proxy">Proxy</label>
-        <input
-          id="proxy"
-          type="text"
-          class="add-gateway__input"
-          formControlName="proxy"
-          placeholder="sip.provider.com"
-          [class.add-gateway__input--invalid]="gatewayForm.get('proxy')?.touched && gatewayForm.get('proxy')?.invalid"
-        />
+        <input id="proxy" type="text" class="add-gateway__input" formControlName="proxy" placeholder="sip.provider.com"
+          [class.add-gateway__input--invalid]="gatewayForm.get('proxy')?.touched && gatewayForm.get('proxy')?.invalid" />
         @if (gatewayForm.get('proxy')?.touched && gatewayForm.get('proxy')?.invalid) {
-          <p class="add-gateway__error">Proxy is required.</p>
+        <p class="add-gateway__error">Proxy is required.</p>
         }
       </div>
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="realm">Realm</label>
-        <input
-          id="realm"
-          type="text"
-          class="add-gateway__input"
-          formControlName="realm"
-          placeholder="sip.provider.com"
-        />
+        <input id="realm" type="text" class="add-gateway__input" formControlName="realm"
+          placeholder="sip.provider.com" />
       </div>
 
       <div class="add-gateway__field">
@@ -77,78 +61,46 @@
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="user_name">User name</label>
-        <input
-          id="user_name"
-          type="text"
-          class="add-gateway__input"
-          formControlName="user_name"
-          placeholder="SIP username"
-          autocomplete="off"
-          [class.add-gateway__input--invalid]="gatewayForm.get('user_name')?.touched && gatewayForm.get('user_name')?.invalid"
-        />
+        <input id="user_name" type="text" class="add-gateway__input" formControlName="user_name"
+          placeholder="SIP username" autocomplete="off"
+          [class.add-gateway__input--invalid]="gatewayForm.get('user_name')?.touched && gatewayForm.get('user_name')?.invalid" />
         @if (gatewayForm.get('user_name')?.touched && gatewayForm.get('user_name')?.invalid) {
-          <p class="add-gateway__error">User name is required.</p>
+        <p class="add-gateway__error">User name is required.</p>
         }
       </div>
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="gateway_password">Gateway password</label>
-        <input
-          id="gateway_password"
-          type="password"
-          class="add-gateway__input"
-          formControlName="gateway_password"
-          placeholder="SIP password"
-          autocomplete="new-password"
-          [class.add-gateway__input--invalid]="gatewayForm.get('gateway_password')?.touched && gatewayForm.get('gateway_password')?.invalid"
-        />
+        <input id="gateway_password" type="password" class="add-gateway__input" formControlName="gateway_password"
+          placeholder="SIP password" autocomplete="new-password"
+          [class.add-gateway__input--invalid]="gatewayForm.get('gateway_password')?.touched && gatewayForm.get('gateway_password')?.invalid" />
         @if (gatewayForm.get('gateway_password')?.touched && gatewayForm.get('gateway_password')?.invalid) {
-          <p class="add-gateway__error">Gateway password is required.</p>
+        <p class="add-gateway__error">Gateway password is required.</p>
         }
       </div>
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="extension">Extension</label>
-        <input
-          id="extension"
-          type="text"
-          class="add-gateway__input"
-          formControlName="extension"
-          placeholder="e.g. 1001"
-        />
+        <input id="extension" type="text" class="add-gateway__input" formControlName="extension"
+          placeholder="e.g. 1001" />
       </div>
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="from_user">From user</label>
-        <input
-          id="from_user"
-          type="text"
-          class="add-gateway__input"
-          formControlName="from_user"
-          placeholder="Outbound caller ID user"
-        />
+        <input id="from_user" type="text" class="add-gateway__input" formControlName="from_user"
+          placeholder="Outbound caller ID user" />
       </div>
 
       <div class="add-gateway__field">
         <label class="add-gateway__label" for="from_domain">From domain</label>
-        <input
-          id="from_domain"
-          type="text"
-          class="add-gateway__input"
-          formControlName="from_domain"
-          placeholder="Outbound caller ID domain"
-        />
+        <input id="from_domain" type="text" class="add-gateway__input" formControlName="from_domain"
+          placeholder="Outbound caller ID domain" />
       </div>
 
       <div class="add-gateway__field add-gateway__field--full">
         <label class="add-gateway__label" for="description">Description</label>
-        <textarea
-          id="description"
-          class="add-gateway__textarea"
-          formControlName="description"
-          rows="3"
-          placeholder="Optional notes about this gateway"
-        ></textarea>
+        <textarea id="description" class="add-gateway__textarea" formControlName="description" rows="3"
+          placeholder="Optional notes about this gateway"></textarea>
       </div>
     </div>
 
@@ -156,16 +108,11 @@
       <button type="button" class="add-gateway__cancel-btn" (click)="goBack()">Cancel</button>
       <button type="submit" class="add-gateway__submit-btn" [disabled]="isLoading()">
         @if (isLoading()) {
-          <mat-progress-spinner
-            class="add-gateway__btn-spinner"
-            diameter="18"
-            strokeWidth="3"
-            mode="indeterminate"
-            aria-hidden="true"
-          ></mat-progress-spinner>
-          Saving...
+        <mat-progress-spinner class="add-gateway__btn-spinner" diameter="18" strokeWidth="3" mode="indeterminate"
+          aria-hidden="true"></mat-progress-spinner>
+        Saving...
         } @else {
-          Save gateway
+        {{ id ? 'Update gateway' : 'Save gateway' }}
         }
       </button>
     </div>
