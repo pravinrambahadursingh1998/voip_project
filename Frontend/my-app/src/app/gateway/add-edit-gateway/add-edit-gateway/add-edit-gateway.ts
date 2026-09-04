@@ -110,8 +110,33 @@ export class AddEditGatewayComponent implements OnInit {
       company_id: this.token?.company?.id ?? null,
     };
     this.spinner.show()
-
-    this.gatewayService
+    if(this.id){
+      payload.id = this.id
+      this.gatewayService
+      .updateGateway(payload)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.toast.success(response.message || 'Gateway created successfully');
+             this.spinner.hide()
+            this.gatewayForm.reset();
+            this.gatewayForm.markAsPristine();
+            this.gatewayForm.markAsUntouched();
+            this.router.navigate(['/gateways']);
+          } else {
+            this.spinner.hide()
+            this.toast.error(response.message || 'Failed to create gateway');
+          }
+        },
+        error: (error: any) => {
+          this.spinner.hide()
+          this.toast.error(error?.error?.message || 'Something went wrong');
+        },
+      });
+    }
+    else{
+      this.gatewayService
       .addGateway(payload)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
@@ -133,6 +158,8 @@ export class AddEditGatewayComponent implements OnInit {
           this.toast.error(error?.error?.message || 'Something went wrong');
         },
       });
+    }
+   
   }
 
  

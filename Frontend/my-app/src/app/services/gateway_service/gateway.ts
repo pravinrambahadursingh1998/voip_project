@@ -47,8 +47,8 @@ export class GatewayService {
         { headers: this.getAuthHeaders() });
     }
     //Update Gateway
-    updateGateway(id: any, data: any): Observable<any> {
-      return this.http.put(`${this.apiUrl}/update_gateway/${id}`, data,
+    updateGateway(data: any): Observable<any> {
+      return this.http.put(`${this.apiUrl}/update_gateway`, data,
         { headers: this.getAuthHeaders() });
     }
 }
