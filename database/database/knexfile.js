@@ -1,6 +1,7 @@
 // module.exports = {
 //   development: {
 //     client: "mysql2",
+//     client: "mysql2",
 //     connection: {
 //       host: process.env.PG_HOST,
 //       user: process.env.PG_USER,

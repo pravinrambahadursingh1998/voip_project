@@ -5,7 +5,7 @@ const gatewayService = require("../services/gateway.service");
 //Insert Gateway Api
 const createGateway = async (req, res) => {
   try {
-    console.log('createGateway',req.body);
+    console.log('createGateway', req.body);
     // return false
     const created_at = new Date()
     const proxy = req.body.proxy
@@ -30,26 +30,26 @@ const createGateway = async (req, res) => {
       company_id: !!req.body.company_id ? req.body.company_id : null
     }).save();
 
-  // Pick up new gateway from DB via xml_curl + register with FreeSWITCH
-  await gatewayService.refreshFreeSWITCH();
+    // Pick up new gateway from DB via xml_curl + register with FreeSWITCH
+    await gatewayService.refreshFreeSWITCH();
 
-  return res.json({ success: true, message: 'Data Created Succesfully' });
+    return res.json({ success: true, message: 'Data Created Succesfully' });
   } catch (error) {
     console.log('error', error);
-    
+
     return res.status(500).json({
       success: false,
       message: 'Something went wrong'
     });
   }
-  
+
 };
 
 //Gateway List
 const listGateway = async (req, res) => {
   try {
- console.log('listGateway');
- 
+    console.log('listGateway');
+
     const gateways = await Gateway.fetchAll();
 
     return res.json({
@@ -59,7 +59,7 @@ const listGateway = async (req, res) => {
 
   } catch (error) {
     console.log('error', error);
-    
+
     return res.status(500).json({
       success: false,
       message: error.message
@@ -213,7 +213,7 @@ const updateGateway = async (req, res) => {
   try {
     const updated_at = new Date();
 
-    const gateway = await Gateway.where({ id: req.params.id }).fetch();
+    const gateway = await Gateway.where({ id: req.body.id }).fetch();
 
     if (!gateway) {
       return res.json({
@@ -286,20 +286,24 @@ const deleteGateway = async (req, res) => {
 
 
 const getUser = async (req, res) => {
-    try {
-        console.log('fetch');
-        const getUser = await Gateway.fetchAll()
-        return res.status(200).json({
-            message: "Users fetched successfully",
-            success: true,
-            users: getUser
-        });
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        return res.status(500).json({ message: "Server Error", success: false });
-    }
+  try {
+    console.log('fetch');
+    const getUser = await Gateway.fetchAll()
+    return res.status(200).json({
+      message: "Users fetched successfully",
+      success: true,
+      users: getUser
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ message: "Server Error", success: false });
+  }
 }
 
-module.exports = { createGateway, listGateway,
-   editGateway,  updateGateway, deleteGateway,
-    getUser, monitorGateways, GatewayStatus}
+
+
+module.exports = {
+  createGateway, listGateway,
+  editGateway, updateGateway, deleteGateway,
+  getUser, monitorGateways, GatewayStatus
+}
