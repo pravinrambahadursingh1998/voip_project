@@ -108,13 +108,11 @@
   height: 6px;
   appearance: none;
   -webkit-appearance: none;
-  background: linear-gradient(
-    to right,
-    #5bb8f5 0%,
-    #5bb8f5 var(--progress),
-    #d5dce7 var(--progress),
-    #d5dce7 100%
-  );
+  background: linear-gradient(to right,
+      #5bb8f5 0%,
+      #5bb8f5 var(--progress),
+      #d5dce7 var(--progress),
+      #d5dce7 100%);
   border-radius: 999px;
   outline: none;
   cursor: pointer;

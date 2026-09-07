@@ -325,11 +325,11 @@
   transition: transform 0.15s ease;
 }
 
-.pr-editor__toggle input:checked + .pr-editor__toggle-track {
+.pr-editor__toggle input:checked+.pr-editor__toggle-track {
   background: #2f80ed;
 }
 
-.pr-editor__toggle input:checked + .pr-editor__toggle-track::after {
+.pr-editor__toggle input:checked+.pr-editor__toggle-track::after {
   transform: translateX(18px);
 }
 

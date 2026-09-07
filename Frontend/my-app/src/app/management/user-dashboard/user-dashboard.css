@@ -94,9 +94,17 @@
   margin-bottom: 6px;
 }
 
-.user-dash__kpi-value--green { color: #168a45; }
-.user-dash__kpi-value--yellow { color: #a87910; }
-.user-dash__kpi-value--red { color: #d14343; }
+.user-dash__kpi-value--green {
+  color: #168a45;
+}
+
+.user-dash__kpi-value--yellow {
+  color: #a87910;
+}
+
+.user-dash__kpi-value--red {
+  color: #d14343;
+}
 
 .user-dash__kpi-meta {
   color: #7b8799;
@@ -218,10 +226,21 @@
   flex-shrink: 0;
 }
 
-.user-dash__activity-dot--success { background: #22c55e; }
-.user-dash__activity-dot--warning { background: #eab308; }
-.user-dash__activity-dot--info { background: #2f80ed; }
-.user-dash__activity-dot--danger { background: #ef4444; }
+.user-dash__activity-dot--success {
+  background: #22c55e;
+}
+
+.user-dash__activity-dot--warning {
+  background: #eab308;
+}
+
+.user-dash__activity-dot--info {
+  background: #2f80ed;
+}
+
+.user-dash__activity-dot--danger {
+  background: #ef4444;
+}
 
 .user-dash__activity-text {
   margin: 0 0 2px;

@@ -71,9 +71,17 @@
   flex-shrink: 0;
 }
 
-.users__stat-dot--green { background: #22c55e; }
-.users__stat-dot--yellow { background: #eab308; }
-.users__stat-dot--red { background: #ef4444; }
+.users__stat-dot--green {
+  background: #22c55e;
+}
+
+.users__stat-dot--yellow {
+  background: #eab308;
+}
+
+.users__stat-dot--red {
+  background: #ef4444;
+}
 
 .users__toolbar {
   display: flex;

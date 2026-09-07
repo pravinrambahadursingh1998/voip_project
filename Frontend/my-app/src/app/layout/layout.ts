@@ -4,6 +4,8 @@ import { filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SidebarComponent } from '../shared/sidebar/sidebar';
 import { AuthService } from '../services/auth';
+import { SpinnerService } from '../shared/spinner/spinner.service';
+
 
 @Component({
   selector: 'app-layout',
@@ -16,6 +18,7 @@ export class LayoutComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
+  private readonly spinnerService = inject(SpinnerService);
 
   readonly sidebarCollapsed = signal(false);
   readonly breadcrumb = signal('');
@@ -95,11 +98,14 @@ export class LayoutComponent {
 
   goToProfile(): void {
     this.profileMenuOpen.set(false);
+    console.log('profile clicked');
+
     this.router.navigate(['/profile']);
   }
 
   logout(): void {
     this.profileMenuOpen.set(false);
+    this.spinnerService.show();
     this.authService.logout().subscribe({
       next: () => this.clearSessionAndRedirect(),
       error: () => this.clearSessionAndRedirect(),
@@ -109,6 +115,7 @@ export class LayoutComponent {
   private clearSessionAndRedirect(): void {
     localStorage.removeItem('session');
     this.sessionUser.set(null);
+    this.spinnerService.hide();
     this.router.navigate(['/login']);
   }
 

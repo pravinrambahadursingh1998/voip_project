@@ -178,11 +178,11 @@
   transition: transform 0.15s ease;
 }
 
-.fn-editor__toggle input:checked + .fn-editor__toggle-track {
+.fn-editor__toggle input:checked+.fn-editor__toggle-track {
   background: #2f80ed;
 }
 
-.fn-editor__toggle input:checked + .fn-editor__toggle-track::after {
+.fn-editor__toggle input:checked+.fn-editor__toggle-track::after {
   transform: translateX(18px);
 }
 
@@ -455,6 +455,7 @@ label.fn-editor__icon-btn {
 }
 
 @media (max-width: 700px) {
+
   .fn-editor__grid,
   .fn-editor__grid--2 {
     grid-template-columns: 1fr;

@@ -140,7 +140,7 @@
   transition: background 0.12s ease, border-color 0.12s ease;
 }
 
-.pr-list__item + .pr-list__item {
+.pr-list__item+.pr-list__item {
   margin-top: 2px;
 }
 

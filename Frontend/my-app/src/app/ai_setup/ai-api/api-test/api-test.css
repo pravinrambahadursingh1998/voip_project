@@ -486,13 +486,30 @@
   background-size: 10px 7px;
 }
 
-.api-test__method--get { color: #1f9d55; }
-.api-test__method--post { color: #d97706; }
-.api-test__method--put { color: #2f80ed; }
-.api-test__method--patch { color: #7c3aed; }
-.api-test__method--delete { color: #e5484d; }
+.api-test__method--get {
+  color: #1f9d55;
+}
+
+.api-test__method--post {
+  color: #d97706;
+}
+
+.api-test__method--put {
+  color: #2f80ed;
+}
+
+.api-test__method--patch {
+  color: #7c3aed;
+}
+
+.api-test__method--delete {
+  color: #e5484d;
+}
+
 .api-test__method--head,
-.api-test__method--options { color: #5b6b85; }
+.api-test__method--options {
+  color: #5b6b85;
+}
 
 .api-test__url {
   flex: 1;
